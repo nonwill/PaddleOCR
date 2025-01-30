@@ -20,7 +20,7 @@
 namespace PaddleOCR {
 
 #ifndef PPOCR_gflags_ENABLED
-struct Args;
+class Args;
 #endif
 
 class PPOCR_API PPOCR {

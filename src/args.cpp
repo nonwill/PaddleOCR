@@ -76,7 +76,7 @@ void ArgsHelp(std::ostream & out) noexcept
 #undef DEFINE_string
 }
 
-int Args::parse( int argc, char** argv ) noexcept
+int Args::parseArgv( int argc, char** argv ) noexcept
 {
   struct option const long_options[] =
   {
@@ -149,6 +149,59 @@ int Args::parse( int argc, char** argv ) noexcept
       printf("\n");
   }
 
+  return 0;
+}
+
+int Args::parseInis( char const * inis ) noexcept
+{
+  char const * lb = inis;
+  char const * le = inis;
+
+  for(;;)
+  {
+    le = strstr( lb, "\n" );
+    if ( le == nullptr )
+      break;
+
+    std::string cats( lb, le - lb );
+    lb = le + 1;
+
+    size_t pos = cats.find( '=' );
+    if ( pos == std::string::npos )
+      continue;
+
+    std::string name = cats.substr(0, pos);
+    std::string value = cats.substr(pos+1);
+    if ( value.empty() )
+      continue;
+
+#define DEFINE_bool(x,v,d) \
+    if ( name == #x ) { \
+      x = strcmp( value.c_str(), "true" ) == 0 \
+                     || atoi( value.c_str() ) != 0; \
+      continue; \
+    }
+#define DEFINE_int32(x,v,d) \
+    if ( name == #x ) { \
+      x = atoi( value.c_str() ); \
+      continue; \
+    }
+#define DEFINE_double(x,v,d) \
+    if ( name == #x ) { \
+      x = atof( value.c_str() ); \
+      continue; \
+    }
+#define DEFINE_string(x,v,d) \
+    if ( name == #x ) { \
+      x = value; \
+      continue; \
+    }
+#include <args_pri.h>
+#undef DEFINE_bool
+#undef DEFINE_int32
+#undef DEFINE_double
+#undef DEFINE_string
+  }
   return 0;
 }
 

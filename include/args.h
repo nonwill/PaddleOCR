@@ -42,13 +42,17 @@ extern "C" {
 
 namespace PaddleOCR {
 
-struct PPOCR_API Args {
+class PPOCR_API Args {
+public:
     Args() noexcept;
-    Args( int argc, char** argv ) noexcept
-    { parse(argc, argv); }
+    explicit Args( int argc, char** argv ) noexcept : Args()
+    { parseArgv(argc, argv); }
+    explicit Args( char const * inistring ) noexcept : Args()
+    { parseInis(inistring); }
     ~Args() {}
 
-    int parse( int argc, char** argv ) noexcept;
+    int parseArgv( int argc, char** argv ) noexcept;
+    int parseInis( char const * inistring ) noexcept;
 
 #define DECLARE_bool(x) bool x
 #define DECLARE_int32(x) int x

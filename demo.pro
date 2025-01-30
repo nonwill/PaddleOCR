@@ -3,10 +3,11 @@ TEMPLATE = app
 
 TARGET = ppocr
 
-CONFIG += console ppocr_capi
+CONFIG += console
 
 include($$PWD/../nwDeployed/nwDeployed.pri)
 
+CONFIG += ppocr_capi
 
 INCLUDEPATH += . \
     $$PWD/include
@@ -28,22 +29,22 @@ ppocr_capi {
 
 QMAKE_POST_LINK = $${DESTDIR}/ppocr.exe \
     --enable_mkldnn=1 --use_dilation=0 \
-    --det_model_dir=$$PWD/deps/PP-Modal/OCRv4/ch_PP-OCRv4_det_infer \
-    --rec_model_dir=$$PWD/deps/PP-Modal/OCRv4/ch_PP-OCRv4_rec_infer \
-    --cls_model_dir=$$PWD/deps/PP-Modal/OCRv4/ch_ppocr_mobile_v2.0_cls_infer \
-    --rec_char_dict_path=$$PWD/deps/PP-Modal/ppocr_inference/ppocr_keys_v1.txt \
+    --det_model_dir=$$PWD/deps/PP-Modal/ch_PP-OCRv4_det_infer \
+    --rec_model_dir=$$PWD/deps/PP-Modal/ch_PP-OCRv4_rec_infer \
+    --cls_model_dir=$$PWD/deps/PP-Modal/ch_ppocr_mobile_v2.0_cls_infer \
+    --rec_char_dict_path=$$PWD/deps/PP-Modal/ppocr_keys_v1.txt \
     --image_dir=$$PWD/tests --output=$${DESTDIR}/output-use_dilation_0 & \
     $${DESTDIR}/ppocr.exe \
     --enable_mkldnn=1 --use_dilation=1 \
-    --det_model_dir=$$PWD/deps/PP-Modal/OCRv4/ch_PP-OCRv4_det_infer \
-    --rec_model_dir=$$PWD/deps/PP-Modal/OCRv4/ch_PP-OCRv4_rec_infer \
-    --cls_model_dir=$$PWD/deps/PP-Modal/OCRv4/ch_ppocr_mobile_v2.0_cls_infer \
-    --rec_char_dict_path=$$PWD/deps/PP-Modal/ppocr_inference/ppocr_keys_v1.txt \
+    --det_model_dir=$$PWD/deps/PP-Modal/ch_PP-OCRv4_det_infer \
+    --rec_model_dir=$$PWD/deps/PP-Modal/ch_PP-OCRv4_rec_infer \
+    --cls_model_dir=$$PWD/deps/PP-Modal/ch_ppocr_mobile_v2.0_cls_infer \
+    --rec_char_dict_path=$$PWD/deps/PP-Modal/ppocr_keys_v1.txt \
     --image_dir=$$PWD/tests --output=$${DESTDIR}/output-use_dilation_1
 
 # QMAKE_POST_LINK = $${DESTDIR}/ppocr.exe \
-#     --det_model_dir=$$PWD/PP-Modal/OCRv3/ch_PP-OCRv3_det_infer \
-#     --rec_model_dir=$$PWD/PP-Modal/OCRv3/ch_PP-OCRv3_rec_infer \
-#     --cls_model_dir=$$PWD/PP-Modal/OCRv3/ch_ppocr_mobile_v2.0_cls_infer \
-#     --rec_char_dict_path=$${DESTDIR}/ppocr_inference/ppocr_keys_v1.txt \
+#     --det_model_dir=$$PWD/PP-Modal/ch_PP-OCRv3_det_infer \
+#     --rec_model_dir=$$PWD/PP-Modal/ch_PP-OCRv3_rec_infer \
+#     --cls_model_dir=$$PWD/PP-Modal/ch_ppocr_mobile_v2.0_cls_infer \
+#     --rec_char_dict_path=$${DESTDIR}/ppocr_keys_v1.txt \
 #     --image_dir=$$PWD/test.jpg

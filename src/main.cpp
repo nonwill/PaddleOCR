@@ -266,7 +266,7 @@ void structure(std::vector<cv::String> &cv_all_img_names, Args const & args) {
                                        "_" + file_name);
         }
 #endif
-      } else {
+      }  {
         std::cout << "count of ocr result is : "
                   << structure_results[j].text_res.size() << std::endl;
         if (structure_results[j].text_res.size() > 0) {
@@ -352,11 +352,13 @@ int main(int argc, char **argv)
   if ( ret )
     return ret;
 
-  ppocr_enable_cout( ocr );
-
-  ret = ppocr_cmd( ocr );
-
-  std::cout << "ppocr_cmd : " << ret  << std::endl;
+  PPPOcrResult results;
+  ret = ppocr_cmd( ocr, &results );
+  if ( !ret )
+  {
+    ppocr_print_result(results);
+    ppocr_free( results );
+  }
 
   ppocr_destroy( ocr );
 
