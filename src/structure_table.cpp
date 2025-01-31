@@ -52,7 +52,7 @@ void StructureTableRecognizer::Run(
       this->normalize_op_.Run(resize_img, this->mean_, this->scale_,
                               this->is_scale_);
       this->pad_op_.Run(resize_img, pad_img, this->table_max_len_);
-      norm_img_batch.emplace_back(pad_img);
+      norm_img_batch.emplace_back(std::move(pad_img));
       width_list.emplace_back(srcimg.cols);
       height_list.emplace_back(srcimg.rows);
     }
@@ -109,9 +109,9 @@ void StructureTableRecognizer::Run(
       structure_html_tag_batch[m].emplace_back("</table>");
       structure_html_tag_batch[m].emplace_back("</body>");
       structure_html_tag_batch[m].emplace_back("</html>");
-      structure_html_tags.emplace_back(structure_html_tag_batch[m]);
+      structure_html_tags.emplace_back(std::move(structure_html_tag_batch[m]));
       structure_scores.emplace_back(structure_score_batch[m]);
-      structure_boxes.emplace_back(structure_boxes_batch[m]);
+      structure_boxes.emplace_back(std::move(structure_boxes_batch[m]));
     }
     auto postprocess_end = std::chrono::steady_clock::now();
     postprocess_diff += postprocess_end - postprocess_start;

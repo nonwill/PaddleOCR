@@ -135,9 +135,9 @@ void DBDetector::Run(const cv::Mat &img,
     cv::dilate(bit_map, bit_map, dila_ele);
   }
 
-  boxes = post_processor_.BoxesFromBitmap(
+  boxes = std::move(post_processor_.BoxesFromBitmap(
       pred_map, bit_map, this->det_db_box_thresh_, this->det_db_unclip_ratio_,
-      this->det_db_score_mode_);
+      this->det_db_score_mode_));
 
   post_processor_.FilterTagDetRes(boxes, ratio_h, ratio_w, srcimg);
   auto postprocess_end = std::chrono::steady_clock::now();

@@ -95,12 +95,12 @@ struct IntPoint {
 typedef std::vector<IntPoint> Path;
 typedef std::vector<Path> Paths;
 
-inline Path &operator<<(Path &poly, const IntPoint &p) noexcept {
-  poly.push_back(p);
+inline Path &operator<<(Path &poly, IntPoint&& p) noexcept {
+  poly.emplace_back(std::forward<IntPoint>(p));
   return poly;
 }
-inline Paths &operator<<(Paths &polys, const Path &p) noexcept {
-  polys.push_back(p);
+inline Paths &operator<<(Paths &polys, Path&& p) noexcept {
+  polys.emplace_back(std::forward<Path>(p));
   return polys;
 }
 

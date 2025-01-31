@@ -130,9 +130,7 @@ PPOCR::ocr(const std::vector<cv::Mat> &img_list, bool det, bool rec, bool cls) n
       this->rec(img_list, ocr_result);
     }
     for (int i = 0; i < ocr_result.size(); ++i) {
-      std::vector<OCRPredictResult> ocr_result_tmp;
-      ocr_result_tmp.emplace_back(ocr_result[i]);
-      ocr_results.emplace_back(std::move(ocr_result_tmp));
+      ocr_results.emplace_back(1, std::move(ocr_result[i]));
     }
   } else {
     for (int i = 0; i < img_list.size(); ++i) {
@@ -154,9 +152,8 @@ std::vector<OCRPredictResult> PPOCR::ocr(const cv::Mat &img, bool det, bool rec,
   // crop image
   std::vector<cv::Mat> img_list;
   for (int j = 0; j < ocr_result.size(); j++) {
-    cv::Mat crop_img;
-    crop_img = Utility::GetRotateCropImage(img, ocr_result[j].box);
-    img_list.emplace_back(crop_img);
+    cv::Mat crop_img = Utility::GetRotateCropImage(img, ocr_result[j].box);
+    img_list.emplace_back(std::move(crop_img));
   }
   // cls
   if (cls && pri->classifier) {
@@ -184,8 +181,8 @@ void PPOCR::det(const cv::Mat &img, std::vector<OCRPredictResult> &ocr_results) 
 
   for (int i = 0; i < boxes.size(); ++i) {
     OCRPredictResult res;
-    res.box = boxes[i];
-    ocr_results.emplace_back(res);
+    res.box = std::move(boxes[i]);
+    ocr_results.emplace_back(std::move(res));
   }
   // sort boex from top to bottom, from left to right
   Utility::sorted_boxes(ocr_results);
@@ -199,13 +196,13 @@ void PPOCR::det(const cv::Mat &img, std::vector<OCRPredictResult> &ocr_results) 
 void PPOCR::rec(const std::vector<cv::Mat> &img_list,
                 std::vector<OCRPredictResult> &ocr_results) noexcept
 {
-  std::vector<std::string> rec_texts(img_list.size(), "");
+  std::vector<std::string> rec_texts(img_list.size(), std::string());
   std::vector<float> rec_text_scores(img_list.size(), 0);
   std::vector<double> rec_times;
   pri->recognizer->Run(img_list, rec_texts, rec_text_scores, rec_times);
   // output rec results
   for (int i = 0; i < rec_texts.size(); ++i) {
-    ocr_results[i].text = rec_texts[i];
+    ocr_results[i].text = std::move(rec_texts[i]);
     ocr_results[i].score = rec_text_scores[i];
   }
 #ifdef PPOCR_benchmark_ENABLED

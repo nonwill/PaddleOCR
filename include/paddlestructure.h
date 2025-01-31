@@ -55,7 +55,7 @@ private:
   void table(const cv::Mat &img, StructurePredictResult &structure_result) noexcept;
 
   std::string rebuild_table(const std::vector<std::string> &rec_html_tags,
-                            std::vector<std::vector<int>> rec_boxes,
+                            const std::vector<std::vector<int>> &rec_boxes,
                             std::vector<OCRPredictResult> &ocr_result) noexcept;
 
   float dis(const std::vector<int> &box1, const std::vector<int> &box2) noexcept;

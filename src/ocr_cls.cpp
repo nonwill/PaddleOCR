@@ -54,7 +54,7 @@ void Classifier::Run(const std::vector<cv::Mat> &img_list,
                            cls_image_shape[2] - resize_img.cols,
                            cv::BORDER_CONSTANT, cv::Scalar(0, 0, 0));
       }
-      norm_img_batch.emplace_back(resize_img);
+      norm_img_batch.emplace_back(std::move(resize_img));
     }
     std::vector<float> input(batch_num * cls_image_shape[0] *
                                  cls_image_shape[1] * cls_image_shape[2],

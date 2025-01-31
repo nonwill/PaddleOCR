@@ -89,19 +89,19 @@ PaddleStructure::structure(const cv::Mat &srcimg, bool layout, bool table, bool 
   } else {
     StructurePredictResult res;
     res.type = "table";
-    res.box = std::vector<float>(4, 0.0);
+    res.box.resize(4, 0.0);
     res.box[2] = img.cols;
     res.box[3] = img.rows;
-    structure_results.emplace_back(res);
+    structure_results.emplace_back(std::move(res));
   }
   cv::Mat roi_img;
   for (int i = 0; i < structure_results.size(); ++i) {
     // crop image
-    roi_img = Utility::crop_image(img, structure_results[i].box);
+    roi_img = std::move(Utility::crop_image(img, structure_results[i].box));
     if (structure_results[i].type == "table" && table) {
       this->table(roi_img, structure_results[i]);
     } else if (ocr) {
-      structure_results[i].text_res = this->ocr(roi_img, true, true, false);
+      structure_results[i].text_res = std::move(this->ocr(roi_img, true, true, false));
     }
   }
 
@@ -141,7 +141,6 @@ void PaddleStructure::table(const cv::Mat &img,
 #endif
 
   std::vector<OCRPredictResult> ocr_result;
-  std::string html;
   int expand_pixel = 3;
 
   for (int i = 0; i < img_list.size(); ++i) {
@@ -151,29 +150,28 @@ void PaddleStructure::table(const cv::Mat &img,
     std::vector<cv::Mat> rec_img_list;
     std::vector<int> ocr_box;
     for (int j = 0; j < ocr_result.size(); j++) {
-      ocr_box = Utility::xyxyxyxy2xyxy(ocr_result[j].box);
+      ocr_box = std::move(Utility::xyxyxyxy2xyxy(ocr_result[j].box));
       ocr_box[0] = std::max(0, ocr_box[0] - expand_pixel);
       ocr_box[1] = std::max(0, ocr_box[1] - expand_pixel),
       ocr_box[2] = std::min(img_list[i].cols, ocr_box[2] + expand_pixel);
       ocr_box[3] = std::min(img_list[i].rows, ocr_box[3] + expand_pixel);
 
       cv::Mat crop_img = Utility::crop_image(img_list[i], ocr_box);
-      rec_img_list.emplace_back(crop_img);
+      rec_img_list.emplace_back(std::move(crop_img));
     }
     // rec
     this->rec(rec_img_list, ocr_result);
     // rebuild table
-    html = this->rebuild_table(structure_html_tags[i], structure_boxes[i],
-                               ocr_result);
-    structure_result.html = html;
-    structure_result.cell_box = structure_boxes[i];
+    structure_result.html = std::move(this->rebuild_table(structure_html_tags[i], structure_boxes[i],
+                               ocr_result));
+    structure_result.cell_box = std::move(structure_boxes[i]);
     structure_result.html_score = structure_scores[i];
   }
 }
 
 std::string
 PaddleStructure::rebuild_table(const std::vector<std::string> &structure_html_tags,
-                               std::vector<std::vector<int>> structure_boxes,
+                               const std::vector<std::vector<int>> &structure_boxes,
                                std::vector<OCRPredictResult> &ocr_result) noexcept
 {
   // match text in same cell
@@ -183,7 +181,7 @@ PaddleStructure::rebuild_table(const std::vector<std::string> &structure_html_ta
   std::vector<int> ocr_box;
   std::vector<int> structure_box;
   for (int i = 0; i < ocr_result.size(); ++i) {
-    ocr_box = Utility::xyxyxyxy2xyxy(ocr_result[i].box);
+    ocr_box = std::move(Utility::xyxyxyxy2xyxy(ocr_result[i].box));
     ocr_box[0] -= 1;
     ocr_box[1] -= 1;
     ocr_box[2] += 1;
@@ -192,7 +190,7 @@ PaddleStructure::rebuild_table(const std::vector<std::string> &structure_html_ta
                                              std::vector<float>(3, 100000.0));
     for (int j = 0; j < structure_boxes.size(); j++) {
       if (structure_boxes[i].size() == 8) {
-        structure_box = Utility::xyxyxyxy2xyxy(structure_boxes[j]);
+        structure_box = std::move(Utility::xyxyxyxy2xyxy(structure_boxes[j]));
       } else {
         structure_box = structure_boxes[j];
       }
@@ -201,8 +199,7 @@ PaddleStructure::rebuild_table(const std::vector<std::string> &structure_html_ta
       dis_list[j][2] = j;
     }
     // find min dis idx
-    std::sort(dis_list.begin(), dis_list.end(),
-              PaddleStructure::comparison_dis);
+    std::sort(dis_list.begin(), dis_list.end(), PaddleStructure::comparison_dis);
     matched[dis_list[0][2]].emplace_back(ocr_result[i].text);
   }
 

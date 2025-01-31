@@ -292,7 +292,7 @@ int main(int argc, char **argv) {
   ppocrParseCommandLineFlags(&argc, &argv, true);
 #else
   Args args;
-  args.parse(argc, argv);
+  args.parseArgv(argc, argv);
 #endif
 
   check_params(args);

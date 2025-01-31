@@ -7,7 +7,7 @@ CONFIG += console
 
 include($$PWD/../nwDeployed/nwDeployed.pri)
 
-CONFIG += ppocr_capi
+#CONFIG += ppocr_capi
 
 INCLUDEPATH += . \
     $$PWD/include
@@ -23,7 +23,7 @@ ppocr_capi {
   win32-msvc* {
    LIBS += -L$${OPENCV_DIR}/x64/vc16/lib
   }
-  LIBS += -lpdddle_ocr -lopencv_world3420
+  LIBS += -lpdddleocr -lopencv_world3420
 }
 
 

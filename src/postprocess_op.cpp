@@ -59,10 +59,10 @@ cv::RotatedRect DBPostProcessor::UnClip(const std::vector<std::vector<float>> &b
 #else
   ClipperLib::ClipperOffset offset;
   ClipperLib::Path p;
-  p << ClipperLib::IntPoint(int(box[0][0]), int(box[0][1]))
-    << ClipperLib::IntPoint(int(box[1][0]), int(box[1][1]))
-    << ClipperLib::IntPoint(int(box[2][0]), int(box[2][1]))
-    << ClipperLib::IntPoint(int(box[3][0]), int(box[3][1]));
+  p.emplace_back(int(box[0][0]), int(box[0][1]));
+  p.emplace_back(int(box[1][0]), int(box[1][1]));
+  p.emplace_back(int(box[2][0]), int(box[2][1]));
+  p.emplace_back(int(box[3][0]), int(box[3][1]));
   offset.AddPath(p, ClipperLib::jtRound, ClipperLib::etClosedPolygon);
 
   ClipperLib::Paths soln;
@@ -504,27 +504,29 @@ void PicodetPostProcessor::Run(std::vector<StructurePredictResult> &results,
         std::vector<float>::const_iterator itemp =
             outs[i + this->fpn_stride_.size()].begin() + idx * 4 * reg_max;
         std::vector<float> bbox_pred(itemp, itemp + 4 * reg_max);
-        bbox_results[cur_label].emplace_back(
+        bbox_results[cur_label].emplace_back( std::move(
             this->disPred2Bbox(bbox_pred, cur_label, score, col, row,
-                               this->fpn_stride_[i], resize_shape, reg_max));
+                               this->fpn_stride_[i], resize_shape, reg_max)) );
       }
     }
   }
+#if 0
   for (int i = 0; i < bbox_results.size(); ++i) {
     bool flag = bbox_results[i].size() <= 0;
   }
+#endif
   for (int i = 0; i < bbox_results.size(); ++i) {
-    bool flag = bbox_results[i].size() <= 0;
+    // bool flag = bbox_results[i].size() <= 0;
     if (bbox_results[i].size() <= 0) {
       continue;
     }
     this->nms(bbox_results[i], this->nms_threshold_);
-    for (auto box : bbox_results[i]) {
+    for (auto &box : bbox_results[i]) {
       box.box[0] = box.box[0] / scale_factor_w;
       box.box[2] = box.box[2] / scale_factor_w;
       box.box[1] = box.box[1] / scale_factor_h;
       box.box[3] = box.box[3] / scale_factor_h;
-      results.emplace_back(box);
+      results.emplace_back(std::move(box));
     }
   }
 }
@@ -541,8 +543,8 @@ PicodetPostProcessor::disPred2Bbox(const std::vector<float> &bbox_pred, int labe
     float dis = 0;
     std::vector<float>::const_iterator itemp = bbox_pred.begin() + i * reg_max;
     std::vector<float> bbox_pred_i(itemp, itemp + reg_max);
-    std::vector<float> dis_after_sm =
-        Utility::activation_function_softmax(bbox_pred_i);
+    std::vector<float> dis_after_sm( std::move(
+        Utility::activation_function_softmax(bbox_pred_i) ) );
     for (int j = 0; j < reg_max; j++) {
       dis += j * dis_after_sm[j];
     }

@@ -76,8 +76,8 @@ public:
 
   static void sorted_boxes(std::vector<OCRPredictResult> &ocr_result) noexcept;
 
-  static std::vector<int> xyxyxyxy2xyxy(std::vector<std::vector<int>> &box) noexcept;
-  static std::vector<int> xyxyxyxy2xyxy(std::vector<int> &box) noexcept;
+  static std::vector<int> xyxyxyxy2xyxy(const std::vector<std::vector<int>> &box) noexcept;
+  static std::vector<int> xyxyxyxy2xyxy(const std::vector<int> &box) noexcept;
 
   static float fast_exp(float x) noexcept;
   static std::vector<float>

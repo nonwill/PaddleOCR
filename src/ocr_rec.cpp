@@ -37,7 +37,7 @@ void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
   for (int i = 0; i < img_num; ++i) {
     width_list.emplace_back(float(img_list[i].cols) / img_list[i].rows);
   }
-  std::vector<int> indices = Utility::argsort(width_list);
+  std::vector<int> indices = std::move(Utility::argsort(width_list));
 
   for (int beg_img_no = 0; beg_img_no < img_num;
        beg_img_no += this->rec_batch_num_) {
@@ -64,8 +64,8 @@ void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
                            this->use_tensorrt_, this->rec_image_shape_);
       this->normalize_op_.Run(resize_img, this->mean_, this->scale_,
                               this->is_scale_);
-      norm_img_batch.emplace_back(resize_img);
       batch_width = std::max(resize_img.cols, batch_width);
+      norm_img_batch.emplace_back(std::move(resize_img));
     }
 
     std::vector<float> input(batch_num * 3 * imgH * batch_width, 0.0f);
@@ -123,7 +123,7 @@ void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
       if (std::isnan(score)) {
         continue;
       }
-      rec_texts[indices[beg_img_no + m]] = str_res;
+      rec_texts[indices[beg_img_no + m]] = std::move(str_res);
       rec_text_scores[indices[beg_img_no + m]] = score;
     }
     auto postprocess_end = std::chrono::steady_clock::now();

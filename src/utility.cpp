@@ -29,8 +29,8 @@
 namespace PaddleOCR {
 
 std::vector<std::string> Utility::ReadDict(const std::string &path) noexcept {
-  std::ifstream in(path);
   std::vector<std::string> m_vec;
+  std::ifstream in(path);
   if (in) {
     for(;;) {
       std::string line;
@@ -54,8 +54,8 @@ void Utility::VisualizeBboxes(const cv::Mat &srcimg,
   for (int n = 0; n < ocr_result.size(); n++) {
     cv::Point rook_points[4];
     for (int m = 0; m < ocr_result[n].box.size(); m++) {
-      rook_points[m] =
-          cv::Point(int(ocr_result[n].box[m][0]), int(ocr_result[n].box[m][1]));
+      rook_points[m].x = int(ocr_result[n].box[m][0]);
+      rook_points[m].y = int(ocr_result[n].box[m][1]);
     }
 
     const cv::Point *ppt[1] = {rook_points};
@@ -86,11 +86,11 @@ void Utility::VisualizeBboxes(const cv::Mat &srcimg,
       int npt[] = {4};
       cv::polylines(img_vis, ppt, npt, 1, 1, CV_RGB(0, 255, 0), 1, 8, 0);
     } else if (structure_result.cell_box[n].size() == 4) {
-      cv::Point rook_points[2];
-      rook_points[0] = cv::Point(int(structure_result.cell_box[n][0]),
-                                 int(structure_result.cell_box[n][1]));
-      rook_points[1] = cv::Point(int(structure_result.cell_box[n][2]),
-                                 int(structure_result.cell_box[n][3]));
+      cv::Point rook_points[2] = {
+        cv::Point(int(structure_result.cell_box[n][0]),
+                  int(structure_result.cell_box[n][1])),
+        cv::Point(int(structure_result.cell_box[n][2]),
+                  int(structure_result.cell_box[n][3])) };
       cv::rectangle(img_vis, rook_points[0], rook_points[1], CV_RGB(0, 255, 0),
                     1, 8, 0);
     }
@@ -179,7 +179,7 @@ cv::Mat Utility::GetRotateCropImage(const cv::Mat &srcimage,
                       cv::BORDER_REPLICATE);
 
   if (float(dst_img.rows) >= float(dst_img.cols) * 1.5) {
-    cv::Mat srcCopy = cv::Mat(dst_img.rows, dst_img.cols, dst_img.depth());
+    cv::Mat srcCopy(dst_img.rows, dst_img.cols, dst_img.depth());
     cv::transpose(dst_img, srcCopy);
     cv::flip(srcCopy, srcCopy, 0);
     return srcCopy;
@@ -189,9 +189,8 @@ cv::Mat Utility::GetRotateCropImage(const cv::Mat &srcimage,
 }
 
 std::vector<int> Utility::argsort(const std::vector<float> &array) noexcept {
-  const int array_len(array.size());
-  std::vector<int> array_index(array_len, 0);
-  for (int i = 0; i < array_len; ++i)
+  std::vector<int> array_index(array.size(), 0);
+  for (int i = 0; i < array.size(); ++i)
     array_index[i] = i;
 
   std::sort(
@@ -260,7 +259,7 @@ void Utility::print_result(const std::vector<OCRPredictResult> &ocr_result) noex
   for (int i = 0; i < ocr_result.size(); ++i) {
     std::cout << i << "\t";
     // det
-    std::vector<std::vector<int>> boxes = ocr_result[i].box;
+    const std::vector<std::vector<int>> &boxes = ocr_result[i].box;
     if (boxes.size() > 0) {
       std::cout << "det boxes: [";
       for (int n = 0; n < boxes.size(); n++) {
@@ -287,13 +286,12 @@ void Utility::print_result(const std::vector<OCRPredictResult> &ocr_result) noex
 }
 
 cv::Mat Utility::crop_image(cv::Mat &img, const std::vector<int> &box) noexcept {
-  cv::Mat crop_im;
+  cv::Mat crop_im = cv::Mat::zeros(box[3] - box[1], box[2] - box[0], 16);
   int crop_x1 = std::max(0, box[0]);
   int crop_y1 = std::max(0, box[1]);
   int crop_x2 = std::min(img.cols - 1, box[2] - 1);
   int crop_y2 = std::min(img.rows - 1, box[3] - 1);
 
-  crop_im = cv::Mat::zeros(box[3] - box[1], box[2] - box[0], 16);
   cv::Mat crop_im_window =
       crop_im(cv::Range(crop_y1 - box[1], crop_y2 + 1 - box[1]),
               cv::Range(crop_x1 - box[0], crop_x2 + 1 - box[0]));
@@ -323,7 +321,7 @@ void Utility::sorted_boxes(std::vector<OCRPredictResult> &ocr_result) noexcept {
   }
 }
 
-std::vector<int> Utility::xyxyxyxy2xyxy(std::vector<std::vector<int>> &box) noexcept {
+std::vector<int> Utility::xyxyxyxy2xyxy(const std::vector<std::vector<int>> &box) noexcept {
   int x_collect[4] = {box[0][0], box[1][0], box[2][0], box[3][0]};
   int y_collect[4] = {box[0][1], box[1][1], box[2][1], box[3][1]};
   int left = int(*std::min_element(x_collect, x_collect + 4));
@@ -338,7 +336,7 @@ std::vector<int> Utility::xyxyxyxy2xyxy(std::vector<std::vector<int>> &box) noex
   return box1;
 }
 
-std::vector<int> Utility::xyxyxyxy2xyxy(std::vector<int> &box) noexcept {
+std::vector<int> Utility::xyxyxyxy2xyxy(const std::vector<int> &box) noexcept {
   int x_collect[4] = {box[0], box[2], box[4], box[6]};
   int y_collect[4] = {box[1], box[3], box[5], box[7]};
   int left = int(*std::min_element(x_collect, x_collect + 4));
