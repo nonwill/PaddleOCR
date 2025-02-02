@@ -2633,10 +2633,10 @@ void Clipper::ProcessHorizontal(TEdge *horzEdge) noexcept {
       }
 
       if (dir == dLeftToRight) {
-        IntPoint Pt = IntPoint(e->Curr.X, horzEdge->Curr.Y);
+        IntPoint Pt(e->Curr.X, horzEdge->Curr.Y);
         IntersectEdges(horzEdge, e, Pt);
       } else {
-        IntPoint Pt = IntPoint(e->Curr.X, horzEdge->Curr.Y);
+        IntPoint Pt(e->Curr.X, horzEdge->Curr.Y);
         IntersectEdges(e, horzEdge, Pt);
       }
       TEdge *eNext = GetNextInAEL(e, dir);
@@ -2756,7 +2756,7 @@ void Clipper::BuildIntersectList(const cInt topY) noexcept {
       if (e->Curr.X > eNext->Curr.X) {
         IntersectPoint(*e, *eNext, Pt);
         if (Pt.Y < topY)
-          Pt = IntPoint(TopX(*e, topY), topY);
+          Pt.reset(TopX(*e, topY), topY);
         IntersectNode *newNode = new IntersectNode;
         newNode->Edge1 = e;
         newNode->Edge2 = eNext;
@@ -3659,12 +3659,12 @@ void ClipperOffset::AddPath(const Path &path, JoinType joinType,
   if (endType != etClosedPolygon)
     return;
   if (m_lowest.X < 0)
-    m_lowest = IntPoint(m_polyNodes.ChildCount() - 1, k);
+    m_lowest.reset(m_polyNodes.ChildCount() - 1, k);
   else {
     IntPoint ip = m_polyNodes.Childs[(int)m_lowest.X]->Contour[(int)m_lowest.Y];
     if (newNode->Contour[k].Y > ip.Y ||
         (newNode->Contour[k].Y == ip.Y && newNode->Contour[k].X < ip.X))
-      m_lowest = IntPoint(m_polyNodes.ChildCount() - 1, k);
+      m_lowest.reset(m_polyNodes.ChildCount() - 1, k);
   }
 }
 //------------------------------------------------------------------------------
@@ -3711,10 +3711,10 @@ bool ClipperOffset::Execute(Paths &solution, double delta) noexcept {
   } else {
     IntRect r = clpr.GetBounds();
     Path outer(4);
-    outer[0] = IntPoint(r.left - 10, r.bottom + 10);
-    outer[1] = IntPoint(r.right + 10, r.bottom + 10);
-    outer[2] = IntPoint(r.right + 10, r.top - 10);
-    outer[3] = IntPoint(r.left - 10, r.top - 10);
+    outer[0].reset(r.left - 10, r.bottom + 10);
+    outer[1].reset(r.right + 10, r.bottom + 10);
+    outer[2].reset(r.right + 10, r.top - 10);
+    outer[3].reset(r.left - 10, r.top - 10);
 
     clpr.AddPath(outer, ptSubject, true);
     clpr.ReverseSolution(true);
@@ -3746,10 +3746,10 @@ bool ClipperOffset::Execute(PolyTree &solution, double delta) noexcept {
   } else {
     IntRect r = clpr.GetBounds();
     Path outer(4);
-    outer[0] = IntPoint(r.left - 10, r.bottom + 10);
-    outer[1] = IntPoint(r.right + 10, r.bottom + 10);
-    outer[2] = IntPoint(r.right + 10, r.top - 10);
-    outer[3] = IntPoint(r.left - 10, r.top - 10);
+    outer[0].reset(r.left - 10, r.bottom + 10);
+    outer[1].reset(r.right + 10, r.bottom + 10);
+    outer[2].reset(r.right + 10, r.top - 10);
+    outer[3].reset(r.left - 10, r.top - 10);
 
     clpr.AddPath(outer, ptSubject, true);
     clpr.ReverseSolution(true);
@@ -3873,8 +3873,8 @@ void ClipperOffset::DoOffset(double delta) noexcept {
       // re-build m_normals ...
       DoublePoint n = m_normals[len - 1];
       for (int j = len - 1; j > 0; j--)
-        m_normals[j] = DoublePoint(-m_normals[j - 1].X, -m_normals[j - 1].Y);
-      m_normals[0] = DoublePoint(-n.X, -n.Y);
+        m_normals[j].reset(-m_normals[j - 1].X, -m_normals[j - 1].Y);
+      m_normals[0].reset(-n.X, -n.Y);
       k = 0;
       for (int j = len - 1; j >= 0; j--)
         OffsetPoint(j, k, node.m_jointype);
@@ -3894,7 +3894,7 @@ void ClipperOffset::DoOffset(double delta) noexcept {
         int j = len - 1;
         k = len - 2;
         m_sinA = 0;
-        m_normals[j] = DoublePoint(-m_normals[j].X, -m_normals[j].Y);
+        m_normals[j].reset(-m_normals[j].X, -m_normals[j].Y);
         if (node.m_endtype == etOpenSquare)
           DoSquare(j, k);
         else
@@ -3903,8 +3903,8 @@ void ClipperOffset::DoOffset(double delta) noexcept {
 
       // re-build m_normals ...
       for (int j = len - 1; j > 0; j--)
-        m_normals[j] = DoublePoint(-m_normals[j - 1].X, -m_normals[j - 1].Y);
-      m_normals[0] = DoublePoint(-m_normals[1].X, -m_normals[1].Y);
+        m_normals[j].reset(-m_normals[j - 1].X, -m_normals[j - 1].Y);
+      m_normals[0].reset(-m_normals[1].X, -m_normals[1].Y);
 
       k = len - 1;
       for (int j = k - 1; j > 0; --j)
@@ -4298,7 +4298,7 @@ void TranslatePath(const Path &input, Path &output, const IntPoint &delta) noexc
   // precondition: input != output
   output.resize(input.size());
   for (size_t i = 0; i < input.size(); ++i)
-    output[i] = IntPoint(input[i].X + delta.X, input[i].Y + delta.Y);
+    output[i].reset(input[i].X + delta.X, input[i].Y + delta.Y);
 }
 //------------------------------------------------------------------------------
 

@@ -79,9 +79,14 @@ struct IntPoint {
 #ifdef use_xyz
   cInt Z;
   IntPoint(cInt x = 0, cInt y = 0, cInt z = 0) noexcept : X(x), Y(y), Z(z){}
+  IntPoint(IntPoint const &ip) noexcept : X(ip.X), Y(ip.Y), Z(ip.Z) {}
 #else
   IntPoint(cInt x = 0, cInt y = 0) noexcept : X(x), Y(y){}
+  IntPoint(IntPoint const &ip) noexcept : X(ip.X), Y(ip.Y) {}
 #endif
+
+  inline void reset(cInt x = 0, cInt y = 0) noexcept
+  { X = x; Y = y; }
 
   friend inline bool operator==(const IntPoint &a, const IntPoint &b) noexcept {
     return a.X == b.X && a.Y == b.Y;
@@ -108,7 +113,9 @@ struct DoublePoint {
   double X;
   double Y;
   DoublePoint(double x = 0, double y = 0) noexcept : X(x), Y(y) {}
-  DoublePoint(IntPoint ip) noexcept : X((double)ip.X), Y((double)ip.Y) {}
+  DoublePoint(IntPoint const &ip) noexcept : X((double)ip.X), Y((double)ip.Y) {}
+  inline void reset(double x = 0, double y = 0) noexcept
+  { X = x; Y = y; }
 };
 //------------------------------------------------------------------------------
 
