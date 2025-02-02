@@ -166,7 +166,7 @@ void ocr(std::vector<cv::String> &cv_all_img_names, Args const & args) {
                 << cv_all_img_names[i] << std::endl;
       continue;
     }
-    img_list.emplace_back(img);
+    img_list.emplace_back(std::move(img));
     img_names.emplace_back(cv_all_img_names[i]);
   }
 

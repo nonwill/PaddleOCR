@@ -19,10 +19,11 @@ CONFIG += ppmkl
 
 # https://zhuanlan.zhihu.com/p/680229436
 PPOCR_ROOT_DIR = $$PWD/..
+PPOCR_DEPS_DIR = $$PWD/../deps
 
-OPENCV_DIR = $${PPOCR_ROOT_DIR}/deps/opencv-3.4.20
-PADDLE_LIB = $${PPOCR_ROOT_DIR}/deps/paddle_inference-2.6.2
-#PADDLE_LIB = $${PPOCR_ROOT_DIR}/deps/paddle_inference-3.0.0rc0
+OPENCV_DIR = $${PPOCR_DEPS_DIR}/opencv-3.4.20
+PADDLE_LIB = $${PPOCR_DEPS_DIR}/paddle_inference-2.6.2
+#PADDLE_LIB = $${PPOCR_ROOT_DIR}/paddle_inference-3.0.0rc0
 
 
 INCLUDEPATH += $${PPOCR_ROOT_DIR} \
@@ -79,13 +80,13 @@ win32:equals(ARCHITECTURE,x64) {
   }
 
   ppmkl {
-    _ = $$nwCopyFileToDir($${PPOCR_ROOT_DIR}/deps/oneDNN-3.6.2/bin/dnnl.dll,$${DESTDIR},mkldnn.dll)
-    _ = $$nwCopyFileToDir($${PPOCR_ROOT_DIR}/deps/mklml/lib/win-x64/native/*.dll,$${DESTDIR})
-    _ = $$nwCopyFileToDir($${PADDLE_LIB}/deps/paddle/lib/mkl/*.dll,$${DESTDIR})
-    _ = $$nwCopyFileToDir($${PADDLE_LIB}/deps/paddle/lib/mkl/*.manifest,$${DESTDIR})
+    _ = $$nwCopyFileToDir($${PPOCR_DEPS_DIR}/oneDNN-3.6.2/bin/dnnl.dll,$${DESTDIR},mkldnn.dll)
+    _ = $$nwCopyFileToDir($${PPOCR_DEPS_DIR}/mklml/lib/win-x64/native/*.dll,$${DESTDIR})
+    _ = $$nwCopyFileToDir($${PADDLE_LIB}/paddle/lib/mkl/*.dll,$${DESTDIR})
+    _ = $$nwCopyFileToDir($${PADDLE_LIB}/paddle/lib/mkl/*.manifest,$${DESTDIR})
     LIBS += -L$${PADDLE_LIB}/paddle/lib/mkl
   } else {
-    _ = $$nwCopyFileToDir($${PPOCR_ROOT_DIR}/deps/OpenBLAS-0.3.29/bin/openblas.dll,$${DESTDIR})
+    _ = $$nwCopyFileToDir($${PPOCR_DEPS_DIR}/OpenBLAS-0.3.29/bin/openblas.dll,$${DESTDIR})
     _ = $$nwCopyFileToDir($${PADDLE_LIB}/paddle/lib/*.dll,$${DESTDIR})
     _ = $$nwCopyFileToDir($${PADDLE_LIB}/paddle/lib/*.manifest,$${DESTDIR})
     LIBS += -L$${PADDLE_LIB}/paddle/lib

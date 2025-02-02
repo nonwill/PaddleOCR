@@ -51,9 +51,9 @@ void Utility::VisualizeBboxes(const cv::Mat &srcimg,
                               const std::string &save_path) noexcept {
   cv::Mat img_vis;
   srcimg.copyTo(img_vis);
-  for (int n = 0; n < ocr_result.size(); n++) {
+  for (int n = 0; n < ocr_result.size(); ++n) {
     cv::Point rook_points[4];
-    for (int m = 0; m < ocr_result[n].box.size(); m++) {
+    for (int m = 0; m < ocr_result[n].box.size(); ++m) {
       rook_points[m].x = int(ocr_result[n].box[m][0]);
       rook_points[m].y = int(ocr_result[n].box[m][1]);
     }

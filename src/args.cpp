@@ -66,9 +66,9 @@ void ArgsHelp(std::ostream & out) noexcept
         << "    type: string  default: \"" \
         << v << "\"" << std::endl;
 
-    out << "Flags from PaddleOCR::Args:" << std::endl;
+  out << "Flags from PaddleOCR::Args:" << std::endl;
 #include "args_pri.h"
-    out << std::endl;
+  out << std::endl;
 
 #undef DEFINE_bool
 #undef DEFINE_int32
@@ -80,7 +80,7 @@ int Args::parseArgv( int argc, char** argv ) noexcept
 {
   struct option const long_options[] =
   {
-      { "help", 0, 0, 'h', 0 },
+    { "help", 0, 0, 'h', 0 },
 #define DEFINE_bool(x,v,d) {#x, 2, 0, 1, &x },
 #define DEFINE_int32(x,v,d) {#x, 2, 0, 2, &x },
 #define DEFINE_double(x,v,d) {#x, 2, 0, 3, &x },
@@ -90,7 +90,7 @@ int Args::parseArgv( int argc, char** argv ) noexcept
 #undef DEFINE_int32
 #undef DEFINE_double
 #undef DEFINE_string
-      { 0, 0, 0, 0, 0 }
+    { 0, 0, 0, 0, 0 }
   };
 
   int ret;
@@ -143,10 +143,10 @@ int Args::parseArgv( int argc, char** argv ) noexcept
 
   if (optind < argc)
   {
-      printf("non-option ARGV-elements: ");
-      while (optind < argc)
-          printf("%s ", argv[optind++]);
-      printf("\n");
+    printf("non-option ARGV-elements: ");
+    while (optind < argc)
+      printf("%s ", argv[optind++]);
+    printf("\n");
   }
 
   return 0;

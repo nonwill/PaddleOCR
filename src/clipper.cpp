@@ -518,7 +518,7 @@ bool SlopesEqual(const TEdge &e1, const TEdge &e2, bool UseFullInt64Range) noexc
 }
 //------------------------------------------------------------------------------
 
-bool SlopesEqual(const IntPoint pt1, const IntPoint pt2, const IntPoint pt3,
+bool SlopesEqual(const IntPoint &pt1, const IntPoint &pt2, const IntPoint &pt3,
                  bool UseFullInt64Range) noexcept {
 #ifndef use_int32
   if (UseFullInt64Range)
@@ -531,8 +531,8 @@ bool SlopesEqual(const IntPoint pt1, const IntPoint pt2, const IntPoint pt3,
 }
 //------------------------------------------------------------------------------
 
-bool SlopesEqual(const IntPoint pt1, const IntPoint pt2, const IntPoint pt3,
-                 const IntPoint pt4, bool UseFullInt64Range) noexcept {
+bool SlopesEqual(const IntPoint &pt1, const IntPoint &pt2, const IntPoint &pt3,
+                 const IntPoint &pt4, bool UseFullInt64Range) noexcept {
 #ifndef use_int32
   if (UseFullInt64Range)
     return Int128Mul(pt1.Y - pt2.Y, pt3.X - pt4.X) ==
@@ -547,7 +547,7 @@ bool SlopesEqual(const IntPoint pt1, const IntPoint pt2, const IntPoint pt3,
 inline bool IsHorizontal(TEdge &e) noexcept { return e.Dx == HORIZONTAL; }
 //------------------------------------------------------------------------------
 
-inline double GetDx(const IntPoint pt1, const IntPoint pt2) noexcept {
+inline double GetDx(const IntPoint &pt1, const IntPoint &pt2) noexcept {
   return (pt1.Y == pt2.Y) ? HORIZONTAL
                           : (double)(pt2.X - pt1.X) / (pt2.Y - pt1.Y);
 }
@@ -4159,7 +4159,7 @@ bool SlopesNearCollinear(const IntPoint &pt1, const IntPoint &pt2,
 }
 //------------------------------------------------------------------------------
 
-bool PointsAreClose(IntPoint pt1, IntPoint pt2, double distSqrd) noexcept {
+bool PointsAreClose(IntPoint &pt1, IntPoint &pt2, double distSqrd) noexcept {
   double Dx = (double)pt1.X - pt2.X;
   double dy = (double)pt1.Y - pt2.Y;
   return ((Dx * Dx) + (dy * dy) <= distSqrd);
