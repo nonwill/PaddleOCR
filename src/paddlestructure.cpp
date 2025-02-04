@@ -24,7 +24,7 @@
 namespace PaddleOCR {
 
 #ifdef PPOCR_gflags_ENABLED
-PaddleStructure::PaddleStructure() :
+PaddleStructure::PaddleStructure() noexcept :
   PPOCR(),
   table_model(nullptr),
   layout_model(nullptr)

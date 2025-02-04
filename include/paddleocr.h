@@ -26,7 +26,7 @@ class Args;
 class PPOCR_API PPOCR {
 public:
 #ifdef PPOCR_gflags_ENABLED
-  explicit PPOCR();
+  explicit PPOCR() noexcept;
 #else
   explicit PPOCR(Args const & args) noexcept;
 #endif

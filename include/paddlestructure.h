@@ -25,7 +25,7 @@ class StructureLayoutRecognizer;
 class PPOCR_API PaddleStructure : public PPOCR {
 public:
 #ifdef PPOCR_gflags_ENABLED
-  explicit PaddleStructure();
+  explicit PaddleStructure() noexcept;
 #else
   explicit PaddleStructure(Args const & args) noexcept;
 #endif
