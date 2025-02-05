@@ -15,7 +15,7 @@
 #ifndef PPOCR_POSTPROCESS_OP_HH
 #define PPOCR_POSTPROCESS_OP_HH
 
-#include <utility.h>
+#include <include/utility.h>
 
 namespace PaddleOCR {
 
@@ -35,8 +35,10 @@ public:
   std::vector<std::vector<float>> GetMiniBoxes(const cv::RotatedRect &box,
                                                float &ssid) noexcept;
 
-  float BoxScoreFast(const std::vector<std::vector<float>> &box_array, const cv::Mat &pred) noexcept;
-  float PolygonScoreAcc(const std::vector<cv::Point> &contour, const cv::Mat &pred) noexcept;
+  float BoxScoreFast(const std::vector<std::vector<float>> &box_array,
+                     const cv::Mat &pred) noexcept;
+  float PolygonScoreAcc(const std::vector<cv::Point> &contour,
+                        const cv::Mat &pred) noexcept;
 
   std::vector<std::vector<std::vector<int>>>
   BoxesFromBitmap(const cv::Mat &pred, const cv::Mat &bitmap,
@@ -44,12 +46,15 @@ public:
                   const std::string &det_db_score_mode) noexcept;
 
   void FilterTagDetRes(std::vector<std::vector<std::vector<int>>> &boxes,
-                  float ratio_h, float ratio_w, const cv::Mat &srcimg) noexcept;
+                       float ratio_h, float ratio_w,
+                       const cv::Mat &srcimg) noexcept;
 
 private:
-  static bool XsortInt(const std::vector<int> &a, const std::vector<int> &b) noexcept;
+  static bool XsortInt(const std::vector<int> &a,
+                       const std::vector<int> &b) noexcept;
 
-  static bool XsortFp32(const std::vector<float> &a, const std::vector<float> &b) noexcept;
+  static bool XsortFp32(const std::vector<float> &a,
+                        const std::vector<float> &b) noexcept;
 
   std::vector<std::vector<float>> Mat2Vector(const cv::Mat &mat) noexcept;
 
@@ -76,13 +81,17 @@ private:
 
 class TablePostProcessor {
 public:
-  void init(const std::string &label_path, bool merge_no_span_structure = true) noexcept;
-  void Run(const std::vector<float> &loc_preds, const std::vector<float> &structure_probs,
-           std::vector<float> &rec_scores, const std::vector<int> &loc_preds_shape,
+  void init(const std::string &label_path,
+            bool merge_no_span_structure = true) noexcept;
+  void Run(const std::vector<float> &loc_preds,
+           const std::vector<float> &structure_probs,
+           std::vector<float> &rec_scores,
+           const std::vector<int> &loc_preds_shape,
            const std::vector<int> &structure_probs_shape,
            std::vector<std::vector<std::string>> &rec_html_tag_batch,
            std::vector<std::vector<std::vector<int>>> &rec_boxes_batch,
-           const std::vector<int> &width_list, const std::vector<int> &height_list) noexcept;
+           const std::vector<int> &width_list,
+           const std::vector<int> &height_list) noexcept;
 
 private:
   std::vector<std::string> label_list_;
@@ -102,8 +111,9 @@ public:
   inline size_t fpn_stride_size() const noexcept { return fpn_stride_.size(); }
 
 private:
-  StructurePredictResult disPred2Bbox(const std::vector<float> &bbox_pred, int label,
-                                      float score, int x, int y, int stride,
+  StructurePredictResult disPred2Bbox(const std::vector<float> &bbox_pred,
+                                      int label, float score, int x, int y,
+                                      int stride,
                                       const std::vector<int> &im_shape,
                                       int reg_max) noexcept;
   void nms(std::vector<StructurePredictResult> &input_boxes,

@@ -97,3 +97,8 @@ LIBS += -lpaddle_inference -lopencv_world3420
 
 win32:LIBS += -lgetopt
 
+# win32:msvc*:QMAKE_CFLAGS_RELEASE += /MT
+# win32:msvc*:QMAKE_CXXFLAGS_RELEASE += /MT
+# CONFIG += static
+
+# win32:LIBS += -L$${PPOCR_ROOT_DIR}/gflags/lib -lgflags_static -lShlwapi

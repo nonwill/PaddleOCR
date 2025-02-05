@@ -15,8 +15,8 @@
 #ifndef PPOCR_STRUCTURE_TABLE_HH
 #define PPOCR_STRUCTURE_TABLE_HH
 
-#include <postprocess_op.h>
-#include <preprocess_op.h>
+#include <include/postprocess_op.h>
+#include <include/preprocess_op.h>
 #include <memory>
 
 namespace paddle_infer { class Predictor; }

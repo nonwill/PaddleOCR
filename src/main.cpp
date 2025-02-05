@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #ifdef USING_PPOCR_CPP_API
-#include <paddlestructure.h>
-#include <args.h>
-#include "opencv2/imgcodecs.hpp"
+#include <include/paddlestructure.h>
+#include <include/args.h>
+#include <opencv2/imgcodecs.hpp>
 #else
-#include <ppocr_c.h>
+#include <include/ppocr_c.h>
 #endif
 
 #include <iostream>

@@ -38,12 +38,12 @@
  *                                                                              *
  *******************************************************************************/
 
-#include "include/clipper.h"
+#include <include/clipper.h>
 
 #include <algorithm>
-#include <ostream>
 #include <cmath>
 #include <cstring>
+#include <ostream>
 
 namespace ClipperLib {
 
@@ -59,10 +59,6 @@ static int const Skip = -2;       // edge that would otherwise close a path
 #define HORIZONTAL (-1.0E+40)
 #define TOLERANCE (1.0e-20)
 #define NEAR_ZERO(val) (((val) > -TOLERANCE) && ((val) < TOLERANCE))
-
-std::ostream &operator<<(std::ostream &s, const IntPoint &p) noexcept;
-std::ostream &operator<<(std::ostream &s, const Path &p) noexcept;
-std::ostream &operator<<(std::ostream &s, const Paths &p) noexcept;
 
 struct TEdge {
   IntPoint Bot;
@@ -506,7 +502,8 @@ bool Poly2ContainsPoly1(OutPt *OutPt1, OutPt *OutPt2) noexcept {
 }
 //----------------------------------------------------------------------
 
-bool SlopesEqual(const TEdge &e1, const TEdge &e2, bool UseFullInt64Range) noexcept {
+bool SlopesEqual(const TEdge &e1, const TEdge &e2,
+                 bool UseFullInt64Range) noexcept {
 #ifndef use_int32
   if (UseFullInt64Range)
     return Int128Mul(e1.Top.Y - e1.Bot.Y, e2.Top.X - e2.Bot.X) ==
@@ -668,7 +665,8 @@ void DisposeOutPts(OutPt *&pp) noexcept {
 }
 //------------------------------------------------------------------------------
 
-inline void InitEdge(TEdge *e, TEdge *eNext, TEdge *ePrev, const IntPoint &Pt) noexcept {
+inline void InitEdge(TEdge *e, TEdge *eNext, TEdge *ePrev,
+                     const IntPoint &Pt) noexcept {
   std::memset(e, int(0), sizeof(TEdge));
   e->Next = eNext;
   e->Prev = ePrev;
@@ -823,7 +821,8 @@ bool Pt2IsBetweenPt1AndPt3(const IntPoint pt1, const IntPoint pt2,
 }
 //------------------------------------------------------------------------------
 
-bool HorzSegmentsOverlap(cInt seg1a, cInt seg1b, cInt seg2a, cInt seg2b) noexcept {
+bool HorzSegmentsOverlap(cInt seg1a, cInt seg1b, cInt seg2a,
+                         cInt seg2b) noexcept {
   if (seg1a > seg1b)
     std::swap(seg1a, seg1b);
   if (seg2a > seg2b)
@@ -1442,7 +1441,9 @@ Clipper::Clipper(int initOptions) noexcept
 //------------------------------------------------------------------------------
 
 #ifdef use_xyz
-void Clipper::ZFillFunction(ZFillCallback zFillFunc) noexcept { m_ZFill = zFillFunc; }
+void Clipper::ZFillFunction(ZFillCallback zFillFunc) noexcept {
+  m_ZFill = zFillFunc;
+}
 //------------------------------------------------------------------------------
 #endif
 
@@ -1481,7 +1482,8 @@ bool Clipper::Execute(ClipType clipType, Paths &solution,
 //------------------------------------------------------------------------------
 
 bool Clipper::Execute(ClipType clipType, PolyTree &polytree,
-                      PolyFillType subjFillType, PolyFillType clipFillType) noexcept {
+                      PolyFillType subjFillType,
+                      PolyFillType clipFillType) noexcept {
   if (m_ExecuteLocked)
     return false;
   m_ExecuteLocked = true;
@@ -1768,7 +1770,8 @@ bool Clipper::IsContributing(const TEdge &edge) const noexcept {
 }
 //------------------------------------------------------------------------------
 
-OutPt *Clipper::AddLocalMinPoly(TEdge *e1, TEdge *e2, const IntPoint &Pt) noexcept {
+OutPt *Clipper::AddLocalMinPoly(TEdge *e1, TEdge *e2,
+                                const IntPoint &Pt) noexcept {
   OutPt *result;
   TEdge *e, *prevE;
   if (IsHorizontal(*e2) || (e1->Dx > e2->Dx)) {
@@ -1807,7 +1810,8 @@ OutPt *Clipper::AddLocalMinPoly(TEdge *e1, TEdge *e2, const IntPoint &Pt) noexce
 }
 //------------------------------------------------------------------------------
 
-void Clipper::AddLocalMaxPoly(TEdge *e1, TEdge *e2, const IntPoint &Pt) noexcept {
+void Clipper::AddLocalMaxPoly(TEdge *e1, TEdge *e2,
+                              const IntPoint &Pt) noexcept {
   AddOutPt(e1, Pt);
   if (e2->WindDelta == 0)
     AddOutPt(e2, Pt);
@@ -3461,7 +3465,8 @@ void Clipper::FixupFirstLefts1(OutRec *OldOutRec, OutRec *NewOutRec) noexcept {
 }
 //----------------------------------------------------------------------
 
-void Clipper::FixupFirstLefts2(OutRec *InnerOutRec, OutRec *OuterOutRec) noexcept {
+void Clipper::FixupFirstLefts2(OutRec *InnerOutRec,
+                               OutRec *OuterOutRec) noexcept {
   // A polygon has split into two such that one is now the inner of the other.
   // It's possible that these polygons now wrap around other polygons, so check
   // every polygon that's also contained by OuterOutRec's FirstLeft container
@@ -3703,32 +3708,31 @@ bool ClipperOffset::Execute(Paths &solution, double delta) noexcept {
   DoOffset(delta);
 
   try {
-  // now clean up 'corners' ...
-  Clipper clpr;
-  clpr.AddPaths(m_destPolys, ptSubject, true);
-  if (delta > 0) {
-    clpr.Execute(ctUnion, solution, pftPositive, pftPositive);
-  } else {
-    IntRect r = clpr.GetBounds();
-    Path outer(4);
-    outer[0].reset(r.left - 10, r.bottom + 10);
-    outer[1].reset(r.right + 10, r.bottom + 10);
-    outer[2].reset(r.right + 10, r.top - 10);
-    outer[3].reset(r.left - 10, r.top - 10);
+    // now clean up 'corners' ...
+    Clipper clpr;
+    clpr.AddPaths(m_destPolys, ptSubject, true);
+    if (delta > 0) {
+      clpr.Execute(ctUnion, solution, pftPositive, pftPositive);
+    } else {
+      IntRect r = clpr.GetBounds();
+      Path outer(4);
+      outer[0].reset(r.left - 10, r.bottom + 10);
+      outer[1].reset(r.right + 10, r.bottom + 10);
+      outer[2].reset(r.right + 10, r.top - 10);
+      outer[3].reset(r.left - 10, r.top - 10);
 
-    clpr.AddPath(outer, ptSubject, true);
-    clpr.ReverseSolution(true);
-    clpr.Execute(ctUnion, solution, pftNegative, pftNegative);
-    if (solution.size() > 0)
-      solution.erase(solution.begin());
-  }
-  return true;
-  }
-  catch( std::exception & e ) {
-    fprintf(stderr,"%s\n", e.what());
+      clpr.AddPath(outer, ptSubject, true);
+      clpr.ReverseSolution(true);
+      clpr.Execute(ctUnion, solution, pftNegative, pftNegative);
+      if (solution.size() > 0)
+        solution.erase(solution.begin());
+    }
+    return true;
+  } catch (std::exception &e) {
+    fprintf(stderr, "%s\n", e.what());
+    fflush(stderr);
     return false;
   }
-
 }
 //------------------------------------------------------------------------------
 
@@ -3738,37 +3742,37 @@ bool ClipperOffset::Execute(PolyTree &solution, double delta) noexcept {
   DoOffset(delta);
 
   try {
-  // now clean up 'corners' ...
-  Clipper clpr;
-  clpr.AddPaths(m_destPolys, ptSubject, true);
-  if (delta > 0) {
-    clpr.Execute(ctUnion, solution, pftPositive, pftPositive);
-  } else {
-    IntRect r = clpr.GetBounds();
-    Path outer(4);
-    outer[0].reset(r.left - 10, r.bottom + 10);
-    outer[1].reset(r.right + 10, r.bottom + 10);
-    outer[2].reset(r.right + 10, r.top - 10);
-    outer[3].reset(r.left - 10, r.top - 10);
+    // now clean up 'corners' ...
+    Clipper clpr;
+    clpr.AddPaths(m_destPolys, ptSubject, true);
+    if (delta > 0) {
+      clpr.Execute(ctUnion, solution, pftPositive, pftPositive);
+    } else {
+      IntRect r = clpr.GetBounds();
+      Path outer(4);
+      outer[0].reset(r.left - 10, r.bottom + 10);
+      outer[1].reset(r.right + 10, r.bottom + 10);
+      outer[2].reset(r.right + 10, r.top - 10);
+      outer[3].reset(r.left - 10, r.top - 10);
 
-    clpr.AddPath(outer, ptSubject, true);
-    clpr.ReverseSolution(true);
-    clpr.Execute(ctUnion, solution, pftNegative, pftNegative);
-    // remove the outer PolyNode rectangle ...
-    if (solution.ChildCount() == 1 && solution.Childs[0]->ChildCount() > 0) {
-      PolyNode *outerNode = solution.Childs[0];
-      solution.Childs.reserve(outerNode->ChildCount());
-      solution.Childs[0] = outerNode->Childs[0];
-      solution.Childs[0]->Parent = outerNode->Parent;
-      for (int i = 1; i < outerNode->ChildCount(); ++i)
-        solution.AddChild(*outerNode->Childs[i]);
-    } else
-      solution.Clear();
-  }
-  return true;
-  }
-  catch( std::exception & e ) {
-    fprintf(stderr,"%s\n", e.what());
+      clpr.AddPath(outer, ptSubject, true);
+      clpr.ReverseSolution(true);
+      clpr.Execute(ctUnion, solution, pftNegative, pftNegative);
+      // remove the outer PolyNode rectangle ...
+      if (solution.ChildCount() == 1 && solution.Childs[0]->ChildCount() > 0) {
+        PolyNode *outerNode = solution.Childs[0];
+        solution.Childs.reserve(outerNode->ChildCount());
+        solution.Childs[0] = outerNode->Childs[0];
+        solution.Childs[0]->Parent = outerNode->Parent;
+        for (int i = 1; i < outerNode->ChildCount(); ++i)
+          solution.AddChild(*outerNode->Childs[i]);
+      } else
+        solution.Clear();
+    }
+    return true;
+  } catch (std::exception &e) {
+    fprintf(stderr, "%s\n", e.what());
+    fflush(stderr);
     return false;
   }
 }
@@ -3886,10 +3890,12 @@ void ClipperOffset::DoOffset(double delta) noexcept {
 
       if (node.m_endtype == etOpenButt) {
         int j = len - 1;
-        m_destPoly.emplace_back((cInt)Round(m_srcPoly[j].X + m_normals[j].X * delta),
-                                (cInt)Round(m_srcPoly[j].Y + m_normals[j].Y * delta));
-        m_destPoly.emplace_back((cInt)Round(m_srcPoly[j].X - m_normals[j].X * delta),
-                                (cInt)Round(m_srcPoly[j].Y - m_normals[j].Y * delta));
+        m_destPoly.emplace_back(
+            (cInt)Round(m_srcPoly[j].X + m_normals[j].X * delta),
+            (cInt)Round(m_srcPoly[j].Y + m_normals[j].Y * delta));
+        m_destPoly.emplace_back(
+            (cInt)Round(m_srcPoly[j].X - m_normals[j].X * delta),
+            (cInt)Round(m_srcPoly[j].Y - m_normals[j].Y * delta));
       } else {
         int j = len - 1;
         k = len - 2;
@@ -3911,10 +3917,12 @@ void ClipperOffset::DoOffset(double delta) noexcept {
         OffsetPoint(j, k, node.m_jointype);
 
       if (node.m_endtype == etOpenButt) {
-        m_destPoly.emplace_back((cInt)Round(m_srcPoly[0].X - m_normals[0].X * delta),
-                (cInt)Round(m_srcPoly[0].Y - m_normals[0].Y * delta));
-        m_destPoly.emplace_back((cInt)Round(m_srcPoly[0].X + m_normals[0].X * delta),
-                (cInt)Round(m_srcPoly[0].Y + m_normals[0].Y * delta));
+        m_destPoly.emplace_back(
+            (cInt)Round(m_srcPoly[0].X - m_normals[0].X * delta),
+            (cInt)Round(m_srcPoly[0].Y - m_normals[0].Y * delta));
+        m_destPoly.emplace_back(
+            (cInt)Round(m_srcPoly[0].X + m_normals[0].X * delta),
+            (cInt)Round(m_srcPoly[0].Y + m_normals[0].Y * delta));
       } else {
         k = 1;
         m_sinA = 0;
@@ -3938,9 +3946,8 @@ void ClipperOffset::OffsetPoint(int j, int &k, JoinType jointype) noexcept {
         (m_normals[k].X * m_normals[j].X + m_normals[j].Y * m_normals[k].Y);
     if (cosA > 0) // angle => 0 degrees
     {
-      m_destPoly.emplace_back(
-          Round(m_srcPoly[j].X + m_normals[k].X * m_delta),
-          Round(m_srcPoly[j].Y + m_normals[k].Y * m_delta));
+      m_destPoly.emplace_back(Round(m_srcPoly[j].X + m_normals[k].X * m_delta),
+                              Round(m_srcPoly[j].Y + m_normals[k].Y * m_delta));
       return;
     }
     // else angle => 180 degrees
@@ -3950,13 +3957,11 @@ void ClipperOffset::OffsetPoint(int j, int &k, JoinType jointype) noexcept {
     m_sinA = -1.0;
 
   if (m_sinA * m_delta < 0) {
-    m_destPoly.emplace_back(
-        Round(m_srcPoly[j].X + m_normals[k].X * m_delta),
-        Round(m_srcPoly[j].Y + m_normals[k].Y * m_delta));
+    m_destPoly.emplace_back(Round(m_srcPoly[j].X + m_normals[k].X * m_delta),
+                            Round(m_srcPoly[j].Y + m_normals[k].Y * m_delta));
     m_destPoly.emplace_back(m_srcPoly[j]);
-    m_destPoly.emplace_back(
-        Round(m_srcPoly[j].X + m_normals[j].X * m_delta),
-        Round(m_srcPoly[j].Y + m_normals[j].Y * m_delta));
+    m_destPoly.emplace_back(Round(m_srcPoly[j].X + m_normals[j].X * m_delta),
+                            Round(m_srcPoly[j].Y + m_normals[j].Y * m_delta));
   } else
     switch (jointype) {
     case jtMiter: {
@@ -3985,12 +3990,10 @@ void ClipperOffset::DoSquare(int j, int k) noexcept {
                        4);
   m_destPoly.emplace_back(
       Round(m_srcPoly[j].X + m_delta * (m_normals[k].X - m_normals[k].Y * dx)),
-      Round(m_srcPoly[j].Y +
-            m_delta * (m_normals[k].Y + m_normals[k].X * dx)));
+      Round(m_srcPoly[j].Y + m_delta * (m_normals[k].Y + m_normals[k].X * dx)));
   m_destPoly.emplace_back(
       Round(m_srcPoly[j].X + m_delta * (m_normals[j].X + m_normals[j].Y * dx)),
-      Round(m_srcPoly[j].Y +
-            m_delta * (m_normals[j].Y - m_normals[j].X * dx)));
+      Round(m_srcPoly[j].Y + m_delta * (m_normals[j].Y - m_normals[j].X * dx)));
 }
 //------------------------------------------------------------------------------
 
@@ -4015,9 +4018,8 @@ void ClipperOffset::DoRound(int j, int k) noexcept {
     X = X * m_cos - m_sin * Y;
     Y = X2 * m_sin + Y * m_cos;
   }
-  m_destPoly.emplace_back(
-      Round(m_srcPoly[j].X + m_normals[j].X * m_delta),
-      Round(m_srcPoly[j].Y + m_normals[j].Y * m_delta));
+  m_destPoly.emplace_back(Round(m_srcPoly[j].X + m_normals[j].X * m_delta),
+                          Round(m_srcPoly[j].Y + m_normals[j].Y * m_delta));
 }
 
 //------------------------------------------------------------------------------
@@ -4175,7 +4177,8 @@ OutPt *ExcludeOp(OutPt *op) noexcept {
 }
 //------------------------------------------------------------------------------
 
-void CleanPolygon(const Path &in_poly, Path &out_poly, double distance) noexcept {
+void CleanPolygon(const Path &in_poly, Path &out_poly,
+                  double distance) noexcept {
   // distance = proximity in units/pixels below which vertices
   // will be stripped. Default ~= sqrt(2).
 
@@ -4230,7 +4233,8 @@ void CleanPolygon(Path &poly, double distance) noexcept {
 }
 //------------------------------------------------------------------------------
 
-void CleanPolygons(const Paths &in_polys, Paths &out_polys, double distance) noexcept {
+void CleanPolygons(const Paths &in_polys, Paths &out_polys,
+                   double distance) noexcept {
   out_polys.resize(in_polys.size());
   for (Paths::size_type i = 0; i < in_polys.size(); ++i)
     CleanPolygon(in_polys[i], out_polys[i], distance);
@@ -4294,7 +4298,8 @@ void MinkowskiSum(const Path &pattern, const Path &path, Paths &solution,
 #endif
 //------------------------------------------------------------------------------
 
-void TranslatePath(const Path &input, Path &output, const IntPoint &delta) noexcept {
+void TranslatePath(const Path &input, Path &output,
+                   const IntPoint &delta) noexcept {
   // precondition: input != output
   output.resize(input.size());
   for (size_t i = 0; i < input.size(); ++i)

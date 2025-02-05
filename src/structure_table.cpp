@@ -13,10 +13,10 @@
 // limitations under the License.
 
 #include <include/structure_table.h>
-#include "paddle_inference_api.h"
+#include <paddle_inference_api.h>
 
-#include <numeric>
 #include <chrono>
+#include <numeric>
 
 namespace PaddleOCR {
 
@@ -101,11 +101,11 @@ void StructureTableRecognizer::Run(
     for (int m = 0; m < predict_shape0[0]; m++) {
 
       structure_html_tag_batch[m].emplace(structure_html_tag_batch[m].begin(),
-                                         "<table>");
+                                          "<table>");
       structure_html_tag_batch[m].emplace(structure_html_tag_batch[m].begin(),
-                                         "<body>");
+                                          "<body>");
       structure_html_tag_batch[m].emplace(structure_html_tag_batch[m].begin(),
-                                         "<html>");
+                                          "<html>");
       structure_html_tag_batch[m].emplace_back("</table>");
       structure_html_tag_batch[m].emplace_back("</body>");
       structure_html_tag_batch[m].emplace_back("</html>");
@@ -121,7 +121,8 @@ void StructureTableRecognizer::Run(
   }
 }
 
-void StructureTableRecognizer::LoadModel(const std::string &model_dir) noexcept {
+void StructureTableRecognizer::LoadModel(
+    const std::string &model_dir) noexcept {
   paddle_infer::Config config;
   config.SetModel(model_dir + "/inference.pdmodel",
                   model_dir + "/inference.pdiparams");

@@ -12,7 +12,7 @@ PPOCR_ROOT_DIR = $$PWD/..
 
 OPENCV_DIR = $${PPOCR_ROOT_DIR}/deps/opencv-3.4.20
 
-INCLUDEPATH += . \
+INCLUDEPATH += $${PPOCR_ROOT_DIR} \
     $${PPOCR_ROOT_DIR}/include \
     $${OPENCV_DIR}/include
 

@@ -11,9 +11,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #include <dirent.h>
 #include <include/utility.h>
-#include "opencv2/imgcodecs.hpp"
+#include <opencv2/imgcodecs.hpp>
 
 #include <fstream>
 #include <iostream>
@@ -32,9 +33,9 @@ std::vector<std::string> Utility::ReadDict(const std::string &path) noexcept {
   std::vector<std::string> m_vec;
   std::ifstream in(path);
   if (in) {
-    for(;;) {
+    for (;;) {
       std::string line;
-      if(!getline(in, line))
+      if (!getline(in, line))
         break;
       m_vec.emplace_back(std::move(line));
     }
@@ -54,13 +55,13 @@ void Utility::VisualizeBboxes(const cv::Mat &srcimg,
   for (int n = 0; n < ocr_result.size(); ++n) {
     cv::Point rook_points[4];
     for (int m = 0; m < ocr_result[n].box.size(); ++m) {
-      rook_points[m].x = int(ocr_result[n].box[m][0]);
-      rook_points[m].y = int(ocr_result[n].box[m][1]);
+      rook_points[m] =
+          cv::Point(int(ocr_result[n].box[m][0]), int(ocr_result[n].box[m][1]));
     }
 
     const cv::Point *ppt[1] = {rook_points};
     int npt[] = {4};
-    cv::polylines(img_vis, ppt, npt, 1, 1, CV_RGB(0, 255, 0), 1, 8, 0);
+    cv::polylines(img_vis, ppt, npt, 1, 1, CV_RGB(0, 255, 0), 2, 8, 0);
   }
 
   cv::imwrite(save_path, img_vis);
@@ -84,15 +85,15 @@ void Utility::VisualizeBboxes(const cv::Mat &srcimg,
       }
       const cv::Point *ppt[1] = {rook_points};
       int npt[] = {4};
-      cv::polylines(img_vis, ppt, npt, 1, 1, CV_RGB(0, 255, 0), 1, 8, 0);
+      cv::polylines(img_vis, ppt, npt, 1, 1, CV_RGB(0, 255, 0), 2, 8, 0);
     } else if (structure_result.cell_box[n].size() == 4) {
       cv::Point rook_points[2] = {
-        cv::Point(int(structure_result.cell_box[n][0]),
-                  int(structure_result.cell_box[n][1])),
-        cv::Point(int(structure_result.cell_box[n][2]),
-                  int(structure_result.cell_box[n][3])) };
+          cv::Point(int(structure_result.cell_box[n][0]),
+                    int(structure_result.cell_box[n][1])),
+          cv::Point(int(structure_result.cell_box[n][2]),
+                    int(structure_result.cell_box[n][3]))};
       cv::rectangle(img_vis, rook_points[0], rook_points[1], CV_RGB(0, 255, 0),
-                    1, 8, 0);
+                    2, 8, 0);
     }
   }
 
@@ -128,13 +129,14 @@ void Utility::GetAllFiles(const char *dir_name,
         continue;
       // img_dir + std::string("/") + all_inputs[0];
       all_inputs.emplace_back(dir_name + std::string("/") +
-                           std::string(filename->d_name));
+                              std::string(filename->d_name));
     }
   }
 }
 
-cv::Mat Utility::GetRotateCropImage(const cv::Mat &srcimage,
-                                     const std::vector<std::vector<int>> &box) noexcept {
+cv::Mat
+Utility::GetRotateCropImage(const cv::Mat &srcimage,
+                            const std::vector<std::vector<int>> &box) noexcept {
   cv::Mat image;
   srcimage.copyTo(image);
   std::vector<std::vector<int>> points = box;
@@ -255,7 +257,8 @@ void Utility::CreateDir(const std::string &path) noexcept {
 #endif // !_WIN32
 }
 
-void Utility::print_result(const std::vector<OCRPredictResult> &ocr_result) noexcept {
+void Utility::print_result(
+    const std::vector<OCRPredictResult> &ocr_result) noexcept {
   for (int i = 0; i < ocr_result.size(); ++i) {
     std::cout << i << "\t";
     // det
@@ -285,7 +288,8 @@ void Utility::print_result(const std::vector<OCRPredictResult> &ocr_result) noex
   }
 }
 
-cv::Mat Utility::crop_image(cv::Mat &img, const std::vector<int> &box) noexcept {
+cv::Mat Utility::crop_image(cv::Mat &img,
+                            const std::vector<int> &box) noexcept {
   cv::Mat crop_im = cv::Mat::zeros(box[3] - box[1], box[2] - box[0], 16);
   int crop_x1 = std::max(0, box[0]);
   int crop_y1 = std::max(0, box[1]);
@@ -301,7 +305,8 @@ cv::Mat Utility::crop_image(cv::Mat &img, const std::vector<int> &box) noexcept 
   return crop_im;
 }
 
-cv::Mat Utility::crop_image(cv::Mat &img, const std::vector<float> &box) noexcept {
+cv::Mat Utility::crop_image(cv::Mat &img,
+                            const std::vector<float> &box) noexcept {
   std::vector<int> box_int = {(int)box[0], (int)box[1], (int)box[2],
                               (int)box[3]};
   return crop_image(img, box_int);
@@ -321,7 +326,8 @@ void Utility::sorted_boxes(std::vector<OCRPredictResult> &ocr_result) noexcept {
   }
 }
 
-std::vector<int> Utility::xyxyxyxy2xyxy(const std::vector<std::vector<int>> &box) noexcept {
+std::vector<int>
+Utility::xyxyxyxy2xyxy(const std::vector<std::vector<int>> &box) noexcept {
   int x_collect[4] = {box[0][0], box[1][0], box[2][0], box[3][0]};
   int y_collect[4] = {box[0][1], box[1][1], box[2][1], box[3][1]};
   int left = int(*std::min_element(x_collect, x_collect + 4));
@@ -401,7 +407,8 @@ float Utility::iou(std::vector<int> &box1, std::vector<int> &box2) noexcept {
   }
 }
 
-float Utility::iou(std::vector<float> &box1, std::vector<float> &box2) noexcept {
+float Utility::iou(std::vector<float> &box1,
+                   std::vector<float> &box2) noexcept {
   float area1 = std::max((float)0.0, box1[2] - box1[0]) *
                 std::max((float)0.0, box1[3] - box1[1]);
   float area2 = std::max((float)0.0, box2[2] - box2[0]) *

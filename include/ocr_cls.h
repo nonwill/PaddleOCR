@@ -19,7 +19,9 @@
 #include <include/utility.h>
 #include <memory>
 
-namespace paddle_infer { class Predictor; }
+namespace paddle_infer {
+class Predictor;
+}
 
 namespace PaddleOCR {
 

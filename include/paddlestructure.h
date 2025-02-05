@@ -15,7 +15,7 @@
 #ifndef PPOCR_PADDLESTRUCTURE_H
 #define PPOCR_PADDLESTRUCTURE_H
 
-#include <paddleocr.h>
+#include <include/paddleocr.h>
 
 namespace PaddleOCR {
 
@@ -31,13 +31,14 @@ public:
 #endif
   ~PaddleStructure();
 
-  std::vector<StructurePredictResult> structure(
-          const cv::Mat &img, bool layout = false,
-          bool table = true, bool ocr = false) noexcept;
+  std::vector<StructurePredictResult> structure(const cv::Mat &img,
+                                                bool layout = false,
+                                                bool table = true,
+                                                bool ocr = false) noexcept;
 
 #ifdef PPOCR_benchmark_ENABLED
-  void reset_timer();
-  void benchmark_log(int img_num);
+  void reset_timer() noexcept;
+  void benchmark_log(int img_num) noexcept;
 #endif
 
 private:
@@ -52,13 +53,15 @@ private:
   void layout(const cv::Mat &img,
               std::vector<StructurePredictResult> &structure_result) noexcept;
 
-  void table(const cv::Mat &img, StructurePredictResult &structure_result) noexcept;
+  void table(const cv::Mat &img,
+             StructurePredictResult &structure_result) noexcept;
 
   std::string rebuild_table(const std::vector<std::string> &rec_html_tags,
                             const std::vector<std::vector<int>> &rec_boxes,
                             std::vector<OCRPredictResult> &ocr_result) noexcept;
 
-  float dis(const std::vector<int> &box1, const std::vector<int> &box2) noexcept;
+  float dis(const std::vector<int> &box1,
+            const std::vector<int> &box2) noexcept;
 
   static bool comparison_dis(const std::vector<float> &dis1,
                              const std::vector<float> &dis2) noexcept {

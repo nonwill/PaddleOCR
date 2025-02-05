@@ -19,7 +19,9 @@
 #include <include/preprocess_op.h>
 #include <memory>
 
-namespace paddle_infer { class Predictor; }
+namespace paddle_infer {
+class Predictor;
+}
 
 namespace PaddleOCR {
 
@@ -56,7 +58,8 @@ public:
   void LoadModel(const std::string &model_dir) noexcept;
 
   // Run predictor
-  void Run(const cv::Mat &img, std::vector<std::vector<std::vector<int>>> &boxes,
+  void Run(const cv::Mat &img,
+           std::vector<std::vector<std::vector<int>>> &boxes,
            std::vector<double> &times) noexcept;
 
 private:

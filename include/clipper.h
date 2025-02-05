@@ -27,8 +27,8 @@
  *                                                                              *
  *******************************************************************************/
 
-#ifndef PPOCR_CLIPPER_HPP
-#define PPOCR_CLIPPER_HPP
+#ifndef clipper_hpp
+#define clipper_hpp
 
 #define CLIPPER_VERSION "6.4.2"
 
@@ -47,8 +47,8 @@
 
 #include <list>
 #include <queue>
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace ClipperLib {
 
@@ -78,15 +78,17 @@ struct IntPoint {
   cInt Y;
 #ifdef use_xyz
   cInt Z;
-  IntPoint(cInt x = 0, cInt y = 0, cInt z = 0) noexcept : X(x), Y(y), Z(z){}
+  IntPoint(cInt x = 0, cInt y = 0, cInt z = 0) noexcept : X(x), Y(y), Z(z) {}
   IntPoint(IntPoint const &ip) noexcept : X(ip.X), Y(ip.Y), Z(ip.Z) {}
 #else
-  IntPoint(cInt x = 0, cInt y = 0) noexcept : X(x), Y(y){}
+  IntPoint(cInt x = 0, cInt y = 0) noexcept : X(x), Y(y) {}
   IntPoint(IntPoint const &ip) noexcept : X(ip.X), Y(ip.Y) {}
 #endif
 
-  inline void reset(cInt x = 0, cInt y = 0) noexcept
-  { X = x; Y = y; }
+  inline void reset(cInt x = 0, cInt y = 0) noexcept {
+    X = x;
+    Y = y;
+  }
 
   friend inline bool operator==(const IntPoint &a, const IntPoint &b) noexcept {
     return a.X == b.X && a.Y == b.Y;
@@ -100,22 +102,28 @@ struct IntPoint {
 typedef std::vector<IntPoint> Path;
 typedef std::vector<Path> Paths;
 
-inline Path &operator<<(Path &poly, IntPoint&& p) noexcept {
+inline Path &operator<<(Path &poly, IntPoint &&p) noexcept {
   poly.emplace_back(std::forward<IntPoint>(p));
   return poly;
 }
-inline Paths &operator<<(Paths &polys, Path&& p) noexcept {
+inline Paths &operator<<(Paths &polys, Path &&p) noexcept {
   polys.emplace_back(std::forward<Path>(p));
   return polys;
 }
+
+std::ostream &operator<<(std::ostream &s, const IntPoint &p) noexcept;
+std::ostream &operator<<(std::ostream &s, const Path &p) noexcept;
+std::ostream &operator<<(std::ostream &s, const Paths &p) noexcept;
 
 struct DoublePoint {
   double X;
   double Y;
   DoublePoint(double x = 0, double y = 0) noexcept : X(x), Y(y) {}
   DoublePoint(IntPoint const &ip) noexcept : X((double)ip.X), Y((double)ip.Y) {}
-  inline void reset(double x = 0, double y = 0) noexcept
-  { X = x; Y = y; }
+  inline void reset(double x = 0, double y = 0) noexcept {
+    X = x;
+    Y = y;
+  }
 };
 //------------------------------------------------------------------------------
 
@@ -144,7 +152,7 @@ typedef std::vector<PolyNode *> PolyNodes;
 class PolyNode {
 public:
   PolyNode() noexcept;
-  virtual ~PolyNode(){}
+  virtual ~PolyNode() {}
   Path Contour;
   PolyNodes Childs;
   PolyNode *Parent;
@@ -190,7 +198,8 @@ void SimplifyPolygons(const Paths &in_polys, Paths &out_polys,
 void SimplifyPolygons(Paths &polys, PolyFillType fillType = pftEvenOdd);
 #endif
 
-void CleanPolygon(const Path &in_poly, Path &out_poly, double distance = 1.415) noexcept;
+void CleanPolygon(const Path &in_poly, Path &out_poly,
+                  double distance = 1.415) noexcept;
 void CleanPolygon(Path &poly, double distance = 1.415) noexcept;
 void CleanPolygons(const Paths &in_polys, Paths &out_polys,
                    double distance = 1.415) noexcept;
@@ -348,7 +357,7 @@ private:
   bool ProcessIntersections(const cInt topY);
   void BuildIntersectList(const cInt topY) noexcept;
   void ProcessIntersectList() noexcept;
-  void ProcessEdgesAtTopOfScanbeam(const cInt topY) ;
+  void ProcessEdgesAtTopOfScanbeam(const cInt topY);
   void BuildResult(Paths &polys) noexcept;
   void BuildResult2(PolyTree &polytree) noexcept;
   void SetHoleState(TEdge *e, OutRec *outrec) noexcept;
@@ -380,7 +389,8 @@ public:
   ClipperOffset(double miterLimit = 2.0, double roundPrecision = 0.25) noexcept;
   ~ClipperOffset();
   void AddPath(const Path &path, JoinType joinType, EndType endType) noexcept;
-  void AddPaths(const Paths &paths, JoinType joinType, EndType endType) noexcept;
+  void AddPaths(const Paths &paths, JoinType joinType,
+                EndType endType) noexcept;
   bool Execute(Paths &solution, double delta) noexcept;
   bool Execute(PolyTree &solution, double delta) noexcept;
   void Clear() noexcept;

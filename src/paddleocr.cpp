@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <include/paddleocr.h>
-#include <include/ocr_det.h>
-#include <include/ocr_cls.h>
-#include <include/ocr_rec.h>
 #include <include/args.h>
+#include <include/ocr_cls.h>
+#include <include/ocr_det.h>
+#include <include/ocr_rec.h>
+#include <include/paddleocr.h>
 
 #ifdef PPOCR_benchmark_ENABLED
 #include "auto_log/autolog.h"
@@ -50,7 +50,7 @@ struct PPOCR::PPOCR_PRIVATE
 };
 
 #ifdef PPOCR_gflags_ENABLED
-PPOCR::PPOCR() : pri(new PPOCR_PRIVATE) {
+PPOCR::PPOCR() noexcept : pri(new PPOCR_PRIVATE) {
   if (FLAGS_det) {
     pri->detector = new DBDetector(
         FLAGS_det_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
@@ -110,8 +110,8 @@ PPOCR::~PPOCR()
 }
 
 std::vector<std::vector<OCRPredictResult>>
-PPOCR::ocr(const std::vector<cv::Mat> &img_list, bool det, bool rec, bool cls) noexcept
-{
+PPOCR::ocr(const std::vector<cv::Mat> &img_list, bool det, bool rec,
+           bool cls) noexcept {
   std::vector<std::vector<OCRPredictResult>> ocr_results;
 
   if (!det) {
@@ -143,8 +143,7 @@ PPOCR::ocr(const std::vector<cv::Mat> &img_list, bool det, bool rec, bool cls) n
 }
 
 std::vector<OCRPredictResult> PPOCR::ocr(const cv::Mat &img, bool det, bool rec,
-                                         bool cls) noexcept
-{
+                                         bool cls) noexcept {
 
   std::vector<OCRPredictResult> ocr_result;
   // det
@@ -172,8 +171,8 @@ std::vector<OCRPredictResult> PPOCR::ocr(const cv::Mat &img, bool det, bool rec,
   return ocr_result;
 }
 
-void PPOCR::det(const cv::Mat &img, std::vector<OCRPredictResult> &ocr_results) noexcept
-{
+void PPOCR::det(const cv::Mat &img,
+                std::vector<OCRPredictResult> &ocr_results) noexcept {
   std::vector<std::vector<std::vector<int>>> boxes;
   std::vector<double> det_times;
 
@@ -194,8 +193,7 @@ void PPOCR::det(const cv::Mat &img, std::vector<OCRPredictResult> &ocr_results) 
 }
 
 void PPOCR::rec(const std::vector<cv::Mat> &img_list,
-                std::vector<OCRPredictResult> &ocr_results) noexcept
-{
+                std::vector<OCRPredictResult> &ocr_results) noexcept {
   std::vector<std::string> rec_texts(img_list.size(), std::string());
   std::vector<float> rec_text_scores(img_list.size(), 0);
   std::vector<double> rec_times;
@@ -213,8 +211,7 @@ void PPOCR::rec(const std::vector<cv::Mat> &img_list,
 }
 
 void PPOCR::cls(const std::vector<cv::Mat> &img_list,
-                std::vector<OCRPredictResult> &ocr_results) noexcept
-{
+                std::vector<OCRPredictResult> &ocr_results) noexcept {
   std::vector<int> cls_labels(img_list.size(), 0);
   std::vector<float> cls_scores(img_list.size(), 0);
   std::vector<double> cls_times;
@@ -232,13 +229,13 @@ void PPOCR::cls(const std::vector<cv::Mat> &img_list,
 }
 
 #ifdef PPOCR_benchmark_ENABLED
-void PPOCR::reset_timer() {
+void PPOCR::reset_timer() noexcept {
   this->time_info_det = {0, 0, 0};
   this->time_info_rec = {0, 0, 0};
   this->time_info_cls = {0, 0, 0};
 }
 
-void PPOCR::benchmark_log(int img_num) {
+void PPOCR::benchmark_log(int img_num) noexcept {
   if (this->time_info_det[0] + this->time_info_det[1] + this->time_info_det[2] >
       0) {
     AutoLogger autolog_det("ocr_det", FLAGS_use_gpu, FLAGS_use_tensorrt,

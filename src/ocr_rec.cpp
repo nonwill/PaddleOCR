@@ -13,11 +13,11 @@
 // limitations under the License.
 
 #include <include/ocr_rec.h>
-#include "paddle_inference_api.h"
+#include <paddle_inference_api.h>
 
-#include <numeric>
 #include <chrono>
 #include <iostream>
+#include <numeric>
 
 namespace PaddleOCR {
 
@@ -180,9 +180,7 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) noexcept {
   config.SwitchIrOptim(true);
 
   config.EnableMemoryOptim();
-#ifndef PPOCR_benchmark_ENABLED
   config.DisableGlogInfo();
-#endif
 
   this->predictor_ = paddle_infer::CreatePredictor(config);
 }

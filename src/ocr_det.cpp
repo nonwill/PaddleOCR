@@ -13,10 +13,10 @@
 // limitations under the License.
 
 #include <include/ocr_det.h>
-#include "paddle_inference_api.h"
+#include <paddle_inference_api.h>
 
-#include <numeric>
 #include <chrono>
+#include <numeric>
 
 namespace PaddleOCR {
 
@@ -62,7 +62,7 @@ void DBDetector::LoadModel(const std::string &model_dir) noexcept {
   config.SwitchIrOptim(true);
 
   config.EnableMemoryOptim();
-  // config.DisableGlogInfo();
+  config.DisableGlogInfo();
 
   this->predictor_ = paddle_infer::CreatePredictor(config);
 }

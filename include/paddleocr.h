@@ -15,7 +15,7 @@
 #ifndef PPOCR_PADDLEOCR_H
 #define PPOCR_PADDLEOCR_H
 
-#include <utility.h>
+#include <include/utility.h>
 
 namespace PaddleOCR {
 
@@ -32,16 +32,15 @@ public:
 #endif
   virtual ~PPOCR();
 
-  std::vector<std::vector<OCRPredictResult>> ocr(
-          const std::vector<cv::Mat> &img_list, bool det = true,
-          bool rec = true, bool cls = true) noexcept;
-  std::vector<OCRPredictResult> ocr(
-          const cv::Mat &img, bool det = true, bool rec = true,
-          bool cls = true) noexcept;
+  std::vector<std::vector<OCRPredictResult>>
+  ocr(const std::vector<cv::Mat> &img_list, bool det = true, bool rec = true,
+      bool cls = true) noexcept;
+  std::vector<OCRPredictResult> ocr(const cv::Mat &img, bool det = true,
+                                    bool rec = true, bool cls = true) noexcept;
 
 #ifdef PPOCR_benchmark_ENABLED
-  void reset_timer();
-  void benchmark_log(int img_num);
+  void reset_timer() noexcept;
+  void benchmark_log(int img_num) noexcept;
 #endif
 
 protected:
@@ -51,7 +50,8 @@ protected:
   std::vector<double> time_info_cls = {0, 0, 0};
 #endif
 
-  void det(const cv::Mat &img, std::vector<OCRPredictResult> &ocr_results) noexcept;
+  void det(const cv::Mat &img,
+           std::vector<OCRPredictResult> &ocr_results) noexcept;
   void rec(const std::vector<cv::Mat> &img_list,
            std::vector<OCRPredictResult> &ocr_results) noexcept;
   void cls(const std::vector<cv::Mat> &img_list,
@@ -59,7 +59,7 @@ protected:
 
 private:
   struct PPOCR_PRIVATE;
-  PPOCR_PRIVATE * pri;
+  PPOCR_PRIVATE *pri;
 };
 
 } // namespace PaddleOCR

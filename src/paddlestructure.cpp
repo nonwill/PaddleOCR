@@ -13,9 +13,9 @@
 // limitations under the License.
 
 #include <include/args.h>
-#include <structure_layout.h>
-#include <structure_table.h>
 #include <include/paddlestructure.h>
+#include <include/structure_layout.h>
+#include <include/structure_table.h>
 
 #ifdef PPOCR_benchmark_ENABLED
 #include "auto_log/autolog.h"
@@ -77,8 +77,8 @@ PaddleStructure::~PaddleStructure()
 }
 
 std::vector<StructurePredictResult>
-PaddleStructure::structure(const cv::Mat &srcimg, bool layout, bool table, bool ocr) noexcept
-{
+PaddleStructure::structure(const cv::Mat &srcimg, bool layout, bool table,
+                           bool ocr) noexcept {
   cv::Mat img;
   srcimg.copyTo(img);
 
@@ -101,7 +101,8 @@ PaddleStructure::structure(const cv::Mat &srcimg, bool layout, bool table, bool 
     if (structure_results[i].type == "table" && table) {
       this->table(roi_img, structure_results[i]);
     } else if (ocr) {
-      structure_results[i].text_res = std::move(this->ocr(roi_img, true, true, false));
+      structure_results[i].text_res =
+          std::move(this->ocr(roi_img, true, true, false));
     }
   }
 
@@ -109,8 +110,8 @@ PaddleStructure::structure(const cv::Mat &srcimg, bool layout, bool table, bool 
 }
 
 void PaddleStructure::layout(
-    const cv::Mat &img, std::vector<StructurePredictResult> &structure_result) noexcept
-{
+    const cv::Mat &img,
+    std::vector<StructurePredictResult> &structure_result) noexcept {
   std::vector<double> layout_times;
   layout_model->Run(img, structure_result, layout_times);
 
@@ -122,8 +123,7 @@ void PaddleStructure::layout(
 }
 
 void PaddleStructure::table(const cv::Mat &img,
-                            StructurePredictResult &structure_result) noexcept
-{
+                            StructurePredictResult &structure_result) noexcept {
   // predict structure
   std::vector<std::vector<std::string>> structure_html_tags;
   std::vector<float> structure_scores(1, 0);
@@ -162,18 +162,17 @@ void PaddleStructure::table(const cv::Mat &img,
     // rec
     this->rec(rec_img_list, ocr_result);
     // rebuild table
-    structure_result.html = std::move(this->rebuild_table(structure_html_tags[i], structure_boxes[i],
-                               ocr_result));
+    structure_result.html = std::move(this->rebuild_table(
+        structure_html_tags[i], structure_boxes[i], ocr_result));
     structure_result.cell_box = std::move(structure_boxes[i]);
     structure_result.html_score = structure_scores[i];
   }
 }
 
-std::string
-PaddleStructure::rebuild_table(const std::vector<std::string> &structure_html_tags,
-                               const std::vector<std::vector<int>> &structure_boxes,
-                               std::vector<OCRPredictResult> &ocr_result) noexcept
-{
+std::string PaddleStructure::rebuild_table(
+    const std::vector<std::string> &structure_html_tags,
+    const std::vector<std::vector<int>> &structure_boxes,
+    std::vector<OCRPredictResult> &ocr_result) noexcept {
   // match text in same cell
   std::vector<std::vector<std::string>> matched(structure_boxes.size(),
                                                 std::vector<std::string>());
@@ -199,7 +198,8 @@ PaddleStructure::rebuild_table(const std::vector<std::string> &structure_html_ta
       dis_list[j][2] = j;
     }
     // find min dis idx
-    std::sort(dis_list.begin(), dis_list.end(), PaddleStructure::comparison_dis);
+    std::sort(dis_list.begin(), dis_list.end(),
+              PaddleStructure::comparison_dis);
     matched[dis_list[0][2]].emplace_back(ocr_result[i].text);
   }
 
@@ -260,8 +260,8 @@ PaddleStructure::rebuild_table(const std::vector<std::string> &structure_html_ta
   return html_str;
 }
 
-float PaddleStructure::dis(const std::vector<int> &box1, const std::vector<int> &box2) noexcept
-{
+float PaddleStructure::dis(const std::vector<int> &box1,
+                           const std::vector<int> &box2) noexcept {
   int x1_1 = box1[0];
   int y1_1 = box1[1];
   int x2_1 = box1[2];
@@ -280,7 +280,7 @@ float PaddleStructure::dis(const std::vector<int> &box1, const std::vector<int> 
 }
 
 #ifdef PPOCR_benchmark_ENABLED
-void PaddleStructure::reset_timer() {
+void PaddleStructure::reset_timer() noexcept {
   this->time_info_det = {0, 0, 0};
   this->time_info_rec = {0, 0, 0};
   this->time_info_cls = {0, 0, 0};
@@ -288,7 +288,7 @@ void PaddleStructure::reset_timer() {
   this->time_info_layout = {0, 0, 0};
 }
 
-void PaddleStructure::benchmark_log(int img_num) {
+void PaddleStructure::benchmark_log(int img_num) noexcept {
   if (this->time_info_det[0] + this->time_info_det[1] + this->time_info_det[2] >
       0) {
     AutoLogger autolog_det("ocr_det", FLAGS_use_gpu, FLAGS_use_tensorrt,

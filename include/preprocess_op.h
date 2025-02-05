@@ -16,7 +16,7 @@
 #define PPOCR_PREPROCESS_OP_HH
 
 #include <ppocr_api.h>
-#include "opencv2/imgproc.hpp"
+#include <opencv2/imgproc.hpp>
 
 namespace PaddleOCR {
 
@@ -41,22 +41,23 @@ public:
 class ResizeImgType0 {
 public:
   virtual void Run(const cv::Mat &img, cv::Mat &resize_img,
-                   const std::string &limit_type, int limit_side_len, float &ratio_h,
-                   float &ratio_w, bool use_tensorrt) noexcept;
+                   const std::string &limit_type, int limit_side_len,
+                   float &ratio_h, float &ratio_w, bool use_tensorrt) noexcept;
 };
 
 class CrnnResizeImg {
 public:
   virtual void Run(const cv::Mat &img, cv::Mat &resize_img, float wh_ratio,
                    bool use_tensorrt = false,
-                   const std::vector<int> &rec_image_shape = {3, 32, 320}) noexcept;
+                   const std::vector<int> &rec_image_shape = {3, 32,
+                                                              320}) noexcept;
 };
 
 class ClsResizeImg {
 public:
-  virtual void Run(const cv::Mat &img, cv::Mat &resize_img,
-                   bool use_tensorrt = false,
-                   const std::vector<int> &rec_image_shape = {3, 48, 192}) noexcept;
+  virtual void
+  Run(const cv::Mat &img, cv::Mat &resize_img, bool use_tensorrt = false,
+      const std::vector<int> &rec_image_shape = {3, 48, 192}) noexcept;
 };
 
 class TableResizeImg {

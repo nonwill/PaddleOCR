@@ -16,7 +16,7 @@
 #define PPOCR_UTILITY_HH
 
 #include <ppocr_api.h>
-#include "opencv2/imgproc.hpp"
+#include <opencv2/imgproc.hpp>
 
 namespace PaddleOCR {
 

@@ -19,7 +19,9 @@
 #include <include/utility.h>
 #include <memory>
 
-namespace paddle_infer { class Predictor; }
+namespace paddle_infer {
+class Predictor;
+}
 
 namespace PaddleOCR {
 
@@ -47,7 +49,7 @@ public:
 
     this->label_list_ = Utility::ReadDict(label_path);
     this->label_list_.emplace(this->label_list_.begin(),
-                             "#"); // blank char for ctc
+                              "#"); // blank char for ctc
     this->label_list_.emplace_back(" ");
 
     LoadModel(model_dir);
@@ -56,8 +58,10 @@ public:
   // Load Paddle inference model
   void LoadModel(const std::string &model_dir) noexcept;
 
-  void Run(const std::vector<cv::Mat> &img_list, std::vector<std::string> &rec_texts,
-           std::vector<float> &rec_text_scores, std::vector<double> &times) noexcept;
+  void Run(const std::vector<cv::Mat> &img_list,
+           std::vector<std::string> &rec_texts,
+           std::vector<float> &rec_text_scores,
+           std::vector<double> &times) noexcept;
 
 private:
   std::shared_ptr<paddle_infer::Predictor> predictor_;

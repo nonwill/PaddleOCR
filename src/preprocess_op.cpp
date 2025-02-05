@@ -38,7 +38,8 @@ void PermuteBatch::Run(const std::vector<cv::Mat> &imgs, float *data) noexcept {
 }
 
 void Normalize::Run(cv::Mat &im, const std::vector<float> &mean,
-                    const std::vector<float> &scale, const bool is_scale) noexcept {
+                    const std::vector<float> &scale,
+                    const bool is_scale) noexcept {
   double e = 1.0;
   if (is_scale) {
     e /= 255.0;
@@ -55,7 +56,8 @@ void Normalize::Run(cv::Mat &im, const std::vector<float> &mean,
 
 void ResizeImgType0::Run(const cv::Mat &img, cv::Mat &resize_img,
                          const std::string &limit_type, int limit_side_len,
-                         float &ratio_h, float &ratio_w, bool use_tensorrt) noexcept {
+                         float &ratio_h, float &ratio_w,
+                         bool use_tensorrt) noexcept {
   int w = img.cols;
   int h = img.rows;
   float ratio = 1.f;
