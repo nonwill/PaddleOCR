@@ -35,7 +35,7 @@ public:
   void LoadModel(const std::string &model_dir) noexcept;
 
   void Run(const std::vector<cv::Mat> &img_list, std::vector<int> &cls_labels,
-           std::vector<float> &cls_scores, std::vector<double> &times) noexcept;
+           std::vector<float> &cls_scores) noexcept;
 
 private:
   Args const & args_;

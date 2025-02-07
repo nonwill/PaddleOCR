@@ -16,7 +16,6 @@
 #include <include/args.h>
 #include <paddle_inference_api.h>
 
-#include <chrono>
 #include <iostream>
 #include <numeric>
 
@@ -32,17 +31,8 @@ StructureLayoutRecognizer::StructureLayoutRecognizer(Args const & args) noexcept
 }
 
 void StructureLayoutRecognizer::Run(const cv::Mat &img,
-                                    std::vector<StructurePredictResult> &result,
-                                    std::vector<double> &times) noexcept {
-  std::chrono::duration<float> preprocess_diff =
-      std::chrono::steady_clock::now() - std::chrono::steady_clock::now();
-  std::chrono::duration<float> inference_diff =
-      std::chrono::steady_clock::now() - std::chrono::steady_clock::now();
-  std::chrono::duration<float> postprocess_diff =
-      std::chrono::steady_clock::now() - std::chrono::steady_clock::now();
-
+                                    std::vector<StructurePredictResult> &result) noexcept {
   // preprocess
-  auto preprocess_start = std::chrono::steady_clock::now();
 
   cv::Mat srcimg;
   img.copyTo(srcimg);
@@ -53,14 +43,11 @@ void StructureLayoutRecognizer::Run(const cv::Mat &img,
 
   std::vector<float> input(1 * 3 * resize_img.rows * resize_img.cols, 0.0f);
   this->permute_op_.Run(resize_img, input.data());
-  auto preprocess_end = std::chrono::steady_clock::now();
-  preprocess_diff += preprocess_end - preprocess_start;
 
   // inference.
   auto input_names = this->predictor_->GetInputNames();
   auto input_t = this->predictor_->GetInputHandle(input_names[0]);
   input_t->Reshape({1, 3, resize_img.rows, resize_img.cols});
-  auto inference_start = std::chrono::steady_clock::now();
   input_t->CopyFromCpu(input.data());
 
   this->predictor_->Run();
@@ -81,11 +68,8 @@ void StructureLayoutRecognizer::Run(const cv::Mat &img,
     output_tensor->CopyToCpu(out_data.data());
     out_tensor_list.emplace_back(std::move(out_data));
   }
-  auto inference_end = std::chrono::steady_clock::now();
-  inference_diff += inference_end - inference_start;
 
   // postprocess
-  auto postprocess_start = std::chrono::steady_clock::now();
 
   std::vector<int> bbox_num;
   int reg_max = 0;
@@ -100,12 +84,6 @@ void StructureLayoutRecognizer::Run(const cv::Mat &img,
   this->post_processor_.Run(result, out_tensor_list, ori_shape, resize_shape,
                             reg_max);
   bbox_num.emplace_back(result.size());
-
-  auto postprocess_end = std::chrono::steady_clock::now();
-  postprocess_diff += postprocess_end - postprocess_start;
-  times.emplace_back(preprocess_diff.count() * 1000);
-  times.emplace_back(inference_diff.count() * 1000);
-  times.emplace_back(postprocess_diff.count() * 1000);
 }
 
 void StructureLayoutRecognizer::LoadModel(

@@ -16,7 +16,6 @@
 #include <include/args.h>
 #include <paddle_inference_api.h>
 
-#include <chrono>
 #include <iostream>
 #include <numeric>
 
@@ -43,15 +42,7 @@ CRNNRecognizer::CRNNRecognizer(Args const & args) noexcept :
 
 void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
                          std::vector<std::string> &rec_texts,
-                         std::vector<float> &rec_text_scores,
-                         std::vector<double> &times) noexcept {
-  std::chrono::duration<float> preprocess_diff =
-      std::chrono::duration<float>::zero();
-  std::chrono::duration<float> inference_diff =
-      std::chrono::duration<float>::zero();
-  std::chrono::duration<float> postprocess_diff =
-      std::chrono::duration<float>::zero();
-
+                         std::vector<float> &rec_text_scores) noexcept {
   int img_num = img_list.size();
   std::vector<float> width_list;
   for (int i = 0; i < img_num; ++i) {
@@ -61,7 +52,6 @@ void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
 
   for (int beg_img_no = 0; beg_img_no < img_num;
        beg_img_no += args_.rec_batch_num) {
-    auto preprocess_start = std::chrono::steady_clock::now();
     int end_img_no = std::min(img_num, beg_img_no + args_.rec_batch_num);
     int batch_num = end_img_no - beg_img_no;
     int imgH = this->rec_image_shape_[1];
@@ -90,13 +80,10 @@ void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
 
     std::vector<float> input(batch_num * 3 * imgH * batch_width, 0.0f);
     this->permute_op_.Run(norm_img_batch, input.data());
-    auto preprocess_end = std::chrono::steady_clock::now();
-    preprocess_diff += preprocess_end - preprocess_start;
     // Inference.
     auto input_names = this->predictor_->GetInputNames();
     auto input_t = this->predictor_->GetInputHandle(input_names[0]);
     input_t->Reshape({batch_num, 3, imgH, batch_width});
-    auto inference_start = std::chrono::steady_clock::now();
     input_t->CopyFromCpu(input.data());
     this->predictor_->Run();
 
@@ -110,10 +97,7 @@ void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
     predict_batch.resize(out_num);
     // predict_batch is the result of Last FC with softmax
     output_t->CopyToCpu(predict_batch.data());
-    auto inference_end = std::chrono::steady_clock::now();
-    inference_diff += inference_end - inference_start;
     // ctc decode
-    auto postprocess_start = std::chrono::steady_clock::now();
     for (int m = 0; m < predict_shape[0]; m++) {
       std::string str_res;
       int argmax_idx;
@@ -146,12 +130,7 @@ void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
       rec_texts[indices[beg_img_no + m]] = std::move(str_res);
       rec_text_scores[indices[beg_img_no + m]] = score;
     }
-    auto postprocess_end = std::chrono::steady_clock::now();
-    postprocess_diff += postprocess_end - postprocess_start;
   }
-  times.emplace_back(preprocess_diff.count() * 1000);
-  times.emplace_back(inference_diff.count() * 1000);
-  times.emplace_back(postprocess_diff.count() * 1000);
 }
 
 void CRNNRecognizer::LoadModel(const std::string &model_dir) noexcept {

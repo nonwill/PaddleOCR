@@ -36,8 +36,7 @@ public:
 
   // Run predictor
   void Run(const cv::Mat &img,
-           std::vector<std::vector<std::vector<int>>> &boxes,
-           std::vector<double> &times) noexcept;
+           std::vector<std::vector<std::vector<int>>> &boxes) noexcept;
 
 private:
   Args const & args_;

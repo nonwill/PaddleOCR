@@ -135,9 +135,8 @@ std::vector<OCRPredictResult> PPOCR::ocr(const cv::Mat &img, bool and_cls) noexc
 void PPOCR::det(const cv::Mat &img,
                 std::vector<OCRPredictResult> &ocr_results) noexcept {
   std::vector<std::vector<std::vector<int>>> boxes;
-  std::vector<double> det_times;
 
-  pri->detector->Run(img, boxes, det_times);
+  pri->detector->Run(img, boxes);
 
   for (int i = 0; i < boxes.size(); ++i) {
     OCRPredictResult res;
@@ -152,8 +151,7 @@ void PPOCR::rec(const std::vector<cv::Mat> &img_list,
                 std::vector<OCRPredictResult> &ocr_results) noexcept {
   std::vector<std::string> rec_texts(img_list.size(), std::string());
   std::vector<float> rec_text_scores(img_list.size(), 0);
-  std::vector<double> rec_times;
-  pri->recognizer->Run(img_list, rec_texts, rec_text_scores, rec_times);
+  pri->recognizer->Run(img_list, rec_texts, rec_text_scores);
   // output rec results
   for (int i = 0; i < rec_texts.size(); ++i) {
     ocr_results[i].text = std::move(rec_texts[i]);
@@ -165,8 +163,7 @@ void PPOCR::cls(const std::vector<cv::Mat> &img_list,
                 std::vector<OCRPredictResult> &ocr_results) noexcept {
   std::vector<int> cls_labels(img_list.size(), 0);
   std::vector<float> cls_scores(img_list.size(), 0);
-  std::vector<double> cls_times;
-  pri->classifier->Run(img_list, cls_labels, cls_scores, cls_times);
+  pri->classifier->Run(img_list, cls_labels, cls_scores);
   // output cls results
   for (int i = 0; i < cls_labels.size(); ++i) {
     ocr_results[i].cls_label = cls_labels[i];

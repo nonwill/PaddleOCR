@@ -16,7 +16,6 @@
 #include <include/args.h>
 #include <paddle_inference_api.h>
 
-#include <chrono>
 #include <numeric>
 
 namespace PaddleOCR {
@@ -78,8 +77,7 @@ void DBDetector::LoadModel(const std::string &model_dir) noexcept {
 }
 
 void DBDetector::Run(const cv::Mat &img,
-                     std::vector<std::vector<std::vector<int>>> &boxes,
-                     std::vector<double> &times) noexcept {
+                     std::vector<std::vector<std::vector<int>>> &boxes) noexcept {
   float ratio_h{};
   float ratio_w{};
 
@@ -87,7 +85,6 @@ void DBDetector::Run(const cv::Mat &img,
   cv::Mat resize_img;
   img.copyTo(srcimg);
 
-  auto preprocess_start = std::chrono::steady_clock::now();
   this->resize_op_.Run(img, resize_img, args_.limit_type,
                        args_.limit_side_len, ratio_h, ratio_w,
                        args_.use_tensorrt);
@@ -97,13 +94,11 @@ void DBDetector::Run(const cv::Mat &img,
 
   std::vector<float> input(1 * 3 * resize_img.rows * resize_img.cols, 0.0f);
   this->permute_op_.Run(resize_img, input.data());
-  auto preprocess_end = std::chrono::steady_clock::now();
 
   // Inference.
   auto input_names = this->predictor_->GetInputNames();
   auto input_t = this->predictor_->GetInputHandle(input_names[0]);
   input_t->Reshape({1, 3, resize_img.rows, resize_img.cols});
-  auto inference_start = std::chrono::steady_clock::now();
   input_t->CopyFromCpu(input.data());
 
   this->predictor_->Run();
@@ -117,9 +112,7 @@ void DBDetector::Run(const cv::Mat &img,
 
   out_data.resize(out_num);
   output_t->CopyToCpu(out_data.data());
-  auto inference_end = std::chrono::steady_clock::now();
 
-  auto postprocess_start = std::chrono::steady_clock::now();
   int n2 = output_shape[2];
   int n3 = output_shape[3];
   int n = n2 * n3;
@@ -150,16 +143,6 @@ void DBDetector::Run(const cv::Mat &img,
       args_.det_db_score_mode));
 
   post_processor_.FilterTagDetRes(boxes, ratio_h, ratio_w, srcimg);
-  auto postprocess_end = std::chrono::steady_clock::now();
-
-  std::chrono::duration<float> preprocess_diff =
-      preprocess_end - preprocess_start;
-  times.emplace_back(preprocess_diff.count() * 1000);
-  std::chrono::duration<float> inference_diff = inference_end - inference_start;
-  times.emplace_back(inference_diff.count() * 1000);
-  std::chrono::duration<float> postprocess_diff =
-      postprocess_end - postprocess_start;
-  times.emplace_back(postprocess_diff.count() * 1000);
 }
 
 } // namespace PaddleOCR

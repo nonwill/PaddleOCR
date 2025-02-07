@@ -16,7 +16,6 @@
 #include <include/args.h>
 #include <paddle_inference_api.h>
 
-#include <chrono>
 #include <numeric>
 
 namespace PaddleOCR {
@@ -35,20 +34,11 @@ void StructureTableRecognizer::Run(
     const std::vector<cv::Mat> &img_list,
     std::vector<std::vector<std::string>> &structure_html_tags,
     std::vector<float> &structure_scores,
-    std::vector<std::vector<std::vector<int>>> &structure_boxes,
-    std::vector<double> &times) noexcept {
-  std::chrono::duration<float> preprocess_diff =
-      std::chrono::steady_clock::now() - std::chrono::steady_clock::now();
-  std::chrono::duration<float> inference_diff =
-      std::chrono::steady_clock::now() - std::chrono::steady_clock::now();
-  std::chrono::duration<float> postprocess_diff =
-      std::chrono::steady_clock::now() - std::chrono::steady_clock::now();
-
+    std::vector<std::vector<std::vector<int>>> &structure_boxes) noexcept {
   int img_num = img_list.size();
   for (int beg_img_no = 0; beg_img_no < img_num;
        beg_img_no += args_.table_batch_num) {
     // preprocess
-    auto preprocess_start = std::chrono::steady_clock::now();
     int end_img_no = std::min(img_num, beg_img_no + args_.table_batch_num);
     int batch_num = end_img_no - beg_img_no;
     std::vector<cv::Mat> norm_img_batch;
@@ -71,14 +61,11 @@ void StructureTableRecognizer::Run(
     std::vector<float> input(
         batch_num * 3 * args_.table_max_len * args_.table_max_len, 0.0f);
     this->permute_op_.Run(norm_img_batch, input.data());
-    auto preprocess_end = std::chrono::steady_clock::now();
-    preprocess_diff += preprocess_end - preprocess_start;
     // inference.
     auto input_names = this->predictor_->GetInputNames();
     auto input_t = this->predictor_->GetInputHandle(input_names[0]);
     input_t->Reshape(
         {batch_num, 3, args_.table_max_len, args_.table_max_len});
-    auto inference_start = std::chrono::steady_clock::now();
     input_t->CopyFromCpu(input.data());
     this->predictor_->Run();
     auto output_names = this->predictor_->GetOutputNames();
@@ -98,10 +85,7 @@ void StructureTableRecognizer::Run(
 
     output_tensor0->CopyToCpu(loc_preds.data());
     output_tensor1->CopyToCpu(structure_probs.data());
-    auto inference_end = std::chrono::steady_clock::now();
-    inference_diff += inference_end - inference_start;
     // postprocess
-    auto postprocess_start = std::chrono::steady_clock::now();
     std::vector<std::vector<std::string>> structure_html_tag_batch;
     std::vector<float> structure_score_batch;
     std::vector<std::vector<std::vector<int>>> structure_boxes_batch;
@@ -124,11 +108,6 @@ void StructureTableRecognizer::Run(
       structure_scores.emplace_back(structure_score_batch[m]);
       structure_boxes.emplace_back(std::move(structure_boxes_batch[m]));
     }
-    auto postprocess_end = std::chrono::steady_clock::now();
-    postprocess_diff += postprocess_end - postprocess_start;
-    times.emplace_back(preprocess_diff.count() * 1000);
-    times.emplace_back(inference_diff.count() * 1000);
-    times.emplace_back(postprocess_diff.count() * 1000);
   }
 }
 

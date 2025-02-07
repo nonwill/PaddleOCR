@@ -35,8 +35,7 @@ public:
   void Run(const std::vector<cv::Mat> &img_list,
            std::vector<std::vector<std::string>> &rec_html_tags,
            std::vector<float> &rec_scores,
-           std::vector<std::vector<std::vector<int>>> &rec_boxes,
-           std::vector<double> &times) noexcept;
+           std::vector<std::vector<std::vector<int>>> &rec_boxes) noexcept;
 
 private:
   Args const & args_;

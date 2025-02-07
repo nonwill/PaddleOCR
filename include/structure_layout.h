@@ -32,8 +32,7 @@ public:
   // Load Paddle inference model
   void LoadModel(const std::string &model_dir) noexcept;
 
-  void Run(const cv::Mat &img, std::vector<StructurePredictResult> &result,
-           std::vector<double> &times) noexcept;
+  void Run(const cv::Mat &img, std::vector<StructurePredictResult> &result) noexcept;
 
 private:
   Args const & args_;

@@ -16,7 +16,6 @@
 #include <include/args.h>
 #include <paddle_inference_api.h>
 
-#include <chrono>
 #include <numeric>
 
 namespace PaddleOCR {
@@ -32,20 +31,11 @@ Classifier::Classifier(Args const & args) noexcept :
 
 void Classifier::Run(const std::vector<cv::Mat> &img_list,
                      std::vector<int> &cls_labels,
-                     std::vector<float> &cls_scores,
-                     std::vector<double> &times) noexcept {
-  std::chrono::duration<float> preprocess_diff =
-      std::chrono::duration<float>::zero();
-  std::chrono::duration<float> inference_diff =
-      std::chrono::duration<float>::zero();
-  std::chrono::duration<float> postprocess_diff =
-      std::chrono::duration<float>::zero();
-
+                     std::vector<float> &cls_scores) noexcept {
   int img_num = img_list.size();
   std::vector<int> cls_image_shape = {3, 48, 192};
   for (int beg_img_no = 0; beg_img_no < img_num;
        beg_img_no += args_.cls_batch_num) {
-    auto preprocess_start = std::chrono::steady_clock::now();
     int end_img_no = std::min(img_num, beg_img_no + args_.cls_batch_num);
     int batch_num = end_img_no - beg_img_no;
     // preprocess
@@ -70,15 +60,12 @@ void Classifier::Run(const std::vector<cv::Mat> &img_list,
                                  cls_image_shape[1] * cls_image_shape[2],
                              0.0f);
     this->permute_op_.Run(norm_img_batch, input.data());
-    auto preprocess_end = std::chrono::steady_clock::now();
-    preprocess_diff += preprocess_end - preprocess_start;
 
     // inference.
     auto input_names = this->predictor_->GetInputNames();
     auto input_t = this->predictor_->GetInputHandle(input_names[0]);
     input_t->Reshape({batch_num, cls_image_shape[0], cls_image_shape[1],
                       cls_image_shape[2]});
-    auto inference_start = std::chrono::steady_clock::now();
     input_t->CopyFromCpu(input.data());
     this->predictor_->Run();
 
@@ -92,11 +79,8 @@ void Classifier::Run(const std::vector<cv::Mat> &img_list,
     predict_batch.resize(out_num);
 
     output_t->CopyToCpu(predict_batch.data());
-    auto inference_end = std::chrono::steady_clock::now();
-    inference_diff += inference_end - inference_start;
 
     // postprocess
-    auto postprocess_start = std::chrono::steady_clock::now();
     for (int batch_idx = 0; batch_idx < predict_shape[0]; batch_idx++) {
       int label = int(
           Utility::argmax(&predict_batch[batch_idx * predict_shape[1]],
@@ -107,12 +91,7 @@ void Classifier::Run(const std::vector<cv::Mat> &img_list,
       cls_labels[beg_img_no + batch_idx] = label;
       cls_scores[beg_img_no + batch_idx] = score;
     }
-    auto postprocess_end = std::chrono::steady_clock::now();
-    postprocess_diff += postprocess_end - postprocess_start;
   }
-  times.emplace_back(preprocess_diff.count() * 1000);
-  times.emplace_back(inference_diff.count() * 1000);
-  times.emplace_back(postprocess_diff.count() * 1000);
 }
 
 void Classifier::LoadModel(const std::string &model_dir) noexcept {

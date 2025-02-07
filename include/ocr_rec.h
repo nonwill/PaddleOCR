@@ -36,8 +36,7 @@ public:
 
   void Run(const std::vector<cv::Mat> &img_list,
            std::vector<std::string> &rec_texts,
-           std::vector<float> &rec_text_scores,
-           std::vector<double> &times) noexcept;
+           std::vector<float> &rec_text_scores) noexcept;
 
 private:
   static std::vector<std::string> gen_label_list(const std::string &label_path) noexcept;

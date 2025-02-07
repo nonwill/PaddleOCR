@@ -77,8 +77,7 @@ PaddleStructure::structure(const cv::Mat &srcimg) noexcept {
 void PaddleStructure::layout(
     const cv::Mat &img,
     std::vector<StructurePredictResult> &structure_result) noexcept {
-  std::vector<double> layout_times;
-  layout_model->Run(img, structure_result, layout_times);
+  layout_model->Run(img, structure_result);
 }
 
 void PaddleStructure::table(const cv::Mat &img,
@@ -87,11 +86,10 @@ void PaddleStructure::table(const cv::Mat &img,
   std::vector<std::vector<std::string>> structure_html_tags;
   std::vector<float> structure_scores(1, 0);
   std::vector<std::vector<std::vector<int>>> structure_boxes;
-  std::vector<double> structure_times;
   std::vector<cv::Mat> img_list(1, img);
 
   table_model->Run(img_list, structure_html_tags, structure_scores,
-                   structure_boxes, structure_times);
+                   structure_boxes);
 
   std::vector<OCRPredictResult> ocr_result;
   int expand_pixel = 3;
