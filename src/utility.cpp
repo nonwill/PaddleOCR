@@ -237,23 +237,23 @@ std::string Utility::basename(const std::string &filename) noexcept {
   return filename.substr(index + 1, len - index);
 }
 
-bool Utility::PathExists(const std::string &path) noexcept {
+bool Utility::PathExists(const char *path) noexcept {
 #ifdef _WIN32
   struct _stat buffer;
-  return (_stat(path.c_str(), &buffer) == 0);
+  return (_stat(path, &buffer) == 0);
 #else
   struct stat buffer;
-  return (stat(path.c_str(), &buffer) == 0);
+  return (stat(path, &buffer) == 0);
 #endif // !_WIN32
 }
 
-void Utility::CreateDir(const std::string &path) noexcept {
+void Utility::CreateDir(const char *path) noexcept {
 #ifdef _MSC_VER
-  _mkdir(path.c_str());
+  _mkdir(path);
 #elif defined __MINGW32__
-  mkdir(path.c_str());
+  mkdir(path);
 #else
-  mkdir(path.c_str(), 0777);
+  mkdir(path, 0777);
 #endif // !_WIN32
 }
 

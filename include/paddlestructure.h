@@ -24,29 +24,12 @@ class StructureLayoutRecognizer;
 
 class PPOCR_API PaddleStructure : public PPOCR {
 public:
-#ifdef PPOCR_gflags_ENABLED
-  explicit PaddleStructure() noexcept;
-#else
   explicit PaddleStructure(Args const & args) noexcept;
-#endif
   ~PaddleStructure();
 
-  std::vector<StructurePredictResult> structure(const cv::Mat &img,
-                                                bool layout = false,
-                                                bool table = true,
-                                                bool ocr = false) noexcept;
-
-#ifdef PPOCR_benchmark_ENABLED
-  void reset_timer() noexcept;
-  void benchmark_log(int img_num) noexcept;
-#endif
+  std::vector<StructurePredictResult> structure(const cv::Mat &img) noexcept;
 
 private:
-#ifdef PPOCR_benchmark_ENABLED
-  std::vector<double> time_info_table = {0, 0, 0};
-  std::vector<double> time_info_layout = {0, 0, 0};
-#endif
-
   StructureTableRecognizer * table_model;
   StructureLayoutRecognizer * layout_model;
 

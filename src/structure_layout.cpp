@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include <include/structure_layout.h>
+#include <include/args.h>
 #include <paddle_inference_api.h>
 
 #include <chrono>
@@ -20,6 +21,15 @@
 #include <numeric>
 
 namespace PaddleOCR {
+StructureLayoutRecognizer::StructureLayoutRecognizer(Args const & args) noexcept :
+  args_(args),
+  mean_({0.485f, 0.456f, 0.406f}),
+  scale_({1 / 0.229f, 1 / 0.224f, 1 / 0.225f}),
+  is_scale_(true),
+  post_processor_(args.layout_dict_path, args.layout_score_threshold, args.layout_nms_threshold)
+{
+  LoadModel(args.layout_model_dir);
+}
 
 void StructureLayoutRecognizer::Run(const cv::Mat &img,
                                     std::vector<StructurePredictResult> &result,
@@ -115,14 +125,14 @@ void StructureLayoutRecognizer::LoadModel(
     exit(1);
   }
 
-  if (this->use_gpu_) {
-    config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);
-    if (this->use_tensorrt_) {
+  if (args_.use_gpu) {
+    config.EnableUseGpu(args_.gpu_mem, args_.gpu_id);
+    if (args_.use_tensorrt) {
       auto precision = paddle_infer::Config::Precision::kFloat32;
-      if (this->precision_ == "fp16") {
+      if (args_.precision == "fp16") {
         precision = paddle_infer::Config::Precision::kHalf;
       }
-      if (this->precision_ == "int8") {
+      if (args_.precision == "int8") {
         precision = paddle_infer::Config::Precision::kInt8;
       }
       config.EnableTensorRtEngine(1 << 20, 10, 3, precision, false, false);
@@ -134,12 +144,12 @@ void StructureLayoutRecognizer::LoadModel(
     }
   } else {
     config.DisableGpu();
-    if (this->use_mkldnn_) {
+    if (args_.enable_mkldnn) {
       config.EnableMKLDNN();
     } else {
       config.DisableMKLDNN();
     }
-    config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
+    config.SetCpuMathLibraryNumThreads(args_.cpu_threads);
   }
 
   // false for zero copy tensor

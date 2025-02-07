@@ -382,23 +382,34 @@ void DBPostProcessor::FilterTagDetRes(
   boxes = std::move(root_points);
 }
 
-void TablePostProcessor::init(const std::string &label_path,
-                              bool merge_no_span_structure) noexcept {
-  this->label_list_ = Utility::ReadDict(label_path);
+const std::string TablePostProcessor::end = "eos";
+const std::string TablePostProcessor::beg = "sos";
+
+std::vector<std::string> TablePostProcessor::gen_label_list(const std::string &label_path,
+                                                            bool merge_no_span_structure) noexcept
+{
+  std::vector<std::string> label_list_ = Utility::ReadDict(label_path);
   if (merge_no_span_structure) {
-    this->label_list_.emplace_back("<td></td>");
+    label_list_.emplace_back("<td></td>");
     std::vector<std::string>::iterator it;
-    for (it = this->label_list_.begin(); it != this->label_list_.end();) {
+    for (it = label_list_.begin(); it != label_list_.end();) {
       if (*it == "<td>") {
-        it = this->label_list_.erase(it);
+        it = label_list_.erase(it);
       } else {
         ++it;
       }
     }
   }
   // add_special_char
-  this->label_list_.emplace(this->label_list_.begin(), this->beg);
-  this->label_list_.emplace_back(this->end);
+  label_list_.emplace(label_list_.begin(), TablePostProcessor::beg);
+  label_list_.emplace_back(TablePostProcessor::end);
+  return label_list_;
+}
+
+TablePostProcessor::TablePostProcessor(const std::string &label_path,
+                              bool merge_no_span_structure) noexcept :
+  label_list_(gen_label_list(label_path, merge_no_span_structure))
+{
 }
 
 void TablePostProcessor::Run(
@@ -435,10 +446,10 @@ void TablePostProcessor::Run(
           &structure_probs[step_start_idx + structure_probs_shape[2]]));
       html_tag = this->label_list_[char_idx];
 
-      if (step_idx > 0 && html_tag == this->end) {
+      if (step_idx > 0 && html_tag == TablePostProcessor::end) {
         break;
       }
-      if (html_tag == this->beg) {
+      if (html_tag == TablePostProcessor::beg) {
         continue;
       }
       count += 1;
@@ -472,15 +483,15 @@ void TablePostProcessor::Run(
   }
 }
 
-void PicodetPostProcessor::init(const std::string &label_path,
-                                const double score_threshold,
-                                const double nms_threshold,
-                                const std::vector<int> &fpn_stride) noexcept {
-  this->label_list_ = Utility::ReadDict(label_path);
-  this->score_threshold_ = score_threshold;
-  this->nms_threshold_ = nms_threshold;
-  this->num_class_ = label_list_.size();
-  this->fpn_stride_ = fpn_stride;
+PicodetPostProcessor::PicodetPostProcessor(const std::string &label_path,
+                                           const double score_threshold,
+                                           const double nms_threshold,
+                                           const std::vector<int> &fpn_stride) noexcept :
+  label_list_(Utility::ReadDict(label_path)),
+  fpn_stride_(fpn_stride),
+  score_threshold_(score_threshold),
+  nms_threshold_(nms_threshold)
+{
 }
 
 void PicodetPostProcessor::Run(std::vector<StructurePredictResult> &results,
@@ -494,7 +505,7 @@ void PicodetPostProcessor::Run(std::vector<StructurePredictResult> &results,
   float scale_factor_w = resize_shape[1] / float(ori_shape[1]);
 
   std::vector<std::vector<StructurePredictResult>> bbox_results;
-  bbox_results.resize(this->num_class_);
+  bbox_results.resize(this->label_list_.size());
   for (int i = 0; i < this->fpn_stride_.size(); ++i) {
     int feature_h = std::ceil((float)in_h / this->fpn_stride_[i]);
     int feature_w = std::ceil((float)in_w / this->fpn_stride_[i]);
@@ -502,9 +513,10 @@ void PicodetPostProcessor::Run(std::vector<StructurePredictResult> &results,
       // score and label
       float score = 0;
       int cur_label = 0;
-      for (int label = 0; label < this->num_class_; label++) {
-        if (outs[i][idx * this->num_class_ + label] > score) {
-          score = outs[i][idx * this->num_class_ + label];
+      for (int label = 0; label < this->label_list_.size(); label++) {
+        float osc = outs[i][idx * this->label_list_.size() + label];
+        if (osc > score) {
+          score = osc;
           cur_label = label;
         }
       }

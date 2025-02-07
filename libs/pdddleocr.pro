@@ -9,21 +9,17 @@ TARGET = pdddleocr
 mac:CONFIG += static
 
 win32:DEFINES += PPOCR_LIBRARY
-#win32:DEFINES += PPOCR_benchmark_ENABLED
-#win32:DEFINES += PPOCR_gflags_ENABLED
 #CONFIG += Clipper2Lib
 
 include($$PWD/../../nwDeployed/nwDeployed.pri)
 
 CONFIG += ppmkl
 
-# https://zhuanlan.zhihu.com/p/680229436
 PPOCR_ROOT_DIR = $$PWD/..
 PPOCR_DEPS_DIR = $$PWD/../deps
 
 OPENCV_DIR = $${PPOCR_DEPS_DIR}/opencv-3.4.20
 PADDLE_LIB = $${PPOCR_DEPS_DIR}/paddle_inference-2.6.2
-#PADDLE_LIB = $${PPOCR_ROOT_DIR}/paddle_inference-3.0.0rc0
 
 
 INCLUDEPATH += $${PPOCR_ROOT_DIR} \
@@ -94,8 +90,7 @@ win32:equals(ARCHITECTURE,x64) {
 }
 
 LIBS += -lpaddle_inference -lopencv_world3420
-
-win32:LIBS += -lgetopt
+LIBS += -lgetopt
 
 # win32:msvc*:QMAKE_CFLAGS_RELEASE += /MT
 # win32:msvc*:QMAKE_CXXFLAGS_RELEASE += /MT

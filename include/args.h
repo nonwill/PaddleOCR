@@ -15,30 +15,8 @@
 #ifndef PPOCR_ARGS_HH
 #define PPOCR_ARGS_HH
 
-#ifdef PPOCR_gflags_ENABLED
-
-#ifdef WIN32
-#   define GFLAGS_IS_A_DLL 0
-#   ifdef PPOCR_LIBRARY
-#       define GFLAGS_DLL_DECLARE_FLAG __declspec(dllexport)
-#   else
-#       define GFLAGS_DLL_DECLARE_FLAG __declspec(dllimport)
-#   endif
-#else
-#   define GFLAGS_DLL_DECLARE_FLAG
-# endif
-
-#include <gflags/gflags.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#else
-
 #include <ppocr_api.h>
 #include <string>
-#include <ostream>
 
 namespace PaddleOCR {
 
@@ -60,8 +38,6 @@ public:
 #define DECLARE_string(x) std::string x
 
 DECLARE_bool(help);
-
-#endif
 
 // common args
 DECLARE_bool(use_gpu);
@@ -114,14 +90,6 @@ DECLARE_bool(cls);
 DECLARE_bool(table);
 DECLARE_bool(layout);
 
-
-#ifdef PPOCR_gflags_ENABLED
-unsigned int GFLAGS_DLL_DECLARE_FLAG ppocrParseCommandLineFlags( int *argc, char*** argv, bool remove_flags );
-
-#ifdef __cplusplus
-}
-#endif
-#else
 #undef DECLARE_bool
 #undef DECLARE_int32
 #undef DECLARE_double
@@ -131,6 +99,5 @@ unsigned int GFLAGS_DLL_DECLARE_FLAG ppocrParseCommandLineFlags( int *argc, char
 void PPOCR_API ArgsHelp(std::ostream & out) noexcept;
 
 } // PaddleOCR namespace
-#endif
 
 #endif // PPOCR_ARGS_HH

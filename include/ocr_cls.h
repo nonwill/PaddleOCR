@@ -25,28 +25,11 @@ class Predictor;
 
 namespace PaddleOCR {
 
+class Args;
+
 class Classifier {
 public:
-  explicit Classifier(const std::string &model_dir,
-                      const bool &use_gpu = false,
-                      const int &gpu_id = 0,
-                      const int &gpu_mem = 4000,
-                      const int &cpu_math_library_num_threads = 4,
-                      const bool &use_mkldnn = false,
-                      const double &cls_thresh = 0.9,
-                      const bool &use_tensorrt = false,
-                      const std::string &precision = "fp32",
-                      const int &cls_batch_num = 1) noexcept :
-    use_gpu_(use_gpu), gpu_id_(gpu_id), gpu_mem_(gpu_mem),
-    cpu_math_library_num_threads_(cpu_math_library_num_threads),
-    use_mkldnn_(use_mkldnn), cls_thresh(cls_thresh),
-    use_tensorrt_(use_tensorrt), precision_(precision),
-    cls_batch_num_(cls_batch_num)
-  {
-    LoadModel(model_dir);
-  }
-
-  inline double cls_thresh_val() const noexcept { return cls_thresh; }
+  explicit Classifier(Args const & args) noexcept;
 
   // Load Paddle inference model
   void LoadModel(const std::string &model_dir) noexcept;
@@ -55,21 +38,13 @@ public:
            std::vector<float> &cls_scores, std::vector<double> &times) noexcept;
 
 private:
+  Args const & args_;
+  const std::vector<float> mean_;
+  const std::vector<float> scale_;
+  const bool is_scale_;
+
   std::shared_ptr<paddle_infer::Predictor> predictor_;
 
-  bool use_gpu_ = false;
-  int gpu_id_ = 0;
-  int gpu_mem_ = 4000;
-  int cpu_math_library_num_threads_ = 4;
-  bool use_mkldnn_ = false;
-  double cls_thresh = 0.9;
-
-  std::vector<float> mean_ = {0.5f, 0.5f, 0.5f};
-  std::vector<float> scale_ = {1 / 0.5f, 1 / 0.5f, 1 / 0.5f};
-  bool is_scale_ = true;
-  bool use_tensorrt_ = false;
-  std::string precision_ = "fp32";
-  int cls_batch_num_ = 1;
   // pre-process
   ClsResizeImg resize_op_;
   Normalize normalize_op_;

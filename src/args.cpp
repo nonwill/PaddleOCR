@@ -14,17 +14,6 @@
 
 #include <args.h>
 
-#ifdef PPOCR_gflags_ENABLED
-
-#include <args_pri.h>
-
-unsigned int ppocrParseCommandLineFlags(int *argc, char*** argv, bool remove_flags)
-{
-  return google::ParseCommandLineFlags(argc, argv, remove_flags);
-}
-
-#else
-
 #include "getopt.h"
 #include <iostream>
 #include <string.h>
@@ -206,5 +195,3 @@ int Args::parseInis( char const * inis ) noexcept
 }
 
 }
-
-#endif

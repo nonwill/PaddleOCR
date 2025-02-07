@@ -17,53 +17,18 @@
 #include <include/structure_layout.h>
 #include <include/structure_table.h>
 
-#ifdef PPOCR_benchmark_ENABLED
-#include "auto_log/autolog.h"
-#endif
-
 namespace PaddleOCR {
 
-#ifdef PPOCR_gflags_ENABLED
-PaddleStructure::PaddleStructure() noexcept :
-  PPOCR(),
-  table_model(nullptr),
-  layout_model(nullptr)
-{
-  if (FLAGS_layout) {
-    layout_model = new StructureLayoutRecognizer(
-        FLAGS_layout_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
-        FLAGS_cpu_threads, FLAGS_enable_mkldnn, FLAGS_layout_dict_path,
-        FLAGS_use_tensorrt, FLAGS_precision, FLAGS_layout_score_threshold,
-        FLAGS_layout_nms_threshold);
-  }
-  if (FLAGS_table) {
-    table_model = new StructureTableRecognizer(
-        FLAGS_table_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
-        FLAGS_cpu_threads, FLAGS_enable_mkldnn, FLAGS_table_char_dict_path,
-        FLAGS_use_tensorrt, FLAGS_precision, FLAGS_table_batch_num,
-        FLAGS_table_max_len, FLAGS_merge_no_span_structure);
-  }
-}
-#else
 PaddleStructure::PaddleStructure(Args const & args) noexcept :
   PPOCR(args),
   table_model(nullptr),
   layout_model(nullptr)
 {
-#endif
   if (args.layout) {
-    layout_model = new StructureLayoutRecognizer(
-        args.layout_model_dir, args.use_gpu, args.gpu_id, args.gpu_mem,
-        args.cpu_threads, args.enable_mkldnn, args.layout_dict_path,
-        args.use_tensorrt, args.precision, args.layout_score_threshold,
-        args.layout_nms_threshold);
+    layout_model = new StructureLayoutRecognizer(PPOCR::args());
   }
   if (args.table) {
-    table_model = new StructureTableRecognizer(
-        args.table_model_dir, args.use_gpu, args.gpu_id, args.gpu_mem,
-        args.cpu_threads, args.enable_mkldnn, args.table_char_dict_path,
-        args.use_tensorrt, args.precision, args.table_batch_num,
-        args.table_max_len, args.merge_no_span_structure);
+    table_model = new StructureTableRecognizer(PPOCR::args());
   }
 }
 
@@ -77,14 +42,14 @@ PaddleStructure::~PaddleStructure()
 }
 
 std::vector<StructurePredictResult>
-PaddleStructure::structure(const cv::Mat &srcimg, bool layout, bool table,
-                           bool ocr) noexcept {
+PaddleStructure::structure(const cv::Mat &srcimg) noexcept {
+  Args const & args = PPOCR::args();
   cv::Mat img;
   srcimg.copyTo(img);
 
   std::vector<StructurePredictResult> structure_results;
 
-  if (layout) {
+  if (args.layout) {
     this->layout(img, structure_results);
   } else {
     StructurePredictResult res;
@@ -98,11 +63,11 @@ PaddleStructure::structure(const cv::Mat &srcimg, bool layout, bool table,
   for (int i = 0; i < structure_results.size(); ++i) {
     // crop image
     roi_img = std::move(Utility::crop_image(img, structure_results[i].box));
-    if (structure_results[i].type == "table" && table) {
+    if (args.table && structure_results[i].type == "table" ) {
       this->table(roi_img, structure_results[i]);
-    } else if (ocr) {
+    } else if (args.det && args.rec) {
       structure_results[i].text_res =
-          std::move(this->ocr(roi_img, true, true, false));
+          std::move(this->ocr(roi_img, false));
     }
   }
 
@@ -114,12 +79,6 @@ void PaddleStructure::layout(
     std::vector<StructurePredictResult> &structure_result) noexcept {
   std::vector<double> layout_times;
   layout_model->Run(img, structure_result, layout_times);
-
-#ifdef PPOCR_benchmark_ENABLED
-  this->time_info_layout[0] += layout_times[0];
-  this->time_info_layout[1] += layout_times[1];
-  this->time_info_layout[2] += layout_times[2];
-#endif
 }
 
 void PaddleStructure::table(const cv::Mat &img,
@@ -133,12 +92,6 @@ void PaddleStructure::table(const cv::Mat &img,
 
   table_model->Run(img_list, structure_html_tags, structure_scores,
                    structure_boxes, structure_times);
-
-#ifdef PPOCR_benchmark_ENABLED
-  this->time_info_table[0] += structure_times[0];
-  this->time_info_table[1] += structure_times[1];
-  this->time_info_table[2] += structure_times[2];
-#endif
 
   std::vector<OCRPredictResult> ocr_result;
   int expand_pixel = 3;
@@ -278,59 +231,5 @@ float PaddleStructure::dis(const std::vector<int> &box1,
   float dis_3 = abs(x2_2 - x2_1) + abs(y2_2 - y2_1);
   return dis + std::min(dis_2, dis_3);
 }
-
-#ifdef PPOCR_benchmark_ENABLED
-void PaddleStructure::reset_timer() noexcept {
-  this->time_info_det = {0, 0, 0};
-  this->time_info_rec = {0, 0, 0};
-  this->time_info_cls = {0, 0, 0};
-  this->time_info_table = {0, 0, 0};
-  this->time_info_layout = {0, 0, 0};
-}
-
-void PaddleStructure::benchmark_log(int img_num) noexcept {
-  if (this->time_info_det[0] + this->time_info_det[1] + this->time_info_det[2] >
-      0) {
-    AutoLogger autolog_det("ocr_det", FLAGS_use_gpu, FLAGS_use_tensorrt,
-                           FLAGS_enable_mkldnn, FLAGS_cpu_threads, 1, "dynamic",
-                           FLAGS_precision, this->time_info_det, img_num);
-    autolog_det.report();
-  }
-  if (this->time_info_rec[0] + this->time_info_rec[1] + this->time_info_rec[2] >
-      0) {
-    AutoLogger autolog_rec("ocr_rec", FLAGS_use_gpu, FLAGS_use_tensorrt,
-                           FLAGS_enable_mkldnn, FLAGS_cpu_threads,
-                           FLAGS_rec_batch_num, "dynamic", FLAGS_precision,
-                           this->time_info_rec, img_num);
-    autolog_rec.report();
-  }
-  if (this->time_info_cls[0] + this->time_info_cls[1] + this->time_info_cls[2] >
-      0) {
-    AutoLogger autolog_cls("ocr_cls", FLAGS_use_gpu, FLAGS_use_tensorrt,
-                           FLAGS_enable_mkldnn, FLAGS_cpu_threads,
-                           FLAGS_cls_batch_num, "dynamic", FLAGS_precision,
-                           this->time_info_cls, img_num);
-    autolog_cls.report();
-  }
-  if (this->time_info_table[0] + this->time_info_table[1] +
-          this->time_info_table[2] >
-      0) {
-    AutoLogger autolog_table("table", FLAGS_use_gpu, FLAGS_use_tensorrt,
-                             FLAGS_enable_mkldnn, FLAGS_cpu_threads,
-                             FLAGS_cls_batch_num, "dynamic", FLAGS_precision,
-                             this->time_info_table, img_num);
-    autolog_table.report();
-  }
-  if (this->time_info_layout[0] + this->time_info_layout[1] +
-          this->time_info_layout[2] >
-      0) {
-    AutoLogger autolog_layout("layout", FLAGS_use_gpu, FLAGS_use_tensorrt,
-                              FLAGS_enable_mkldnn, FLAGS_cpu_threads,
-                              FLAGS_cls_batch_num, "dynamic", FLAGS_precision,
-                              this->time_info_layout, img_num);
-    autolog_layout.report();
-  }
-}
-#endif
 
 } // namespace PaddleOCR

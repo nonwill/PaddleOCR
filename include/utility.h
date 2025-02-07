@@ -65,9 +65,14 @@ public:
 
   static std::string basename(const std::string &filename) noexcept;
 
-  static bool PathExists(const std::string &path) noexcept;
+  static bool PathExists(const char *path) noexcept;
+  static inline bool PathExists(const std::string &path) noexcept
+  { return PathExists(path.c_str()); }
 
-  static void CreateDir(const std::string &path) noexcept;
+  static void CreateDir(const char *path) noexcept;
+  static inline void CreateDir(const std::string &path) noexcept
+  { CreateDir(path.c_str()); }
+
 
   static void print_result(const std::vector<OCRPredictResult> &ocr_result) noexcept;
 

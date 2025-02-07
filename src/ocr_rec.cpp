@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include <include/ocr_rec.h>
+#include <include/args.h>
 #include <paddle_inference_api.h>
 
 #include <chrono>
@@ -20,6 +21,25 @@
 #include <numeric>
 
 namespace PaddleOCR {
+
+std::vector<std::string> CRNNRecognizer::gen_label_list(const std::string &label_path) noexcept
+{
+  std::vector<std::string> label_list_ = Utility::ReadDict(label_path);
+  label_list_.emplace(label_list_.begin(), "#"); // blank char for ctc
+  label_list_.emplace_back(" ");
+  return label_list_;
+}
+
+CRNNRecognizer::CRNNRecognizer(Args const & args) noexcept :
+  args_(args),
+  label_list_(gen_label_list(args.rec_char_dict_path)),
+  rec_image_shape_({3, args.rec_img_h, args.rec_img_w}),
+  mean_(3, 0.5f),
+  scale_(3, 1.0 / 0.5f),
+  is_scale_(true)
+{
+  LoadModel(args_.rec_model_dir);
+}
 
 void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
                          std::vector<std::string> &rec_texts,
@@ -40,9 +60,9 @@ void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
   std::vector<int> indices = std::move(Utility::argsort(width_list));
 
   for (int beg_img_no = 0; beg_img_no < img_num;
-       beg_img_no += this->rec_batch_num_) {
+       beg_img_no += args_.rec_batch_num) {
     auto preprocess_start = std::chrono::steady_clock::now();
-    int end_img_no = std::min(img_num, beg_img_no + this->rec_batch_num_);
+    int end_img_no = std::min(img_num, beg_img_no + args_.rec_batch_num);
     int batch_num = end_img_no - beg_img_no;
     int imgH = this->rec_image_shape_[1];
     int imgW = this->rec_image_shape_[2];
@@ -61,7 +81,7 @@ void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
       img_list[indices[ino]].copyTo(srcimg);
       cv::Mat resize_img;
       this->resize_op_.Run(srcimg, resize_img, max_wh_ratio,
-                           this->use_tensorrt_, this->rec_image_shape_);
+                           args_.use_tensorrt, this->rec_image_shape_);
       this->normalize_op_.Run(resize_img, this->mean_, this->scale_,
                               this->is_scale_);
       batch_width = std::max(resize_img.cols, batch_width);
@@ -141,14 +161,14 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) noexcept {
   std::cout << "In PP-OCRv3, default rec_img_h is 48,"
             << "if you use other model, you should set the param rec_img_h=32"
             << std::endl;
-  if (this->use_gpu_) {
-    config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);
-    if (this->use_tensorrt_) {
+  if (args_.use_gpu) {
+    config.EnableUseGpu(args_.gpu_mem, args_.gpu_id);
+    if (args_.use_tensorrt) {
       auto precision = paddle_infer::Config::Precision::kFloat32;
-      if (this->precision_ == "fp16") {
+      if (args_.precision == "fp16") {
         precision = paddle_infer::Config::Precision::kHalf;
       }
-      if (this->precision_ == "int8") {
+      if (args_.precision == "int8") {
         precision = paddle_infer::Config::Precision::kInt8;
       }
       if (!Utility::PathExists("./trt_rec_shape.txt")) {
@@ -159,14 +179,14 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) noexcept {
     }
   } else {
     config.DisableGpu();
-    if (this->use_mkldnn_) {
+    if (args_.enable_mkldnn) {
       config.EnableMKLDNN();
       // cache 10 different shapes for mkldnn to avoid memory leak
       config.SetMkldnnCacheCapacity(10);
     } else {
       config.DisableMKLDNN();
     }
-    config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
+    config.SetCpuMathLibraryNumThreads(args_.cpu_threads);
   }
 
   // get pass_builder object

@@ -81,8 +81,8 @@ private:
 
 class TablePostProcessor {
 public:
-  void init(const std::string &label_path,
-            bool merge_no_span_structure = true) noexcept;
+  TablePostProcessor(const std::string &label_path,
+                    bool merge_no_span_structure = true) noexcept;
   void Run(const std::vector<float> &loc_preds,
            const std::vector<float> &structure_probs,
            std::vector<float> &rec_scores,
@@ -94,20 +94,24 @@ public:
            const std::vector<int> &height_list) noexcept;
 
 private:
-  std::vector<std::string> label_list_;
-  const std::string end = "eos";
-  const std::string beg = "sos";
+  static std::vector<std::string> gen_label_list(const std::string &label_path, bool merge_no_span_structure) noexcept;
+
+  const std::vector<std::string> label_list_;
+  static const std::string end;
+  static const std::string beg;
 };
 
 class PicodetPostProcessor {
 public:
-  void init(const std::string &label_path, const double score_threshold = 0.4,
-            const double nms_threshold = 0.5,
-            const std::vector<int> &fpn_stride = {8, 16, 32, 64}) noexcept;
+  PicodetPostProcessor(const std::string &label_path,
+                       const double score_threshold = 0.4,
+                       const double nms_threshold = 0.5,
+                       const std::vector<int> &fpn_stride = {8, 16, 32, 64}) noexcept;
   void Run(std::vector<StructurePredictResult> &results,
            const std::vector<std::vector<float>> &outs,
            const std::vector<int> &ori_shape,
            const std::vector<int> &resize_shape, int eg_max) noexcept;
+
   inline size_t fpn_stride_size() const noexcept { return fpn_stride_.size(); }
 
 private:
@@ -119,12 +123,11 @@ private:
   void nms(std::vector<StructurePredictResult> &input_boxes,
            float nms_threshold) noexcept;
 
-  std::vector<int> fpn_stride_ = {8, 16, 32, 64};
+  const std::vector<std::string> label_list_;
+  const std::vector<int> fpn_stride_;
 
-  std::vector<std::string> label_list_;
-  double score_threshold_ = 0.4;
-  double nms_threshold_ = 0.5;
-  int num_class_ = 5;
+  const double score_threshold_;
+  const double nms_threshold_;
 };
 
 } // namespace PaddleOCR

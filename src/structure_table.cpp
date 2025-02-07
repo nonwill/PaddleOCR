@@ -13,12 +13,23 @@
 // limitations under the License.
 
 #include <include/structure_table.h>
+#include <include/args.h>
 #include <paddle_inference_api.h>
 
 #include <chrono>
 #include <numeric>
 
 namespace PaddleOCR {
+
+StructureTableRecognizer::StructureTableRecognizer(Args const & args) noexcept :
+  args_(args),
+  mean_({0.485f, 0.456f, 0.406f}),
+  scale_({1 / 0.229f, 1 / 0.224f, 1 / 0.225f}),
+  is_scale_(true),
+  post_processor_(args.table_char_dict_path, args.merge_no_span_structure)
+{
+  LoadModel(args.table_model_dir);
+}
 
 void StructureTableRecognizer::Run(
     const std::vector<cv::Mat> &img_list,
@@ -35,10 +46,10 @@ void StructureTableRecognizer::Run(
 
   int img_num = img_list.size();
   for (int beg_img_no = 0; beg_img_no < img_num;
-       beg_img_no += this->table_batch_num_) {
+       beg_img_no += args_.table_batch_num) {
     // preprocess
     auto preprocess_start = std::chrono::steady_clock::now();
-    int end_img_no = std::min(img_num, beg_img_no + this->table_batch_num_);
+    int end_img_no = std::min(img_num, beg_img_no + args_.table_batch_num);
     int batch_num = end_img_no - beg_img_no;
     std::vector<cv::Mat> norm_img_batch;
     std::vector<int> width_list;
@@ -48,17 +59,17 @@ void StructureTableRecognizer::Run(
       img_list[ino].copyTo(srcimg);
       cv::Mat resize_img;
       cv::Mat pad_img;
-      this->resize_op_.Run(srcimg, resize_img, this->table_max_len_);
+      this->resize_op_.Run(srcimg, resize_img, args_.table_max_len);
       this->normalize_op_.Run(resize_img, this->mean_, this->scale_,
                               this->is_scale_);
-      this->pad_op_.Run(resize_img, pad_img, this->table_max_len_);
+      this->pad_op_.Run(resize_img, pad_img, args_.table_max_len);
       norm_img_batch.emplace_back(std::move(pad_img));
       width_list.emplace_back(srcimg.cols);
       height_list.emplace_back(srcimg.rows);
     }
 
     std::vector<float> input(
-        batch_num * 3 * this->table_max_len_ * this->table_max_len_, 0.0f);
+        batch_num * 3 * args_.table_max_len * args_.table_max_len, 0.0f);
     this->permute_op_.Run(norm_img_batch, input.data());
     auto preprocess_end = std::chrono::steady_clock::now();
     preprocess_diff += preprocess_end - preprocess_start;
@@ -66,7 +77,7 @@ void StructureTableRecognizer::Run(
     auto input_names = this->predictor_->GetInputNames();
     auto input_t = this->predictor_->GetInputHandle(input_names[0]);
     input_t->Reshape(
-        {batch_num, 3, this->table_max_len_, this->table_max_len_});
+        {batch_num, 3, args_.table_max_len, args_.table_max_len});
     auto inference_start = std::chrono::steady_clock::now();
     input_t->CopyFromCpu(input.data());
     this->predictor_->Run();
@@ -127,14 +138,14 @@ void StructureTableRecognizer::LoadModel(
   config.SetModel(model_dir + "/inference.pdmodel",
                   model_dir + "/inference.pdiparams");
 
-  if (this->use_gpu_) {
-    config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);
-    if (this->use_tensorrt_) {
+  if (args_.use_gpu) {
+    config.EnableUseGpu(args_.gpu_mem, args_.gpu_id);
+    if (args_.use_tensorrt) {
       auto precision = paddle_infer::Config::Precision::kFloat32;
-      if (this->precision_ == "fp16") {
+      if (args_.precision == "fp16") {
         precision = paddle_infer::Config::Precision::kHalf;
       }
-      if (this->precision_ == "int8") {
+      if (args_.precision == "int8") {
         precision = paddle_infer::Config::Precision::kInt8;
       }
       config.EnableTensorRtEngine(1 << 20, 10, 3, precision, false, false);
@@ -146,12 +157,12 @@ void StructureTableRecognizer::LoadModel(
     }
   } else {
     config.DisableGpu();
-    if (this->use_mkldnn_) {
+    if (args_.enable_mkldnn) {
       config.EnableMKLDNN();
     } else {
       config.DisableMKLDNN();
     }
-    config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
+    config.SetCpuMathLibraryNumThreads(args_.cpu_threads);
   }
 
   // false for zero copy tensor

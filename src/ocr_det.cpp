@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include <include/ocr_det.h>
+#include <include/args.h>
 #include <paddle_inference_api.h>
 
 #include <chrono>
@@ -20,20 +21,29 @@
 
 namespace PaddleOCR {
 
+DBDetector::DBDetector(Args const & args) noexcept :
+  args_(args),
+  mean_({0.485f, 0.456f, 0.406f}),
+  scale_({1 / 0.229f, 1 / 0.224f, 1 / 0.225f}),
+  is_scale_(true)
+{
+    LoadModel(args_.det_model_dir);
+}
+
 void DBDetector::LoadModel(const std::string &model_dir) noexcept {
   //   AnalysisConfig config;
   paddle_infer::Config config;
   config.SetModel(model_dir + "/inference.pdmodel",
                   model_dir + "/inference.pdiparams");
 
-  if (this->use_gpu_) {
-    config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);
-    if (this->use_tensorrt_) {
+  if (args_.use_gpu) {
+    config.EnableUseGpu(args_.gpu_mem, args_.gpu_id);
+    if (args_.use_tensorrt) {
       auto precision = paddle_infer::Config::Precision::kFloat32;
-      if (this->precision_ == "fp16") {
+      if (args_.precision == "fp16") {
         precision = paddle_infer::Config::Precision::kHalf;
       }
-      if (this->precision_ == "int8") {
+      if (args_.precision == "int8") {
         precision = paddle_infer::Config::Precision::kInt8;
       }
       config.EnableTensorRtEngine(1 << 30, 1, 20, precision, false, false);
@@ -45,14 +55,14 @@ void DBDetector::LoadModel(const std::string &model_dir) noexcept {
     }
   } else {
     config.DisableGpu();
-    if (this->use_mkldnn_) {
+    if (args_.enable_mkldnn) {
       config.EnableMKLDNN();
       // cache 10 different shapes for mkldnn to avoid memory leak
       config.SetMkldnnCacheCapacity(10);
     } else {
       config.DisableMKLDNN();
     }
-    config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
+    config.SetCpuMathLibraryNumThreads(args_.cpu_threads);
   }
   // use zero_copy_run as default
   config.SwitchUseFeedFetchOps(false);
@@ -78,12 +88,12 @@ void DBDetector::Run(const cv::Mat &img,
   img.copyTo(srcimg);
 
   auto preprocess_start = std::chrono::steady_clock::now();
-  this->resize_op_.Run(img, resize_img, this->limit_type_,
-                       this->limit_side_len_, ratio_h, ratio_w,
-                       this->use_tensorrt_);
+  this->resize_op_.Run(img, resize_img, args_.limit_type,
+                       args_.limit_side_len, ratio_h, ratio_w,
+                       args_.use_tensorrt);
 
-  this->normalize_op_.Run(resize_img, this->mean_, this->scale_,
-                          this->is_scale_);
+  this->normalize_op_.Run(resize_img, mean_, scale_,
+                          is_scale_);
 
   std::vector<float> input(1 * 3 * resize_img.rows * resize_img.cols, 0.0f);
   this->permute_op_.Run(resize_img, input.data());
@@ -125,19 +135,19 @@ void DBDetector::Run(const cv::Mat &img,
   cv::Mat cbuf_map(n2, n3, CV_8UC1, (unsigned char *)cbuf.data());
   cv::Mat pred_map(n2, n3, CV_32F, (float *)pred.data());
 
-  const double threshold = this->det_db_thresh_ * 255;
+  const double threshold = args_.det_db_thresh * 255;
   const double maxvalue = 255;
   cv::Mat bit_map;
   cv::threshold(cbuf_map, bit_map, threshold, maxvalue, cv::THRESH_BINARY);
-  if (this->use_dilation_) {
+  if (args_.use_dilation) {
     cv::Mat dila_ele =
         cv::getStructuringElement(cv::MORPH_RECT, cv::Size(2, 2));
     cv::dilate(bit_map, bit_map, dila_ele);
   }
 
   boxes = std::move(post_processor_.BoxesFromBitmap(
-      pred_map, bit_map, this->det_db_box_thresh_, this->det_db_unclip_ratio_,
-      this->det_db_score_mode_));
+      pred_map, bit_map, args_.det_db_box_thresh, args_.det_db_unclip_ratio,
+      args_.det_db_score_mode));
 
   post_processor_.FilterTagDetRes(boxes, ratio_h, ratio_w, srcimg);
   auto postprocess_end = std::chrono::steady_clock::now();

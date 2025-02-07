@@ -13,12 +13,22 @@
 // limitations under the License.
 
 #include <include/ocr_cls.h>
+#include <include/args.h>
 #include <paddle_inference_api.h>
 
 #include <chrono>
 #include <numeric>
 
 namespace PaddleOCR {
+
+Classifier::Classifier(Args const & args) noexcept :
+  args_(args),
+  mean_(3, 0.5f),
+  scale_(3, 1.0 / 0.5f),
+  is_scale_(true)
+{
+  LoadModel(args_.cls_model_dir);
+}
 
 void Classifier::Run(const std::vector<cv::Mat> &img_list,
                      std::vector<int> &cls_labels,
@@ -34,9 +44,9 @@ void Classifier::Run(const std::vector<cv::Mat> &img_list,
   int img_num = img_list.size();
   std::vector<int> cls_image_shape = {3, 48, 192};
   for (int beg_img_no = 0; beg_img_no < img_num;
-       beg_img_no += this->cls_batch_num_) {
+       beg_img_no += args_.cls_batch_num) {
     auto preprocess_start = std::chrono::steady_clock::now();
-    int end_img_no = std::min(img_num, beg_img_no + this->cls_batch_num_);
+    int end_img_no = std::min(img_num, beg_img_no + args_.cls_batch_num);
     int batch_num = end_img_no - beg_img_no;
     // preprocess
     std::vector<cv::Mat> norm_img_batch;
@@ -44,11 +54,11 @@ void Classifier::Run(const std::vector<cv::Mat> &img_list,
       cv::Mat srcimg;
       img_list[ino].copyTo(srcimg);
       cv::Mat resize_img;
-      this->resize_op_.Run(srcimg, resize_img, this->use_tensorrt_,
+      this->resize_op_.Run(srcimg, resize_img, args_.use_tensorrt,
                            cls_image_shape);
 
-      this->normalize_op_.Run(resize_img, this->mean_, this->scale_,
-                              this->is_scale_);
+      this->normalize_op_.Run(resize_img, mean_, scale_,
+                              is_scale_);
       if (resize_img.cols < cls_image_shape[2]) {
         cv::copyMakeBorder(resize_img, resize_img, 0, 0, 0,
                            cls_image_shape[2] - resize_img.cols,
@@ -110,14 +120,14 @@ void Classifier::LoadModel(const std::string &model_dir) noexcept {
   config.SetModel(model_dir + "/inference.pdmodel",
                   model_dir + "/inference.pdiparams");
 
-  if (this->use_gpu_) {
-    config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);
-    if (this->use_tensorrt_) {
+  if (args_.use_gpu) {
+    config.EnableUseGpu(args_.gpu_mem, args_.gpu_id);
+    if (args_.use_tensorrt) {
       auto precision = paddle_infer::Config::Precision::kFloat32;
-      if (this->precision_ == "fp16") {
+      if (args_.precision == "fp16") {
         precision = paddle_infer::Config::Precision::kHalf;
       }
-      if (this->precision_ == "int8") {
+      if (args_.precision == "int8") {
         precision = paddle_infer::Config::Precision::kInt8;
       }
       config.EnableTensorRtEngine(1 << 20, 10, 3, precision, false, false);
@@ -129,12 +139,12 @@ void Classifier::LoadModel(const std::string &model_dir) noexcept {
     }
   } else {
     config.DisableGpu();
-    if (this->use_mkldnn_) {
+    if (args_.enable_mkldnn) {
       config.EnableMKLDNN();
     } else {
       config.DisableMKLDNN();
     }
-    config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
+    config.SetCpuMathLibraryNumThreads(args_.cpu_threads);
   }
 
   // false for zero copy tensor

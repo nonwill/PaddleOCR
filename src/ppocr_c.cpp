@@ -60,7 +60,6 @@ int check_params( Args const & args ) {
 
 
 struct PPOCRC {
-  Args   args;
   PPOCR* exe;
 };
 
@@ -89,7 +88,6 @@ int ppocr_from_Args( CPPOCR * cppocr, Args const & args )
     return -1;
   }
 
-  (*cppocr)->args = args;
   (*cppocr)->exe = ocr;
 
   return 0;
@@ -148,18 +146,15 @@ void ppocr_print_result( PPPOcrResult results )
 
 int ocr(std::vector<cv::String> &cv_all_img_names, CPPOCR cppocr,
         std::vector<std::vector<OCRPredictResult>> &ocr_results) {
-  Args const & args = cppocr->args;
   PPOCR &ocr = *(cppocr->exe);
+  Args const & args = ocr.args();
 
   std::vector<cv::Mat> img_list;
   std::vector<cv::String> img_names;
   for (int i = 0; i < cv_all_img_names.size(); ++i) {
     cv::Mat img = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
-    if (!img.data) {
-      // std::cerr << "[ERROR] image read failed! image path: "
-      //           << cv_all_img_names[i] << std::endl;
+    if (!img.data)
       continue;
-    }
     img_list.emplace_back(img);
     img_names.emplace_back(cv_all_img_names[i]);
   }
@@ -167,11 +162,9 @@ int ocr(std::vector<cv::String> &cv_all_img_names, CPPOCR cppocr,
   if ( img_list.empty() )
     return -8;
 
-  ocr_results = ocr.ocr(img_list, args.det, args.rec, args.cls);
+  ocr_results = ocr.ocr(img_list);
 
   for (int i = 0; i < img_names.size(); ++i) {
-    // std::cout << "predict img: " << cv_all_img_names[i] << std::endl;
-    // Utility::print_result(ocr_results[i]);
     if (args.visualize && args.det) {
       std::string file_name = Utility::basename(img_names[i]);
       cv::Mat srcimg = img_list[i];
@@ -185,12 +178,8 @@ int ocr(std::vector<cv::String> &cv_all_img_names, CPPOCR cppocr,
 
 int structure(std::vector<cv::String> &cv_all_img_names, CPPOCR cppocr,
               std::vector<std::vector<OCRPredictResult>> &ocr_results) {
-  PaddleStructure * _ = dynamic_cast<PaddleStructure*>(cppocr->exe);
-  if ( !_ )
-    return -3;
-
-  Args const & args = cppocr->args;
-  PaddleStructure &engine = *_;
+  PaddleStructure &engine = *dynamic_cast<PaddleStructure*>(cppocr->exe);
+  Args const & args = engine.args();
 
   for (int i = 0; i < cv_all_img_names.size(); ++i) {
     // std::cout << "predict img: " << cv_all_img_names[i] << std::endl;
@@ -201,18 +190,9 @@ int structure(std::vector<cv::String> &cv_all_img_names, CPPOCR cppocr,
       continue;
     }
 
-    std::vector<StructurePredictResult> structure_results = engine.structure(
-        img, args.layout, args.table, args.det && args.rec);
+    std::vector<StructurePredictResult> structure_results = engine.structure(img);
 
     for (int j = 0; j < structure_results.size(); j++) {
-      // std::cout << j << "\ttype: " << structure_results[j].type
-      //           << ", region: [";
-      // std::cout << structure_results[j].box[0] << ","
-      //           << structure_results[j].box[1] << ","
-      //           << structure_results[j].box[2] << ","
-      //           << structure_results[j].box[3] << "], score: ";
-      // std::cout << structure_results[j].confidence << ", res: ";
-
       if (structure_results[j].type == "table") {
         // std::cout << structure_results[j].html << std::endl;
         if (structure_results[j].cell_box.size() > 0 && args.visualize) {
@@ -222,16 +202,6 @@ int structure(std::vector<cv::String> &cv_all_img_names, CPPOCR cppocr,
                                    args.output + "/" + std::to_string(j) +
                                        "_" + file_name);
         }
-      }  {
-        // std::cout << "count of ocr result is : "
-        //           << structure_results[j].text_res.size() << std::endl;
-        // if (structure_results[j].text_res.size() > 0) {
-        //   std::cout << "********** print ocr result "
-        //             << "**********" << std::endl;
-        //   Utility::print_result(structure_results[j].text_res);
-        //   std::cout << "********** end print ocr result "
-        //             << "**********" << std::endl;
-        // }
       }
       ocr_results.emplace_back(std::move(structure_results[j].text_res));
     }
@@ -240,26 +210,20 @@ int structure(std::vector<cv::String> &cv_all_img_names, CPPOCR cppocr,
   return 0;
 }
 
-int ppocr_exe( CPPOCR cppocr, char const * image_dir,
-               PPPOcrResult * result ) {
-  Args & args = cppocr->args;
-  args.image_dir = image_dir;
-  return ppocr_cmd( cppocr, result );
+int ppocr_cmd( CPPOCR cppocr, PPPOcrResult * result ) {
+  return ppocr_exe( cppocr, cppocr->exe->args().image_dir.c_str(), result );
 }
 
-int ppocr_cmd( CPPOCR cppocr, PPPOcrResult * result ) {
-  Args const & args = cppocr->args;
+int ppocr_exe( CPPOCR cppocr, char const * image_dir, PPPOcrResult * result ) {
 
-  if (!Utility::PathExists(args.image_dir)) {
-    // std::cerr << "[ERROR] image path not exist! image_dir: " << args.image_dir
-    //           << std::endl;
+  if (!Utility::PathExists(image_dir)) {
     return -3;
   }
 
   std::vector<cv::String> cv_all_img_names;
-  cv::glob(args.image_dir, cv_all_img_names);
+  cv::glob(image_dir, cv_all_img_names);
 
-  // std::cout << "total images num: " << cv_all_img_names.size() << std::endl;
+  Args const & args = cppocr->exe->args();
 
   if (!Utility::PathExists(args.output))
     Utility::CreateDir(args.output);
