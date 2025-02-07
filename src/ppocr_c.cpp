@@ -192,7 +192,7 @@ int structure(std::vector<cv::String> &cv_all_img_names, CPPOCR cppocr,
 
     std::vector<StructurePredictResult> structure_results = engine.structure(img);
 
-    for (int j = 0; j < structure_results.size(); j++) {
+    for (size_t j = 0; j < structure_results.size(); ++j) {
       if (structure_results[j].type == "table") {
         // std::cout << structure_results[j].html << std::endl;
         if (structure_results[j].cell_box.size() > 0 && args.visualize) {

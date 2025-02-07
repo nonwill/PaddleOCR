@@ -43,21 +43,21 @@ CRNNRecognizer::CRNNRecognizer(Args const & args) noexcept :
 void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
                          std::vector<std::string> &rec_texts,
                          std::vector<float> &rec_text_scores) noexcept {
-  int img_num = img_list.size();
+  size_t img_num = img_list.size();
   std::vector<float> width_list;
-  for (int i = 0; i < img_num; ++i) {
+  for (size_t i = 0; i < img_num; ++i) {
     width_list.emplace_back(float(img_list[i].cols) / img_list[i].rows);
   }
   std::vector<int> indices = std::move(Utility::argsort(width_list));
 
-  for (int beg_img_no = 0; beg_img_no < img_num;
+  for (size_t beg_img_no = 0; beg_img_no < img_num;
        beg_img_no += args_.rec_batch_num) {
-    int end_img_no = std::min(img_num, beg_img_no + args_.rec_batch_num);
+    size_t end_img_no = std::min(img_num, beg_img_no + args_.rec_batch_num);
     int batch_num = end_img_no - beg_img_no;
     int imgH = this->rec_image_shape_[1];
     int imgW = this->rec_image_shape_[2];
     float max_wh_ratio = imgW * 1.0 / imgH;
-    for (int ino = beg_img_no; ino < end_img_no; ino++) {
+    for (size_t ino = beg_img_no; ino < end_img_no; ++ino) {
       int h = img_list[indices[ino]].rows;
       int w = img_list[indices[ino]].cols;
       float wh_ratio = w * 1.0 / h;
@@ -66,7 +66,7 @@ void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
 
     int batch_width = imgW;
     std::vector<cv::Mat> norm_img_batch;
-    for (int ino = beg_img_no; ino < end_img_no; ino++) {
+    for (size_t ino = beg_img_no; ino < end_img_no; ++ino) {
       cv::Mat srcimg;
       img_list[indices[ino]].copyTo(srcimg);
       cv::Mat resize_img;
@@ -92,13 +92,13 @@ void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
     auto output_t = this->predictor_->GetOutputHandle(output_names[0]);
     auto predict_shape = output_t->shape();
 
-    int out_num = std::accumulate(predict_shape.begin(), predict_shape.end(), 1,
+    size_t out_num = std::accumulate(predict_shape.begin(), predict_shape.end(), 1,
                                   std::multiplies<int>());
     predict_batch.resize(out_num);
     // predict_batch is the result of Last FC with softmax
     output_t->CopyToCpu(predict_batch.data());
     // ctc decode
-    for (int m = 0; m < predict_shape[0]; m++) {
+    for (int m = 0; m < predict_shape[0]; ++m) {
       std::string str_res;
       int argmax_idx;
       int last_index = 0;
@@ -106,7 +106,7 @@ void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
       int count = 0;
       float max_value = 0.0f;
 
-      for (int n = 0; n < predict_shape[1]; n++) {
+      for (int n = 0; n < predict_shape[1]; ++n) {
         // get idx
         argmax_idx = int(Utility::argmax(
             &predict_batch[(m * predict_shape[1] + n) * predict_shape[2]],

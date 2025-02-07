@@ -123,7 +123,7 @@ void ocr(std::vector<cv::String> &cv_all_img_names, Args const & args) {
   }
 
   std::vector<std::vector<OCRPredictResult>> ocr_results =
-      ocr.ocr(img_list, args.det, args.rec, args.cls);
+      ocr.ocr(img_list);
 
   for (int i = 0; i < img_names.size(); ++i) {
     std::cout << "predict img: " << cv_all_img_names[i] << std::endl;
@@ -149,10 +149,9 @@ void structure(std::vector<cv::String> &cv_all_img_names, Args const & args) {
       continue;
     }
 
-    std::vector<StructurePredictResult> structure_results = engine.structure(
-        img, args.layout, args.table, args.det && args.rec);
+    std::vector<StructurePredictResult> structure_results = engine.structure(img);
 
-    for (int j = 0; j < structure_results.size(); j++) {
+    for (size_t j = 0; j < structure_results.size(); ++j) {
       std::cout << j << "\ttype: " << structure_results[j].type
                 << ", region: [";
       std::cout << structure_results[j].box[0] << ","

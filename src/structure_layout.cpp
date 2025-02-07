@@ -56,7 +56,7 @@ void StructureLayoutRecognizer::Run(const cv::Mat &img,
   std::vector<std::vector<float>> out_tensor_list;
   std::vector<std::vector<int>> output_shape_list;
   auto output_names = this->predictor_->GetOutputNames();
-  for (int j = 0; j < output_names.size(); j++) {
+  for (size_t j = 0; j < output_names.size(); ++j) {
     auto output_tensor = this->predictor_->GetOutputHandle(output_names[j]);
     std::vector<int> output_shape = output_tensor->shape();
     int out_num = std::accumulate(output_shape.begin(), output_shape.end(), 1,
@@ -73,7 +73,7 @@ void StructureLayoutRecognizer::Run(const cv::Mat &img,
 
   std::vector<int> bbox_num;
   int reg_max = 0;
-  for (int i = 0; i < out_tensor_list.size(); ++i) {
+  for (size_t i = 0; i < out_tensor_list.size(); ++i) {
     if (i == this->post_processor_.fpn_stride_size()) {
       reg_max = output_shape_list[i][2] / 4;
       break;
@@ -142,4 +142,5 @@ void StructureLayoutRecognizer::LoadModel(
 
   this->predictor_ = paddle_infer::CreatePredictor(config);
 }
+
 } // namespace PaddleOCR

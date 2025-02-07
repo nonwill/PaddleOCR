@@ -26,7 +26,7 @@ DBDetector::DBDetector(Args const & args) noexcept :
   scale_({1 / 0.229f, 1 / 0.224f, 1 / 0.225f}),
   is_scale_(true)
 {
-    LoadModel(args_.det_model_dir);
+  LoadModel(args_.det_model_dir);
 }
 
 void DBDetector::LoadModel(const std::string &model_dir) noexcept {

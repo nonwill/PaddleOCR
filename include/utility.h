@@ -89,18 +89,6 @@ public:
   activation_function_softmax(std::vector<float> &src) noexcept;
   static float iou(std::vector<int> &box1, std::vector<int> &box2) noexcept;
   static float iou(std::vector<float> &box1, std::vector<float> &box2) noexcept;
-
-private:
-  static bool comparison_box(const OCRPredictResult &result1,
-                             const OCRPredictResult &result2) noexcept {
-    if (result1.box[0][1] < result2.box[0][1]) {
-      return true;
-    } else if (result1.box[0][1] == result2.box[0][1]) {
-      return result1.box[0][0] < result2.box[0][0];
-    } else {
-      return false;
-    }
-  }
 };
 
 } // namespace PaddleOCR
