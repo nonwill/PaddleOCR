@@ -51,44 +51,53 @@ public:
                               const std::string &save_path) noexcept;
 
   template <class ForwardIterator>
-  inline static size_t argmax(ForwardIterator first, ForwardIterator last) noexcept {
+  inline static size_t argmax(ForwardIterator first,
+                              ForwardIterator last) noexcept {
     return std::distance(first, std::max_element(first, last));
   }
 
   static void GetAllFiles(const char *dir_name,
                           std::vector<std::string> &all_inputs) noexcept;
 
-  static cv::Mat GetRotateCropImage(const cv::Mat &srcimage,
-                                    const std::vector<std::vector<int>> &box) noexcept;
+  static cv::Mat
+  GetRotateCropImage(const cv::Mat &srcimage,
+                     const std::vector<std::vector<int>> &box) noexcept;
 
-  static std::vector<int> argsort(const std::vector<float> &array) noexcept;
+  static std::vector<size_t> argsort(const std::vector<float> &array) noexcept;
 
   static std::string basename(const std::string &filename) noexcept;
 
   static bool PathExists(const char *path) noexcept;
-  static inline bool PathExists(const std::string &path) noexcept
-  { return PathExists(path.c_str()); }
+  static inline bool PathExists(const std::string &path) noexcept {
+    return PathExists(path.c_str());
+  }
 
   static void CreateDir(const char *path) noexcept;
-  static inline void CreateDir(const std::string &path) noexcept
-  { CreateDir(path.c_str()); }
+  static inline void CreateDir(const std::string &path) noexcept {
+    CreateDir(path.c_str());
+  }
 
+  static void
+  print_result(const std::vector<OCRPredictResult> &ocr_result) noexcept;
 
-  static void print_result(const std::vector<OCRPredictResult> &ocr_result) noexcept;
+  static cv::Mat crop_image(const cv::Mat &img,
+                            const std::vector<int> &area) noexcept;
+  static cv::Mat crop_image(const cv::Mat &img,
+                            const std::vector<float> &area) noexcept;
 
-  static cv::Mat crop_image(cv::Mat &img, const std::vector<int> &area) noexcept;
-  static cv::Mat crop_image(cv::Mat &img, const std::vector<float> &area) noexcept;
+  static void sort_boxes(std::vector<OCRPredictResult> &ocr_result) noexcept;
 
-  static void sorted_boxes(std::vector<OCRPredictResult> &ocr_result) noexcept;
-
-  static std::vector<int> xyxyxyxy2xyxy(const std::vector<std::vector<int>> &box) noexcept;
+  static std::vector<int>
+  xyxyxyxy2xyxy(const std::vector<std::vector<int>> &box) noexcept;
   static std::vector<int> xyxyxyxy2xyxy(const std::vector<int> &box) noexcept;
 
   static float fast_exp(float x) noexcept;
   static std::vector<float>
-  activation_function_softmax(std::vector<float> &src) noexcept;
-  static float iou(std::vector<int> &box1, std::vector<int> &box2) noexcept;
-  static float iou(std::vector<float> &box1, std::vector<float> &box2) noexcept;
+  activation_function_softmax(const std::vector<float> &src) noexcept;
+  static float iou(const std::vector<int> &box1,
+                   const std::vector<int> &box2) noexcept;
+  static float iou(const std::vector<float> &box1,
+                   const std::vector<float> &box2) noexcept;
 };
 
 } // namespace PaddleOCR

@@ -20,9 +20,9 @@ typedef struct PPOcrResult * PPPOcrResult;
 
 struct PPOcrResult {
   char* text;
-  float score = -1.0;
+  float score;
   float cls_score;
-  int cls_label = -1;
+  int cls_label;
   PPPOcrResult next;
 };
 

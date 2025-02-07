@@ -10,6 +10,7 @@ include($$PWD/../nwDeployed/nwDeployed.pri)
 CONFIG += ppocr_capi
 
 PPOCR_ROOT_DIR = $$PWD
+# PPOCR_ROOT_DIR = Z:/PaddleOCR_Origin/deploy/cpp_infer
 
 INCLUDEPATH += $${PPOCR_ROOT_DIR} \
     $${PPOCR_ROOT_DIR}/include

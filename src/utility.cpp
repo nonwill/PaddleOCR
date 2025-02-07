@@ -190,14 +190,15 @@ Utility::GetRotateCropImage(const cv::Mat &srcimage,
   }
 }
 
-std::vector<int> Utility::argsort(const std::vector<float> &array) noexcept {
-  std::vector<int> array_index(array.size(), 0);
-  for (int i = 0; i < array.size(); ++i)
+std::vector<size_t> Utility::argsort(const std::vector<float> &array) noexcept {
+  std::vector<size_t> array_index(array.size(), 0);
+  for (size_t i = 0; i < array.size(); ++i)
     array_index[i] = i;
 
-  std::sort(
-      array_index.begin(), array_index.end(),
-      [&array](int pos1, int pos2) { return (array[pos1] < array[pos2]); });
+  std::sort(array_index.begin(), array_index.end(),
+            [&array](size_t pos1, size_t pos2) {
+              return (array[pos1] < array[pos2]);
+            });
 
   return array_index;
 }
@@ -288,7 +289,7 @@ void Utility::print_result(
   }
 }
 
-cv::Mat Utility::crop_image(cv::Mat &img,
+cv::Mat Utility::crop_image(const cv::Mat &img,
                             const std::vector<int> &box) noexcept {
   cv::Mat crop_im = cv::Mat::zeros(box[3] - box[1], box[2] - box[0], 16);
   int crop_x1 = std::max(0, box[0]);
@@ -305,14 +306,14 @@ cv::Mat Utility::crop_image(cv::Mat &img,
   return crop_im;
 }
 
-cv::Mat Utility::crop_image(cv::Mat &img,
+cv::Mat Utility::crop_image(const cv::Mat &img,
                             const std::vector<float> &box) noexcept {
   std::vector<int> box_int = {(int)box[0], (int)box[1], (int)box[2],
                               (int)box[3]};
   return crop_image(img, box_int);
 }
 
-void Utility::sorted_boxes(std::vector<OCRPredictResult> &ocr_result) noexcept {
+void Utility::sort_boxes(std::vector<OCRPredictResult> &ocr_result) noexcept {
   struct comparison_box {
     inline bool operator()(const OCRPredictResult &result1,
                            const OCRPredictResult &result2) noexcept {
@@ -378,7 +379,7 @@ float Utility::fast_exp(float x) noexcept {
 }
 
 std::vector<float>
-Utility::activation_function_softmax(std::vector<float> &src) noexcept {
+Utility::activation_function_softmax(const std::vector<float> &src) noexcept {
   size_t length = src.size();
   std::vector<float> dst;
   dst.resize(length);
@@ -396,7 +397,8 @@ Utility::activation_function_softmax(std::vector<float> &src) noexcept {
   return dst;
 }
 
-float Utility::iou(std::vector<int> &box1, std::vector<int> &box2) noexcept {
+float Utility::iou(const std::vector<int> &box1,
+                   const std::vector<int> &box2) noexcept {
   int area1 = std::max(0, box1[2] - box1[0]) * std::max(0, box1[3] - box1[1]);
   int area2 = std::max(0, box2[2] - box2[0]) * std::max(0, box2[3] - box2[1]);
 
@@ -418,8 +420,8 @@ float Utility::iou(std::vector<int> &box1, std::vector<int> &box2) noexcept {
   }
 }
 
-float Utility::iou(std::vector<float> &box1,
-                   std::vector<float> &box2) noexcept {
+float Utility::iou(const std::vector<float> &box1,
+                   const std::vector<float> &box2) noexcept {
   float area1 = std::max((float)0.0, box1[2] - box1[0]) *
                 std::max((float)0.0, box1[3] - box1[1]);
   float area2 = std::max((float)0.0, box2[2] - box2[0]) *

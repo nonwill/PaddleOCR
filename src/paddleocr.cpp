@@ -144,7 +144,7 @@ void PPOCR::det(const cv::Mat &img,
     ocr_results.emplace_back(std::move(res));
   }
   // sort boex from top to bottom, from left to right
-  Utility::sorted_boxes(ocr_results);
+  Utility::sort_boxes(ocr_results);
 }
 
 void PPOCR::rec(const std::vector<cv::Mat> &img_list,
