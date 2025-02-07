@@ -1518,7 +1518,7 @@ bool Clipper::ExecuteInternal() noexcept {
   bool succeeded = true;
   try {
     Reset();
-    m_Maxima = MaximaList();
+    MaximaList m_Maxima;
     m_SortedEdges = 0;
 
     succeeded = true;
@@ -1527,13 +1527,13 @@ bool Clipper::ExecuteInternal() noexcept {
       return false;
     InsertLocalMinimaIntoAEL(botY);
     while (PopScanbeam(topY) || LocalMinimaPending()) {
-      ProcessHorizontals();
+      ProcessHorizontals(m_Maxima);
       ClearGhostJoins();
       if (!ProcessIntersections(topY)) {
         succeeded = false;
         break;
       }
-      ProcessEdgesAtTopOfScanbeam(topY);
+      ProcessEdgesAtTopOfScanbeam(topY, m_Maxima);
       botY = topY;
       InsertLocalMinimaIntoAEL(botY);
     }
@@ -2408,10 +2408,10 @@ OutPt *Clipper::GetLastOutPt(TEdge *e) noexcept {
 }
 //------------------------------------------------------------------------------
 
-void Clipper::ProcessHorizontals() noexcept {
+void Clipper::ProcessHorizontals(const MaximaList &m_Maxima) noexcept {
   TEdge *horzEdge;
   while (PopEdgeFromSEL(horzEdge))
-    ProcessHorizontal(horzEdge);
+    ProcessHorizontal(horzEdge, m_Maxima);
 }
 //------------------------------------------------------------------------------
 
@@ -2533,7 +2533,7 @@ void GetHorzDirection(TEdge &HorzEdge, Direction &Dir, cInt &Left,
  * the AEL. These 'promoted' edges may in turn intersect [%] with other HEs. *
  *******************************************************************************/
 
-void Clipper::ProcessHorizontal(TEdge *horzEdge) noexcept {
+void Clipper::ProcessHorizontal(TEdge *horzEdge, const MaximaList &m_Maxima) noexcept {
   Direction dir;
   cInt horzLeft, horzRight;
   bool IsOpen = (horzEdge->WindDelta == 0);
@@ -2872,7 +2872,7 @@ void Clipper::DoMaxima(TEdge *e) {
 }
 //------------------------------------------------------------------------------
 
-void Clipper::ProcessEdgesAtTopOfScanbeam(const cInt topY) {
+void Clipper::ProcessEdgesAtTopOfScanbeam(const cInt topY, MaximaList &m_Maxima) {
   TEdge *e = m_ActiveEdges;
   while (e) {
     // 1. process maxima, treating them as if they're 'bent' horizontal edges,
@@ -2931,8 +2931,8 @@ void Clipper::ProcessEdgesAtTopOfScanbeam(const cInt topY) {
   }
 
   // 3. Process horizontals at the Top of the scanbeam ...
-  m_Maxima.sort();
-  ProcessHorizontals();
+  std::sort(m_Maxima.begin(), m_Maxima.end());
+  ProcessHorizontals(m_Maxima);
   m_Maxima.clear();
 
   // 4. Promote intermediate vertices ...

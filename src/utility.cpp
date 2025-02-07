@@ -61,7 +61,7 @@ void Utility::VisualizeBboxes(const cv::Mat &srcimg,
 
     const cv::Point *ppt[1] = {rook_points};
     int npt[] = {4};
-    cv::polylines(img_vis, ppt, npt, 1, 1, CV_RGB(0, 255, 0), 2, 8, 0);
+    cv::polylines(img_vis, ppt, npt, 1, 1, CV_RGB(0, 255, 0), 1, 8, 0);
   }
 
   cv::imwrite(save_path, img_vis);
@@ -85,7 +85,7 @@ void Utility::VisualizeBboxes(const cv::Mat &srcimg,
       }
       const cv::Point *ppt[1] = {rook_points};
       int npt[] = {4};
-      cv::polylines(img_vis, ppt, npt, 1, 1, CV_RGB(0, 255, 0), 2, 8, 0);
+      cv::polylines(img_vis, ppt, npt, 1, 1, CV_RGB(0, 255, 0), 1, 8, 0);
     } else if (structure_result.cell_box[n].size() == 4) {
       cv::Point rook_points[2] = {
           cv::Point(int(structure_result.cell_box[n][0]),
@@ -93,7 +93,7 @@ void Utility::VisualizeBboxes(const cv::Mat &srcimg,
           cv::Point(int(structure_result.cell_box[n][2]),
                     int(structure_result.cell_box[n][3]))};
       cv::rectangle(img_vis, rook_points[0], rook_points[1], CV_RGB(0, 255, 0),
-                    2, 8, 0);
+                    1, 8, 0);
     }
   }
 

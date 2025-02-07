@@ -45,7 +45,6 @@
 // use_deprecated: Enables temporary support for the obsolete functions
 //#define use_deprecated
 
-#include <list>
 #include <queue>
 #include <string>
 #include <vector>
@@ -320,8 +319,7 @@ private:
   JoinList m_GhostJoins;
   IntersectList m_IntersectList;
   ClipType m_ClipType;
-  typedef std::list<cInt> MaximaList;
-  MaximaList m_Maxima;
+  typedef std::vector<cInt> MaximaList;
   TEdge *m_SortedEdges;
   bool m_ExecuteLocked;
   PolyFillType m_ClipFillType;
@@ -345,8 +343,8 @@ private:
   bool IsContributing(const TEdge &edge) const noexcept;
   bool IsTopHorz(const cInt XPos) noexcept;
   void DoMaxima(TEdge *e);
-  void ProcessHorizontals() noexcept;
-  void ProcessHorizontal(TEdge *horzEdge) noexcept;
+  void ProcessHorizontals(const MaximaList &m_Maxima) noexcept;
+  void ProcessHorizontal(TEdge *horzEdge, const MaximaList &m_Maxima) noexcept;
   void AddLocalMaxPoly(TEdge *e1, TEdge *e2, const IntPoint &pt) noexcept;
   OutPt *AddLocalMinPoly(TEdge *e1, TEdge *e2, const IntPoint &pt) noexcept;
   OutRec *GetOutRec(int idx) noexcept;
@@ -357,7 +355,7 @@ private:
   bool ProcessIntersections(const cInt topY);
   void BuildIntersectList(const cInt topY) noexcept;
   void ProcessIntersectList() noexcept;
-  void ProcessEdgesAtTopOfScanbeam(const cInt topY);
+  void ProcessEdgesAtTopOfScanbeam(const cInt topY, MaximaList &m_Maxima);
   void BuildResult(Paths &polys) noexcept;
   void BuildResult2(PolyTree &polytree) noexcept;
   void SetHoleState(TEdge *e, OutRec *outrec) noexcept;
