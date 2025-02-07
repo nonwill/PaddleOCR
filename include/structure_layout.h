@@ -19,7 +19,9 @@
 #include <include/preprocess_op.h>
 #include <memory>
 
-namespace paddle_infer { class Predictor; }
+namespace paddle_infer {
+class Predictor;
+}
 
 namespace PaddleOCR {
 
@@ -27,15 +29,16 @@ class Args;
 
 class StructureLayoutRecognizer {
 public:
-  explicit StructureLayoutRecognizer(Args const & args) noexcept;
+  explicit StructureLayoutRecognizer(Args const &args) noexcept;
 
   // Load Paddle inference model
   void LoadModel(const std::string &model_dir) noexcept;
 
-  void Run(const cv::Mat &img, std::vector<StructurePredictResult> &result) noexcept;
+  void Run(const cv::Mat &img,
+           std::vector<StructurePredictResult> &result) noexcept;
 
 private:
-  Args const & args_;
+  Args const &args_;
   std::shared_ptr<paddle_infer::Predictor> predictor_;
 
   std::vector<float> mean_;

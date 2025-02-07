@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <include/ocr_rec.h>
 #include <include/args.h>
+#include <include/ocr_rec.h>
 #include <paddle_inference_api.h>
 
 #include <iostream>
@@ -21,22 +21,18 @@
 
 namespace PaddleOCR {
 
-std::vector<std::string> CRNNRecognizer::gen_label_list(const std::string &label_path) noexcept
-{
+std::vector<std::string>
+CRNNRecognizer::gen_label_list(const std::string &label_path) noexcept {
   std::vector<std::string> label_list_ = Utility::ReadDict(label_path);
   label_list_.emplace(label_list_.begin(), "#"); // blank char for ctc
   label_list_.emplace_back(" ");
   return label_list_;
 }
 
-CRNNRecognizer::CRNNRecognizer(Args const & args) noexcept :
-  args_(args),
-  label_list_(gen_label_list(args.rec_char_dict_path)),
-  rec_image_shape_({3, args.rec_img_h, args.rec_img_w}),
-  mean_(3, 0.5f),
-  scale_(3, 1.0 / 0.5f),
-  is_scale_(true)
-{
+CRNNRecognizer::CRNNRecognizer(Args const &args) noexcept
+    : args_(args), label_list_(gen_label_list(args.rec_char_dict_path)),
+      rec_image_shape_({3, args.rec_img_h, args.rec_img_w}), mean_(3, 0.5f),
+      scale_(3, 1.0 / 0.5f), is_scale_(true) {
   LoadModel(args_.rec_model_dir);
 }
 
@@ -70,8 +66,8 @@ void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
       cv::Mat srcimg;
       img_list[indices[ino]].copyTo(srcimg);
       cv::Mat resize_img;
-      this->resize_op_.Run(srcimg, resize_img, max_wh_ratio,
-                           args_.use_tensorrt, this->rec_image_shape_);
+      this->resize_op_.Run(srcimg, resize_img, max_wh_ratio, args_.use_tensorrt,
+                           this->rec_image_shape_);
       this->normalize_op_.Run(resize_img, this->mean_, this->scale_,
                               this->is_scale_);
       batch_width = std::max(resize_img.cols, batch_width);
@@ -92,8 +88,8 @@ void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
     auto output_t = this->predictor_->GetOutputHandle(output_names[0]);
     auto predict_shape = output_t->shape();
 
-    size_t out_num = std::accumulate(predict_shape.begin(), predict_shape.end(), 1,
-                                  std::multiplies<int>());
+    size_t out_num = std::accumulate(predict_shape.begin(), predict_shape.end(),
+                                     1, std::multiplies<int>());
     predict_batch.resize(out_num);
     // predict_batch is the result of Last FC with softmax
     output_t->CopyToCpu(predict_batch.data());

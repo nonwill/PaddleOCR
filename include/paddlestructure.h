@@ -24,14 +24,14 @@ class StructureLayoutRecognizer;
 
 class PPOCR_API PaddleStructure : public PPOCR {
 public:
-  explicit PaddleStructure(Args const & args) noexcept;
+  explicit PaddleStructure(Args const &args) noexcept;
   ~PaddleStructure();
 
   std::vector<StructurePredictResult> structure(const cv::Mat &img) noexcept;
 
 private:
-  StructureTableRecognizer * table_model;
-  StructureLayoutRecognizer * layout_model;
+  StructureTableRecognizer *table_model;
+  StructureLayoutRecognizer *layout_model;
 
   void layout(const cv::Mat &img,
               std::vector<StructurePredictResult> &structure_result) noexcept;

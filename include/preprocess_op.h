@@ -15,8 +15,8 @@
 #ifndef PPOCR_PREPROCESS_OP_HH
 #define PPOCR_PREPROCESS_OP_HH
 
-#include <ppocr_api.h>
 #include <opencv2/imgproc.hpp>
+#include <ppocr_api.h>
 
 namespace PaddleOCR {
 

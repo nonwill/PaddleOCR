@@ -12,32 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #ifdef USING_PPOCR_CPP_API
-#include <include/paddlestructure.h>
 #include <include/args.h>
-#include <opencv2/imgcodecs.hpp>
+#include <include/paddlestructure.h>
 #include <iostream>
+#include <opencv2/imgcodecs.hpp>
 #include <vector>
 #else
 
 #include <include/ppocr_c.h>
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
   CPPOCR ocr;
 
-  int ret = ppocr_from_args( &ocr, argc, argv );
-  if ( ret )
+  int ret = ppocr_from_args(&ocr, argc, argv);
+  if (ret)
     return ret;
 
   PPPOcrResult results;
-  ret = ppocr_cmd( ocr, &results );
-  if ( !ret )
-  {
+  ret = ppocr_cmd(ocr, &results);
+  if (!ret) {
     ppocr_print_result(results);
-    ppocr_free( results );
+    ppocr_free(results);
   }
 
-  ppocr_destroy( ocr );
+  ppocr_destroy(ocr);
 
   return ret;
 }
@@ -48,7 +46,7 @@ int main(int argc, char **argv)
 
 using namespace PaddleOCR;
 
-void check_params( Args const & args ) {
+void check_params(Args const &args) {
   if (args.det) {
     if (args.det_model_dir.empty() || args.image_dir.empty()) {
       std::cout << "Usage[det]: ./ppocr "
@@ -106,7 +104,7 @@ void check_params( Args const & args ) {
   }
 }
 
-void ocr(std::vector<cv::String> &cv_all_img_names, Args const & args) {
+void ocr(std::vector<cv::String> &cv_all_img_names, Args const &args) {
   PPOCR ocr(args);
 
   std::vector<cv::Mat> img_list;
@@ -122,8 +120,7 @@ void ocr(std::vector<cv::String> &cv_all_img_names, Args const & args) {
     img_names.emplace_back(cv_all_img_names[i]);
   }
 
-  std::vector<std::vector<OCRPredictResult>> ocr_results =
-      ocr.ocr(img_list);
+  std::vector<std::vector<OCRPredictResult>> ocr_results = ocr.ocr(img_list);
 
   for (int i = 0; i < img_names.size(); ++i) {
     std::cout << "predict img: " << cv_all_img_names[i] << std::endl;
@@ -137,7 +134,7 @@ void ocr(std::vector<cv::String> &cv_all_img_names, Args const & args) {
   }
 }
 
-void structure(std::vector<cv::String> &cv_all_img_names, Args const & args) {
+void structure(std::vector<cv::String> &cv_all_img_names, Args const &args) {
   PaddleOCR::PaddleStructure engine(args);
 
   for (int i = 0; i < cv_all_img_names.size(); ++i) {
@@ -149,7 +146,8 @@ void structure(std::vector<cv::String> &cv_all_img_names, Args const & args) {
       continue;
     }
 
-    std::vector<StructurePredictResult> structure_results = engine.structure(img);
+    std::vector<StructurePredictResult> structure_results =
+        engine.structure(img);
 
     for (size_t j = 0; j < structure_results.size(); ++j) {
       std::cout << j << "\ttype: " << structure_results[j].type
@@ -166,8 +164,8 @@ void structure(std::vector<cv::String> &cv_all_img_names, Args const & args) {
           std::string file_name = Utility::basename(cv_all_img_names[i]);
 
           Utility::VisualizeBboxes(img, structure_results[j],
-                                   args.output + "/" + std::to_string(j) +
-                                       "_" + file_name);
+                                   args.output + "/" + std::to_string(j) + "_" +
+                                       file_name);
         }
       }
       {

@@ -20,36 +20,30 @@
 
 namespace PaddleOCR {
 
-struct PPOCR::PPOCR_PRIVATE
-{
+struct PPOCR::PPOCR_PRIVATE {
   Args const args;
-  DBDetector * detector;
-  Classifier * classifier;
-  CRNNRecognizer * recognizer;
+  DBDetector *detector;
+  Classifier *classifier;
+  CRNNRecognizer *recognizer;
 
-  PPOCR_PRIVATE(Args const & args_) noexcept :
-    args(args_),
-    detector(nullptr),
-    classifier(nullptr),
-    recognizer(nullptr)
-  {}
+  PPOCR_PRIVATE(Args const &args_)
+  noexcept
+      : args(args_), detector(nullptr), classifier(nullptr),
+        recognizer(nullptr) {}
 
-  ~PPOCR_PRIVATE()
-  {
-    if ( recognizer )
+  ~PPOCR_PRIVATE() {
+    if (recognizer)
       delete recognizer;
 
-    if ( classifier )
+    if (classifier)
       delete classifier;
 
-    if ( detector )
+    if (detector)
       delete detector;
   }
 };
 
-PPOCR::PPOCR(Args const & args) noexcept :
-  pri(new PPOCR_PRIVATE(args))
-{
+PPOCR::PPOCR(Args const &args) noexcept : pri(new PPOCR_PRIVATE(args)) {
   if (args.det) {
     pri->detector = new DBDetector(pri->args);
   }
@@ -62,15 +56,9 @@ PPOCR::PPOCR(Args const & args) noexcept :
   }
 }
 
-PPOCR::~PPOCR()
-{
-  delete pri;
-}
+PPOCR::~PPOCR() { delete pri; }
 
-Args const & PPOCR::args() const noexcept
-{
-  return pri->args;
-}
+Args const &PPOCR::args() const noexcept { return pri->args; }
 
 std::vector<std::vector<OCRPredictResult>>
 PPOCR::ocr(const std::vector<cv::Mat> &img_list) noexcept {
@@ -96,15 +84,15 @@ PPOCR::ocr(const std::vector<cv::Mat> &img_list) noexcept {
     }
   } else {
     for (size_t i = 0; i < img_list.size(); ++i) {
-      std::vector<OCRPredictResult> ocr_result =
-          this->ocr(img_list[i]);
+      std::vector<OCRPredictResult> ocr_result = this->ocr(img_list[i]);
       ocr_results.emplace_back(std::move(ocr_result));
     }
   }
   return ocr_results;
 }
 
-std::vector<OCRPredictResult> PPOCR::ocr(const cv::Mat &img, bool and_cls) noexcept {
+std::vector<OCRPredictResult> PPOCR::ocr(const cv::Mat &img,
+                                         bool and_cls) noexcept {
 
   std::vector<OCRPredictResult> ocr_result;
   // det

@@ -23,13 +23,16 @@ class Args;
 
 class PPOCR_API PPOCR {
 public:
-  explicit PPOCR(Args const & args) noexcept;
+  explicit PPOCR(Args const &args) noexcept;
   virtual ~PPOCR();
 
-  Args const & args() const noexcept;
+  Args const &args() const noexcept;
 
-  std::vector<std::vector<OCRPredictResult>> ocr(const std::vector<cv::Mat> &img_list) noexcept;
-  std::vector<OCRPredictResult> ocr(const cv::Mat &img, bool and_cls = true) noexcept;
+  std::vector<std::vector<OCRPredictResult>>
+  ocr(const std::vector<cv::Mat> &img_list) noexcept;
+  std::vector<OCRPredictResult> ocr(const cv::Mat &img,
+                                    bool and_cls = true) noexcept;
+
 protected:
   void det(const cv::Mat &img,
            std::vector<OCRPredictResult> &ocr_results) noexcept;

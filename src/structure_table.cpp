@@ -12,21 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <include/structure_table.h>
 #include <include/args.h>
+#include <include/structure_table.h>
 #include <paddle_inference_api.h>
 
 #include <numeric>
 
 namespace PaddleOCR {
 
-StructureTableRecognizer::StructureTableRecognizer(Args const & args) noexcept :
-  args_(args),
-  mean_({0.485f, 0.456f, 0.406f}),
-  scale_({1 / 0.229f, 1 / 0.224f, 1 / 0.225f}),
-  is_scale_(true),
-  post_processor_(args.table_char_dict_path, args.merge_no_span_structure)
-{
+StructureTableRecognizer::StructureTableRecognizer(Args const &args) noexcept
+    : args_(args), mean_({0.485f, 0.456f, 0.406f}),
+      scale_({1 / 0.229f, 1 / 0.224f, 1 / 0.225f}), is_scale_(true),
+      post_processor_(args.table_char_dict_path, args.merge_no_span_structure) {
   LoadModel(args.table_model_dir);
 }
 
@@ -64,8 +61,7 @@ void StructureTableRecognizer::Run(
     // inference.
     auto input_names = this->predictor_->GetInputNames();
     auto input_t = this->predictor_->GetInputHandle(input_names[0]);
-    input_t->Reshape(
-        {batch_num, 3, args_.table_max_len, args_.table_max_len});
+    input_t->Reshape({batch_num, 3, args_.table_max_len, args_.table_max_len});
     input_t->CopyFromCpu(input.data());
     this->predictor_->Run();
     auto output_names = this->predictor_->GetOutputNames();

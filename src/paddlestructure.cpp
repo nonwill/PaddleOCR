@@ -19,11 +19,8 @@
 
 namespace PaddleOCR {
 
-PaddleStructure::PaddleStructure(Args const & args) noexcept :
-  PPOCR(args),
-  table_model(nullptr),
-  layout_model(nullptr)
-{
+PaddleStructure::PaddleStructure(Args const &args) noexcept
+    : PPOCR(args), table_model(nullptr), layout_model(nullptr) {
   if (args.layout) {
     layout_model = new StructureLayoutRecognizer(PPOCR::args());
   }
@@ -32,18 +29,17 @@ PaddleStructure::PaddleStructure(Args const & args) noexcept :
   }
 }
 
-PaddleStructure::~PaddleStructure()
-{
-  if ( layout_model )
+PaddleStructure::~PaddleStructure() {
+  if (layout_model)
     delete layout_model;
 
-  if ( table_model )
+  if (table_model)
     delete table_model;
 }
 
 std::vector<StructurePredictResult>
 PaddleStructure::structure(const cv::Mat &srcimg) noexcept {
-  Args const & args = PPOCR::args();
+  Args const &args = PPOCR::args();
   cv::Mat img;
   srcimg.copyTo(img);
 
@@ -63,11 +59,10 @@ PaddleStructure::structure(const cv::Mat &srcimg) noexcept {
   for (size_t i = 0; i < structure_results.size(); ++i) {
     // crop image
     roi_img = std::move(Utility::crop_image(img, structure_results[i].box));
-    if (args.table && structure_results[i].type == "table" ) {
+    if (args.table && structure_results[i].type == "table") {
       this->table(roi_img, structure_results[i]);
     } else if (args.det && args.rec) {
-      structure_results[i].text_res =
-          std::move(this->ocr(roi_img, false));
+      structure_results[i].text_res = std::move(this->ocr(roi_img, false));
     }
   }
 

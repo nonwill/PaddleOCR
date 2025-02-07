@@ -82,7 +82,7 @@ private:
 class TablePostProcessor {
 public:
   TablePostProcessor(const std::string &label_path,
-                    bool merge_no_span_structure = true) noexcept;
+                     bool merge_no_span_structure = true) noexcept;
   void Run(const std::vector<float> &loc_preds,
            const std::vector<float> &structure_probs,
            std::vector<float> &rec_scores,
@@ -94,7 +94,9 @@ public:
            const std::vector<int> &height_list) noexcept;
 
 private:
-  static std::vector<std::string> gen_label_list(const std::string &label_path, bool merge_no_span_structure) noexcept;
+  static std::vector<std::string>
+  gen_label_list(const std::string &label_path,
+                 bool merge_no_span_structure) noexcept;
 
   const std::vector<std::string> label_list_;
   static const std::string end;
@@ -106,7 +108,8 @@ public:
   PicodetPostProcessor(const std::string &label_path,
                        const double score_threshold = 0.4,
                        const double nms_threshold = 0.5,
-                       const std::vector<int> &fpn_stride = {8, 16, 32, 64}) noexcept;
+                       const std::vector<int> &fpn_stride = {8, 16, 32,
+                                                             64}) noexcept;
   void Run(std::vector<StructurePredictResult> &results,
            const std::vector<std::vector<float>> &outs,
            const std::vector<int> &ori_shape,

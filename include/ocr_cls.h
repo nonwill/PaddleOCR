@@ -29,7 +29,7 @@ class Args;
 
 class Classifier {
 public:
-  explicit Classifier(Args const & args) noexcept;
+  explicit Classifier(Args const &args) noexcept;
 
   // Load Paddle inference model
   void LoadModel(const std::string &model_dir) noexcept;
@@ -38,7 +38,7 @@ public:
            std::vector<float> &cls_scores) noexcept;
 
 private:
-  Args const & args_;
+  Args const &args_;
   const std::vector<float> mean_;
   const std::vector<float> scale_;
   const bool is_scale_;

@@ -12,26 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <include/structure_layout.h>
 #include <include/args.h>
+#include <include/structure_layout.h>
 #include <paddle_inference_api.h>
 
 #include <iostream>
 #include <numeric>
 
 namespace PaddleOCR {
-StructureLayoutRecognizer::StructureLayoutRecognizer(Args const & args) noexcept :
-  args_(args),
-  mean_({0.485f, 0.456f, 0.406f}),
-  scale_({1 / 0.229f, 1 / 0.224f, 1 / 0.225f}),
-  is_scale_(true),
-  post_processor_(args.layout_dict_path, args.layout_score_threshold, args.layout_nms_threshold)
-{
+StructureLayoutRecognizer::StructureLayoutRecognizer(Args const &args) noexcept
+    : args_(args), mean_({0.485f, 0.456f, 0.406f}),
+      scale_({1 / 0.229f, 1 / 0.224f, 1 / 0.225f}), is_scale_(true),
+      post_processor_(args.layout_dict_path, args.layout_score_threshold,
+                      args.layout_nms_threshold) {
   LoadModel(args.layout_model_dir);
 }
 
-void StructureLayoutRecognizer::Run(const cv::Mat &img,
-                                    std::vector<StructurePredictResult> &result) noexcept {
+void StructureLayoutRecognizer::Run(
+    const cv::Mat &img, std::vector<StructurePredictResult> &result) noexcept {
   // preprocess
 
   cv::Mat srcimg;

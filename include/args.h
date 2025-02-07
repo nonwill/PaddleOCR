@@ -22,73 +22,75 @@ namespace PaddleOCR {
 
 class PPOCR_API Args {
 public:
-    Args() noexcept;
-    explicit Args( int argc, char** argv ) noexcept : Args()
-    { parseArgv(argc, argv); }
-    explicit Args( char const * inistring ) noexcept : Args()
-    { parseInis(inistring); }
-    ~Args() {}
+  Args() noexcept;
+  explicit Args(int argc, char **argv) noexcept : Args() {
+    parseArgv(argc, argv);
+  }
+  explicit Args(char const *inistring) noexcept : Args() {
+    parseInis(inistring);
+  }
+  ~Args() {}
 
-    int parseArgv( int argc, char** argv ) noexcept;
-    int parseInis( char const * inistring ) noexcept;
+  int parseArgv(int argc, char **argv) noexcept;
+  int parseInis(char const *inistring) noexcept;
 
 #define DECLARE_bool(x) bool x
 #define DECLARE_int32(x) int x
 #define DECLARE_double(x) double x
 #define DECLARE_string(x) std::string x
 
-DECLARE_bool(help);
+  DECLARE_bool(help);
 
-// common args
-DECLARE_bool(use_gpu);
-DECLARE_bool(use_tensorrt);
-DECLARE_int32(gpu_id);
-DECLARE_int32(gpu_mem);
-DECLARE_int32(cpu_threads);
-DECLARE_bool(enable_mkldnn);
-DECLARE_string(precision);
-DECLARE_bool(benchmark);
-DECLARE_string(output);
-DECLARE_string(image_dir);
-DECLARE_string(type);
-// detection related
-DECLARE_string(det_model_dir);
-DECLARE_string(limit_type);
-DECLARE_int32(limit_side_len);
-DECLARE_double(det_db_thresh);
-DECLARE_double(det_db_box_thresh);
-DECLARE_double(det_db_unclip_ratio);
-DECLARE_bool(use_dilation);
-DECLARE_string(det_db_score_mode);
-DECLARE_bool(visualize);
-// classification related
-DECLARE_bool(use_angle_cls);
-DECLARE_string(cls_model_dir);
-DECLARE_double(cls_thresh);
-DECLARE_int32(cls_batch_num);
-// recognition related
-DECLARE_string(rec_model_dir);
-DECLARE_int32(rec_batch_num);
-DECLARE_string(rec_char_dict_path);
-DECLARE_int32(rec_img_h);
-DECLARE_int32(rec_img_w);
-// layout model related
-DECLARE_string(layout_model_dir);
-DECLARE_string(layout_dict_path);
-DECLARE_double(layout_score_threshold);
-DECLARE_double(layout_nms_threshold);
-// structure model related
-DECLARE_string(table_model_dir);
-DECLARE_int32(table_max_len);
-DECLARE_int32(table_batch_num);
-DECLARE_string(table_char_dict_path);
-DECLARE_bool(merge_no_span_structure);
-// forward related
-DECLARE_bool(det);
-DECLARE_bool(rec);
-DECLARE_bool(cls);
-DECLARE_bool(table);
-DECLARE_bool(layout);
+  // common args
+  DECLARE_bool(use_gpu);
+  DECLARE_bool(use_tensorrt);
+  DECLARE_int32(gpu_id);
+  DECLARE_int32(gpu_mem);
+  DECLARE_int32(cpu_threads);
+  DECLARE_bool(enable_mkldnn);
+  DECLARE_string(precision);
+  DECLARE_bool(benchmark);
+  DECLARE_string(output);
+  DECLARE_string(image_dir);
+  DECLARE_string(type);
+  // detection related
+  DECLARE_string(det_model_dir);
+  DECLARE_string(limit_type);
+  DECLARE_int32(limit_side_len);
+  DECLARE_double(det_db_thresh);
+  DECLARE_double(det_db_box_thresh);
+  DECLARE_double(det_db_unclip_ratio);
+  DECLARE_bool(use_dilation);
+  DECLARE_string(det_db_score_mode);
+  DECLARE_bool(visualize);
+  // classification related
+  DECLARE_bool(use_angle_cls);
+  DECLARE_string(cls_model_dir);
+  DECLARE_double(cls_thresh);
+  DECLARE_int32(cls_batch_num);
+  // recognition related
+  DECLARE_string(rec_model_dir);
+  DECLARE_int32(rec_batch_num);
+  DECLARE_string(rec_char_dict_path);
+  DECLARE_int32(rec_img_h);
+  DECLARE_int32(rec_img_w);
+  // layout model related
+  DECLARE_string(layout_model_dir);
+  DECLARE_string(layout_dict_path);
+  DECLARE_double(layout_score_threshold);
+  DECLARE_double(layout_nms_threshold);
+  // structure model related
+  DECLARE_string(table_model_dir);
+  DECLARE_int32(table_max_len);
+  DECLARE_int32(table_batch_num);
+  DECLARE_string(table_char_dict_path);
+  DECLARE_bool(merge_no_span_structure);
+  // forward related
+  DECLARE_bool(det);
+  DECLARE_bool(rec);
+  DECLARE_bool(cls);
+  DECLARE_bool(table);
+  DECLARE_bool(layout);
 
 #undef DECLARE_bool
 #undef DECLARE_int32
@@ -96,8 +98,8 @@ DECLARE_bool(layout);
 #undef DECLARE_string
 };
 
-void PPOCR_API ArgsHelp(std::ostream & out) noexcept;
+void PPOCR_API ArgsHelp(std::ostream &out) noexcept;
 
-} // PaddleOCR namespace
+} // namespace PaddleOCR
 
 #endif // PPOCR_ARGS_HH

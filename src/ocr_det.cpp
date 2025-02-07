@@ -12,20 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <include/ocr_det.h>
 #include <include/args.h>
+#include <include/ocr_det.h>
 #include <paddle_inference_api.h>
 
 #include <numeric>
 
 namespace PaddleOCR {
 
-DBDetector::DBDetector(Args const & args) noexcept :
-  args_(args),
-  mean_({0.485f, 0.456f, 0.406f}),
-  scale_({1 / 0.229f, 1 / 0.224f, 1 / 0.225f}),
-  is_scale_(true)
-{
+DBDetector::DBDetector(Args const &args) noexcept
+    : args_(args), mean_({0.485f, 0.456f, 0.406f}),
+      scale_({1 / 0.229f, 1 / 0.224f, 1 / 0.225f}), is_scale_(true) {
   LoadModel(args_.det_model_dir);
 }
 
@@ -76,8 +73,9 @@ void DBDetector::LoadModel(const std::string &model_dir) noexcept {
   this->predictor_ = paddle_infer::CreatePredictor(config);
 }
 
-void DBDetector::Run(const cv::Mat &img,
-                     std::vector<std::vector<std::vector<int>>> &boxes) noexcept {
+void DBDetector::Run(
+    const cv::Mat &img,
+    std::vector<std::vector<std::vector<int>>> &boxes) noexcept {
   float ratio_h{};
   float ratio_w{};
 
@@ -85,12 +83,10 @@ void DBDetector::Run(const cv::Mat &img,
   cv::Mat resize_img;
   img.copyTo(srcimg);
 
-  this->resize_op_.Run(img, resize_img, args_.limit_type,
-                       args_.limit_side_len, ratio_h, ratio_w,
-                       args_.use_tensorrt);
+  this->resize_op_.Run(img, resize_img, args_.limit_type, args_.limit_side_len,
+                       ratio_h, ratio_w, args_.use_tensorrt);
 
-  this->normalize_op_.Run(resize_img, mean_, scale_,
-                          is_scale_);
+  this->normalize_op_.Run(resize_img, mean_, scale_, is_scale_);
 
   std::vector<float> input(1 * 3 * resize_img.rows * resize_img.cols, 0.0f);
   this->permute_op_.Run(resize_img, input.data());

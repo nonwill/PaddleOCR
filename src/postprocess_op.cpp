@@ -54,7 +54,8 @@ DBPostProcessor::UnClip(const std::vector<std::vector<float>> &box,
   p.emplace_back(box[1][0], box[1][1]);
   p.emplace_back(box[2][0], box[2][1]);
   p.emplace_back(box[3][0], box[3][1]);
-  offset.AddPath(p, Clipper2Lib::JoinType::Round, Clipper2Lib::EndType::Polygon);
+  offset.AddPath(p, Clipper2Lib::JoinType::Round,
+                 Clipper2Lib::EndType::Polygon);
 
   Clipper2Lib::Paths64 soln;
   offset.Execute(distance, soln);
@@ -385,9 +386,9 @@ void DBPostProcessor::FilterTagDetRes(
 const std::string TablePostProcessor::end = "eos";
 const std::string TablePostProcessor::beg = "sos";
 
-std::vector<std::string> TablePostProcessor::gen_label_list(const std::string &label_path,
-                                                            bool merge_no_span_structure) noexcept
-{
+std::vector<std::string>
+TablePostProcessor::gen_label_list(const std::string &label_path,
+                                   bool merge_no_span_structure) noexcept {
   std::vector<std::string> label_list_ = Utility::ReadDict(label_path);
   if (merge_no_span_structure) {
     label_list_.emplace_back("<td></td>");
@@ -407,10 +408,8 @@ std::vector<std::string> TablePostProcessor::gen_label_list(const std::string &l
 }
 
 TablePostProcessor::TablePostProcessor(const std::string &label_path,
-                              bool merge_no_span_structure) noexcept :
-  label_list_(gen_label_list(label_path, merge_no_span_structure))
-{
-}
+                                       bool merge_no_span_structure) noexcept
+    : label_list_(gen_label_list(label_path, merge_no_span_structure)) {}
 
 void TablePostProcessor::Run(
     const std::vector<float> &loc_preds,
@@ -483,16 +482,11 @@ void TablePostProcessor::Run(
   }
 }
 
-PicodetPostProcessor::PicodetPostProcessor(const std::string &label_path,
-                                           const double score_threshold,
-                                           const double nms_threshold,
-                                           const std::vector<int> &fpn_stride) noexcept :
-  label_list_(Utility::ReadDict(label_path)),
-  fpn_stride_(fpn_stride),
-  score_threshold_(score_threshold),
-  nms_threshold_(nms_threshold)
-{
-}
+PicodetPostProcessor::PicodetPostProcessor(
+    const std::string &label_path, const double score_threshold,
+    const double nms_threshold, const std::vector<int> &fpn_stride) noexcept
+    : label_list_(Utility::ReadDict(label_path)), fpn_stride_(fpn_stride),
+      score_threshold_(score_threshold), nms_threshold_(nms_threshold) {}
 
 void PicodetPostProcessor::Run(std::vector<StructurePredictResult> &results,
                                const std::vector<std::vector<float>> &outs,

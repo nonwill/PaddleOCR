@@ -29,7 +29,7 @@ class Args;
 
 class CRNNRecognizer {
 public:
-  explicit CRNNRecognizer(Args const & args) noexcept;
+  explicit CRNNRecognizer(Args const &args) noexcept;
 
   // Load Paddle inference model
   void LoadModel(const std::string &model_dir) noexcept;
@@ -39,9 +39,10 @@ public:
            std::vector<float> &rec_text_scores) noexcept;
 
 private:
-  static std::vector<std::string> gen_label_list(const std::string &label_path) noexcept;
+  static std::vector<std::string>
+  gen_label_list(const std::string &label_path) noexcept;
 
-  Args const & args_;
+  Args const &args_;
   const std::vector<std::string> label_list_;
   const std::vector<int> rec_image_shape_;
 

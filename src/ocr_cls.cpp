@@ -12,20 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <include/ocr_cls.h>
 #include <include/args.h>
+#include <include/ocr_cls.h>
 #include <paddle_inference_api.h>
 
 #include <numeric>
 
 namespace PaddleOCR {
 
-Classifier::Classifier(Args const & args) noexcept :
-  args_(args),
-  mean_(3, 0.5f),
-  scale_(3, 1.0 / 0.5f),
-  is_scale_(true)
-{
+Classifier::Classifier(Args const &args) noexcept
+    : args_(args), mean_(3, 0.5f), scale_(3, 1.0 / 0.5f), is_scale_(true) {
   LoadModel(args_.cls_model_dir);
 }
 
@@ -47,8 +43,7 @@ void Classifier::Run(const std::vector<cv::Mat> &img_list,
       this->resize_op_.Run(srcimg, resize_img, args_.use_tensorrt,
                            cls_image_shape);
 
-      this->normalize_op_.Run(resize_img, mean_, scale_,
-                              is_scale_);
+      this->normalize_op_.Run(resize_img, mean_, scale_, is_scale_);
       if (resize_img.cols < cls_image_shape[2]) {
         cv::copyMakeBorder(resize_img, resize_img, 0, 0, 0,
                            cls_image_shape[2] - resize_img.cols,
