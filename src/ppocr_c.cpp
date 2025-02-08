@@ -83,9 +83,9 @@ int ppocr_from_Args( CPPOCR * cppocr, Args const & args ) noexcept
 
   PPOCR * ocr;
 
-  if (args.type == "ocr")
+  if (args.type == 1)
     ocr = new PaddleOCR::PPOCR(args);
-  else if (args.type == "structure")
+  else if (args.type == 2)
     ocr = new PaddleOCR::PaddleStructure(args);
   else
     return 7;
@@ -243,9 +243,9 @@ int ppocr_exe( CPPOCR cppocr, char const * image_dir, PPPOcrResult * result ) no
   int ret = 7;
   std::vector<std::vector<OCRPredictResult>> ocr_results;
 
-  if (args.type == "ocr")
+  if (args.type == 1)
     ret = ocr(cv_all_img_names, cppocr, ocr_results);
-  else if (args.type == "structure")
+  else if (args.type == 2)
     ret = structure(cv_all_img_names, cppocr, ocr_results);
 
   if ( ret || !result )

@@ -203,9 +203,9 @@ int main(int argc, char **argv) {
   if (!Utility::PathExists(args.output)) {
     Utility::CreateDir(args.output);
   }
-  if (args.type == "ocr") {
+  if (args.type == 1) {
     ocr(cv_all_img_names, args);
-  } else if (args.type == "structure") {
+  } else if (args.type == 2) {
     structure(cv_all_img_names, args);
   } else {
     std::cout << "only value in ['ocr','structure'] is supported" << std::endl;

@@ -49,10 +49,10 @@ public:
   DECLARE_int32(cpu_threads);
   DECLARE_bool(enable_mkldnn);
   DECLARE_string(precision);
-  DECLARE_bool(benchmark);
+  // DECLARE_bool(benchmark);
   DECLARE_string(output);
   DECLARE_string(image_dir);
-  DECLARE_string(type);
+  DECLARE_int32(type);
   // detection related
   DECLARE_string(det_model_dir);
   DECLARE_string(limit_type);
