@@ -1,3 +1,5 @@
-Sources：https://github.com/PaddlePaddle/PaddleOCR/tree/main/deploy/cpp_infer
+Origin Sources:
+https://github.com/PaddlePaddle/PaddleOCR/tree/main/deploy/cpp_infer
 
-Reference：https://nonwill.github.io/cpp/Build-PaddleOCR-with-MSVC2019-Build-Tools/
+Depends:  
+opencv-3.4.20：https://github.com/nonwill/nw3rdBuild/releases/tag/opencv-3.4.20
