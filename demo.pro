@@ -7,7 +7,7 @@ CONFIG += console
 
 include($$PWD/../nwDeployed/nwDeployed.pri)
 
-CONFIG += ppocr_capi
+# CONFIG += ppocr_capi
 
 PPOCR_ROOT_DIR = $$PWD
 # PPOCR_ROOT_DIR = Z:/PaddleOCR_Origin/deploy/cpp_infer
@@ -39,15 +39,16 @@ QMAKE_POST_LINK = $${DESTDIR}/ppocr.exe \
     --rec_model_dir=$$PWD/deps/PP-Modal/ch_PP-OCRv4_rec_infer \
     --cls_model_dir=$$PWD/deps/PP-Modal/ch_ppocr_mobile_v2.0_cls_infer \
     --rec_char_dict_path=$$PWD/deps/PP-Modal/ppocr_keys_v1.txt \
-    --image_dir=$$PWD/tests --output=$${DESTDIR}/output-use_dilation_0 && \
+    --image_dir=$$PWD/tests/test3.png \
+    --output=$${DESTDIR}/output-use_dilation_0 > $${DESTDIR}/output-use_dilation_0/debug.txt && \
     $${DESTDIR}/ppocr.exe \
     --enable_mkldnn=1 --use_dilation=1 \
     --det_model_dir=$$PWD/deps/PP-Modal/ch_PP-OCRv4_det_infer \
     --rec_model_dir=$$PWD/deps/PP-Modal/ch_PP-OCRv4_rec_infer \
     --cls_model_dir=$$PWD/deps/PP-Modal/ch_ppocr_mobile_v2.0_cls_infer \
     --rec_char_dict_path=$$PWD/deps/PP-Modal/ppocr_keys_v1.txt \
-    --image_dir=$$PWD/tests --output=$${DESTDIR}/output-use_dilation_1 && \
-    $${DESTDIR}/ppocr.exe -h
+    --image_dir=$$PWD/tests/test3.png \
+    --output=$${DESTDIR}/output-use_dilation_1 > $${DESTDIR}/output-use_dilation_1/debug.txt
 
 # QMAKE_POST_LINK = $${DESTDIR}/ppocr.exe \
 #     --det_model_dir=$$PWD/PP-Modal/ch_PP-OCRv3_det_infer \

@@ -185,8 +185,12 @@ void structure(std::vector<cv::String> &cv_all_img_names, Args const &args) {
 
 int main(int argc, char **argv) {
   // Parsing command-line
-  Args args;
-  args.parseArgv(argc, argv);
+  Args args(argc, argv);
+
+  if (args.help) {
+    PaddleOCR::ArgsHelp(std::cout);
+    return 0;
+  }
 
   check_params(args);
 
