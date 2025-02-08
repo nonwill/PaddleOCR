@@ -26,18 +26,20 @@ struct PPOcrResult {
   PPPOcrResult next;
 };
 
-extern CPPOCR_API int ppocr_from_args( CPPOCR * cppocr, int argc, char ** argv );
-extern CPPOCR_API int ppocr_from_inis( CPPOCR * cppocr, char  const * inis );
-extern CPPOCR_API int ppocr_from_sxml( CPPOCR * cppocr, char const * xmlfile );
+extern CPPOCR_API int ppocr_from_args( CPPOCR * cppocr, int argc, char ** argv ) noexcept;
+extern CPPOCR_API int ppocr_from_inis( CPPOCR * cppocr, char const * inis ) noexcept;
+extern CPPOCR_API int ppocr_from_sxml( CPPOCR * cppocr, char const * xmlfile ) noexcept;
 
-extern CPPOCR_API int ppocr_cmd( CPPOCR cppocr, PPPOcrResult * result = nullptr );
+extern CPPOCR_API int ppocr_cmd( CPPOCR cppocr, PPPOcrResult * result = nullptr ) noexcept;
 extern CPPOCR_API int ppocr_exe( CPPOCR cppocr, char const * image_dir,
-                                 PPPOcrResult * results = nullptr );
+                                 PPPOcrResult * results = nullptr ) noexcept;
 
-extern CPPOCR_API void ppocr_print_result( PPPOcrResult result );
+extern CPPOCR_API void ppocr_print_result( PPPOcrResult result ) noexcept;
 
-extern CPPOCR_API void ppocr_free( PPPOcrResult result );
-extern CPPOCR_API void ppocr_destroy( CPPOCR cppocr );
+extern CPPOCR_API void ppocr_free( PPPOcrResult result ) noexcept;
+extern CPPOCR_API void ppocr_destroy( CPPOCR cppocr ) noexcept;
+
+extern CPPOCR_API void ppocr_print_help() noexcept;
 
 #ifdef __cplusplus
 }

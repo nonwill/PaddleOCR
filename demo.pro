@@ -46,7 +46,8 @@ QMAKE_POST_LINK = $${DESTDIR}/ppocr.exe \
     --rec_model_dir=$$PWD/deps/PP-Modal/ch_PP-OCRv4_rec_infer \
     --cls_model_dir=$$PWD/deps/PP-Modal/ch_ppocr_mobile_v2.0_cls_infer \
     --rec_char_dict_path=$$PWD/deps/PP-Modal/ppocr_keys_v1.txt \
-    --image_dir=$$PWD/tests --output=$${DESTDIR}/output-use_dilation_1
+    --image_dir=$$PWD/tests --output=$${DESTDIR}/output-use_dilation_1 && \
+    $${DESTDIR}/ppocr.exe -h
 
 # QMAKE_POST_LINK = $${DESTDIR}/ppocr.exe \
 #     --det_model_dir=$$PWD/PP-Modal/ch_PP-OCRv3_det_infer \

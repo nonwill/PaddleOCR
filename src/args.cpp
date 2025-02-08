@@ -87,7 +87,7 @@ int Args::parseArgv(int argc, char **argv) noexcept {
 
     if (!opt.context) {
       if (ret == 'h')
-        ArgsHelp(std::cout);
+        help = true;
       else if (option_index)
         printf("non-context option: %s val=%d\n", opt.name, opt.val);
     } else if (opt.val == 1) {
@@ -155,11 +155,13 @@ int Args::parseInis(char const *inis) noexcept {
     continue;                                                                  \
   }
 #include <args_pri.h>
+    DEFINE_bool(help, "", false);
 #undef DEFINE_bool
 #undef DEFINE_int32
 #undef DEFINE_double
 #undef DEFINE_string
   }
+
   return 0;
 }
 

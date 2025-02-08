@@ -15,10 +15,11 @@
 #include <paddlestructure.h>
 #include <opencv2/imgcodecs.hpp>
 #include <args.h>
+#include <iostream>
 
 using namespace PaddleOCR;
 
-int check_params( Args const & args ) {
+int check_params( Args const & args ) noexcept {
   if (args.det) {
     if (args.det_model_dir.empty() || args.image_dir.empty()) {
       return 1;
@@ -58,13 +59,24 @@ int check_params( Args const & args ) {
   return 0;
 }
 
+/// Print help messages
+void ppocr_print_help() noexcept
+{
+  ArgsHelp(std::cout);
+}
 
 struct PPOCRC {
   PPOCR* exe;
 };
 
-int ppocr_from_Args( CPPOCR * cppocr, Args const & args )
+int ppocr_from_Args( CPPOCR * cppocr, Args const & args ) noexcept
 {
+  if ( args.help )
+  {
+    ppocr_print_help();
+    exit(0);
+  }
+
   int ret = check_params(args);
   if ( ret )
     return ret;
@@ -94,22 +106,22 @@ int ppocr_from_Args( CPPOCR * cppocr, Args const & args )
 }
 
 
-int ppocr_from_args( CPPOCR * cppocr, int argc, char ** argv )
+int ppocr_from_args( CPPOCR * cppocr, int argc, char ** argv ) noexcept
 {
   return ppocr_from_Args( cppocr, Args( argc, argv ) );
 }
 
-int ppocr_from_inis( CPPOCR * cppocr, const char *inis )
+int ppocr_from_inis( CPPOCR * cppocr, const char *inis ) noexcept
 {
   return ppocr_from_Args( cppocr, Args(inis) );
 }
 
-int ppocr_from_sxml( CPPOCR * cppocr, char const * xmlfile )
+int ppocr_from_sxml( CPPOCR * cppocr, char const * xmlfile ) noexcept
 {
     return -5;
 }
 
-void ppocr_destroy( CPPOCR cppocr )
+void ppocr_destroy( CPPOCR cppocr ) noexcept
 {
   if ( !cppocr )
     return;
@@ -118,7 +130,7 @@ void ppocr_destroy( CPPOCR cppocr )
   delete cppocr;
 }
 
-void ppocr_print_result( PPPOcrResult results )
+void ppocr_print_result( PPPOcrResult results ) noexcept
 {
   int i = 0;
   PPPOcrResult current = results;
@@ -145,7 +157,7 @@ void ppocr_print_result( PPPOcrResult results )
 }
 
 int ocr(std::vector<cv::String> &cv_all_img_names, CPPOCR cppocr,
-        std::vector<std::vector<OCRPredictResult>> &ocr_results) {
+        std::vector<std::vector<OCRPredictResult>> &ocr_results) noexcept {
   PPOCR &ocr = *(cppocr->exe);
   Args const & args = ocr.args();
 
@@ -177,7 +189,7 @@ int ocr(std::vector<cv::String> &cv_all_img_names, CPPOCR cppocr,
 }
 
 int structure(std::vector<cv::String> &cv_all_img_names, CPPOCR cppocr,
-              std::vector<std::vector<OCRPredictResult>> &ocr_results) {
+              std::vector<std::vector<OCRPredictResult>> &ocr_results) noexcept {
   PaddleStructure &engine = *dynamic_cast<PaddleStructure*>(cppocr->exe);
   Args const & args = engine.args();
 
@@ -210,11 +222,11 @@ int structure(std::vector<cv::String> &cv_all_img_names, CPPOCR cppocr,
   return 0;
 }
 
-int ppocr_cmd( CPPOCR cppocr, PPPOcrResult * result ) {
+int ppocr_cmd( CPPOCR cppocr, PPPOcrResult * result ) noexcept {
   return ppocr_exe( cppocr, cppocr->exe->args().image_dir.c_str(), result );
 }
 
-int ppocr_exe( CPPOCR cppocr, char const * image_dir, PPPOcrResult * result ) {
+int ppocr_exe( CPPOCR cppocr, char const * image_dir, PPPOcrResult * result ) noexcept {
 
   if (!Utility::PathExists(image_dir)) {
     return -3;
@@ -269,7 +281,7 @@ int ppocr_exe( CPPOCR cppocr, char const * image_dir, PPPOcrResult * result ) {
   return 0;
 }
 
-void ppocr_free( PPPOcrResult result )
+void ppocr_free( PPPOcrResult result ) noexcept
 {
   PPPOcrResult recent = result;
   while(recent)
