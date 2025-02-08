@@ -95,7 +95,7 @@
 /* #undef HAVE_HALIDE */
 
 /* Define to 1 if you have the <inttypes.h> header file. */
-#define HAVE_INTTYPES_H 1
+/* #undef HAVE_INTTYPES_H */
 
 /* Intel Perceptual Computing SDK library */
 /* #undef HAVE_INTELPERC */
@@ -107,7 +107,7 @@
 /* #undef HAVE_IPP_IW_LL */
 
 /* JPEG-2000 codec */
-#define HAVE_JASPER
+/* #undef HAVE_JASPER */
 
 /* IJG JPEG codec */
 #define HAVE_JPEG
@@ -135,14 +135,12 @@
 /* #undef HAVE_NVCUVENC */
 
 /* OpenCL Support */
-#define HAVE_OPENCL
+/* #undef HAVE_OPENCL */
 /* #undef HAVE_OPENCL_STATIC */
 /* #undef HAVE_OPENCL_SVM */
 
 /* NVIDIA OpenCL D3D Extensions support */
-#ifdef _MSC_VER
-#define HAVE_OPENCL_D3D11_NV
-#endif
+/* #undef HAVE_OPENCL_D3D11_NV */
 
 /* OpenEXR codec */
 /* #undef HAVE_OPENEXR */
@@ -181,7 +179,7 @@
 /* #undef HAVE_TBB */
 
 /* TIFF codec */
-#define HAVE_TIFF
+/* #undef HAVE_TIFF */
 
 /* Unicap video capture library */
 /* #undef HAVE_UNICAP */
@@ -248,7 +246,7 @@
 #endif
 
 /* OpenCV trace utilities */
-#define OPENCV_TRACE
+/* #undef OPENCV_TRACE */
 
 /* Library QR-code decoding */
 /* #undef HAVE_QUIRC */

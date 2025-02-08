@@ -8,7 +8,7 @@
 
 // This definition means that OpenCV is built with enabled non-free code.
 // For example, patented algorithms for non-profit/non-commercial use only.
-#define OPENCV_ENABLE_NONFREE
+/* #undef OPENCV_ENABLE_NONFREE */
 
 #define HAVE_OPENCV_CORE
 #define HAVE_OPENCV_IMGCODECS
