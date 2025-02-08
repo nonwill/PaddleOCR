@@ -133,9 +133,6 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) noexcept {
   paddle_infer::Config config;
   config.SetModel(model_dir + "/inference.pdmodel",
                   model_dir + "/inference.pdiparams");
-  std::cout << "In PP-OCRv3, default rec_img_h is 48,"
-            << "if you use other model, you should set the param rec_img_h=32"
-            << std::endl;
   if (args_.use_gpu) {
     config.EnableUseGpu(args_.gpu_mem, args_.gpu_id);
     if (args_.use_tensorrt) {
