@@ -27,7 +27,7 @@ INCLUDEPATH += $${PPOCR_ROOT_DIR} \
     $${PPOCR_ROOT_DIR}/include \
     $${OPENCV_DIR}/include \
     $${PADDLE_LIB}/paddle/include \
-    $${NWDEP_DIR}/getopt
+    $${NWDEP_DIR}/getoptpp
 
 Clipper2Lib {
     DEFINES += ClipperLib_Version_2
@@ -91,7 +91,7 @@ win32:equals(ARCHITECTURE,x64) {
 }
 
 LIBS += -lpaddle_inference -lopencv_world3420
-LIBS += -lgetopt
+LIBS += -lgetoptpp
 
 # win32:msvc*:QMAKE_CFLAGS_RELEASE += /MT
 # win32:msvc*:QMAKE_CXXFLAGS_RELEASE += /MT

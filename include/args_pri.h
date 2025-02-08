@@ -53,4 +53,4 @@ DEFINE_bool(cls, false, "Whether use cls in forward.")
 DEFINE_bool(table, false, "Whether use table structure in forward.")
 DEFINE_bool(layout, false, "Whether use layout analysis in forward.")
 
-DEFINE_bool(help, false, "Show this message.")
+DEFINE_void(help, false, "Show this message.")

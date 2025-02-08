@@ -34,12 +34,13 @@ public:
   int parseArgv(int argc, char **argv) noexcept;
   int parseInis(char const *inistring) noexcept;
 
+#define DEFINE_void(x) bool x
 #define DECLARE_bool(x) bool x
 #define DECLARE_int32(x) int x
 #define DECLARE_double(x) double x
 #define DECLARE_string(x) std::string x
 
-  DECLARE_bool(help);
+  DEFINE_void(help);
 
   // common args
   DECLARE_bool(use_gpu);
@@ -92,6 +93,7 @@ public:
   DECLARE_bool(table);
   DECLARE_bool(layout);
 
+#undef DEFINE_void
 #undef DECLARE_bool
 #undef DECLARE_int32
 #undef DECLARE_double

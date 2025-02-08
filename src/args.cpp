@@ -14,7 +14,7 @@
 
 #include <args.h>
 
-#include "getopt.h"
+#include "getopt.hh"
 #include <iostream>
 #include <string.h>
 
@@ -25,7 +25,9 @@ Args::Args() noexcept {
 #define DEFINE_int32(x, v, d) x = v;
 #define DEFINE_double(x, v, d) x = v;
 #define DEFINE_string(x, v, d) x = v;
+#define DEFINE_void DEFINE_bool
 #include "args_pri.h"
+#undef DEFINE_void
 #undef DEFINE_bool
 #undef DEFINE_int32
 #undef DEFINE_double
@@ -33,6 +35,9 @@ Args::Args() noexcept {
 }
 
 void ArgsHelp(std::ostream &out) noexcept {
+#define DEFINE_void(x, v, d)                                                   \
+  out << "  --" << #x << ": " << d << std::endl;
+
 #define DEFINE_bool(x, v, d)                                                   \
   out << "  --" << #x << ": " << d << std::endl                                \
       << "    type: bool  default: " << (v ? "true" : "false") << std::endl;
@@ -53,6 +58,7 @@ void ArgsHelp(std::ostream &out) noexcept {
 #include "args_pri.h"
   out << std::endl;
 
+#undef DEFINE_void
 #undef DEFINE_bool
 #undef DEFINE_int32
 #undef DEFINE_double
@@ -60,28 +66,29 @@ void ArgsHelp(std::ostream &out) noexcept {
 }
 
 int Args::parseArgv(int argc, char **argv) noexcept {
-  struct option const long_options[] = {{"help", 0, 0, 'h', 0},
-#define DEFINE_bool(x, v, d) {#x, 2, 0, 1, &x},
-#define DEFINE_int32(x, v, d) {#x, 2, 0, 2, &x},
-#define DEFINE_double(x, v, d) {#x, 2, 0, 3, &x},
-#define DEFINE_string(x, v, d) {#x, 2, 0, 4, &x},
+#define DEFINE_bool(x, v, d) OPTION_FOR_CONTEXT_BOOL(x),
+#define DEFINE_int32(x, v, d) OPTION_FOR_CONTEXT_SINT(x),
+#define DEFINE_double(x, v, d) OPTION_FOR_CONTEXT_DOUBLE(x),
+#define DEFINE_string(x, v, d) OPTION_FOR_CONTEXT_STRING(x),
+#define DEFINE_void DEFINE_bool
+  OptPlus::option const long_options[] = {{"help", OptPlus::no, 0, 'h', 0},
 #include "args_pri.h"
+                                        {0, OptPlus::no, 0, 0, 0}};
+#undef DEFINE_void
 #undef DEFINE_bool
 #undef DEFINE_int32
 #undef DEFINE_double
 #undef DEFINE_string
-                                        {0, 0, 0, 0, 0}};
 
-  int ret;
-  int option_index;
+  OptPlus optpp;
 
   for (;;) {
-    option_index = 0;
-    ret = getopt_long(argc, argv, "h", long_options, &option_index);
+    int option_index = 0;
+    int ret = optpp.travel_long(argc, argv, "h", long_options, &option_index);
     if (ret < 0)
       break;
 
-    struct option const opt = long_options[option_index];
+    OptPlus::option const &opt = long_options[option_index];
     if (!opt.name)
       continue;
 
@@ -89,25 +96,28 @@ int Args::parseArgv(int argc, char **argv) noexcept {
       if (ret == 'h')
         help = true;
       else if (option_index)
-        printf("non-context option: %s val=%d\n", opt.name, opt.val);
-    } else if (opt.val == 1) {
-      *((bool *)opt.context) = strcmp(optarg, "true") == 0 || atoi(optarg) != 0;
-    } else if (opt.val == 2) {
-      *((int *)opt.context) = atoi(optarg);
-    } else if (opt.val == 3) {
-      *((double *)opt.context) = atof(optarg);
-    } else if (opt.val == 4) {
-      *((std::string *)opt.context) = optarg;
+        fprintf(stderr, "OptPlus null context: %s val=%d\n", opt.name, opt.val);
+    } else if (opt.val == OptPlus::v_bool) {
+      *((bool *)opt.context) = optpp.as_bool();
+    } else if (opt.val == OptPlus::v_sint) {
+      *((int *)opt.context) = optpp.as_sint();
+    // } else if (opt.val == OptPlus::v_float) {
+    //   *((float *)opt.context) = optpp.arg_as_double();
+    } else if (opt.val == OptPlus::v_double) {
+      *((double *)opt.context) = optpp.as_double();
+    } else if (opt.val == OptPlus::v_string) {
+      *((std::string *)opt.context) = optpp.as_str();
     } else {
-      printf("notype-bind option: %s type=%d\n", opt.name, opt.val);
+      fprintf(stderr, "OptPlus ignored context: %s type=%d\n", opt.name, opt.val);
     }
   }
 
+  int optind = optpp.ind();
   if (optind < argc) {
-    printf("non-option ARGV-elements: ");
+    fprintf(stderr, "non-option ARGV-elements: ");
     while (optind < argc)
-      printf("%s ", argv[optind++]);
-    printf("\n");
+      fprintf(stderr, "%s ", argv[optind++]);
+    fprintf(stderr, "\n");
   }
 
   return 0;
@@ -154,8 +164,9 @@ int Args::parseInis(char const *inis) noexcept {
     x = value;                                                                 \
     continue;                                                                  \
   }
+#define DEFINE_void DEFINE_bool
 #include <args_pri.h>
-    DEFINE_bool(help, "", false);
+#undef DEFINE_void
 #undef DEFINE_bool
 #undef DEFINE_int32
 #undef DEFINE_double
