@@ -57,10 +57,8 @@ void check_params(Args const &args) {
   }
   if (args.rec) {
     std::cout
-        << "In PP-OCRv3, rec_image_shape parameter defaults to '3, 48, 320',"
-           "if you are using recognition model with PP-OCRv2 or an older "
-           "version, "
-           "please set --rec_image_shape='3,32,320"
+        << "Default rec_img_h is 48 in PP-OCRv3, minimum set 32 when "
+           "using recognition model with PP-OCRv2 or older version"
         << std::endl;
     if (args.rec_model_dir.empty() || args.image_dir.empty()) {
       std::cout << "Usage[rec]: ./ppocr "
@@ -123,6 +121,7 @@ void ocr(std::vector<cv::String> &cv_all_img_names, Args const &args) {
   std::vector<std::vector<OCRPredictResult>> ocr_results = ocr.ocr(img_list);
 
   for (int i = 0; i < img_names.size(); ++i) {
+    std::cout << std::endl;
     std::cout << "predict img: " << cv_all_img_names[i] << std::endl;
     Utility::print_result(ocr_results[i]);
     if (args.visualize && args.det) {

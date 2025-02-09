@@ -31,7 +31,7 @@ DEFINE_int32(cls_batch_num, 1, "cls_batch_num.")
 DEFINE_string(rec_model_dir, "", "Path of rec inference model.")
 DEFINE_int32(rec_batch_num, 6, "rec_batch_num.")
 DEFINE_string(rec_char_dict_path, "./ppocr_keys_v1.txt", "Path of dictionary.")
-DEFINE_int32(rec_img_h, 48, "rec image height, minimum 32 for PP-OCRv4")
+DEFINE_int32(rec_img_h, 48, "rec image height, minimum set 32 for PP-OCRv2 or older version")
 DEFINE_int32(rec_img_w, 320, "rec image width")
 
 // layout model related
