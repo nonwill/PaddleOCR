@@ -53,7 +53,7 @@ public:
   // DECLARE_bool(benchmark);
   DECLARE_string(output);
   DECLARE_string(image_dir);
-  DECLARE_int32(type);
+  DECLARE_string(type);
   // detection related
   DECLARE_string(det_model_dir);
   DECLARE_string(limit_type);

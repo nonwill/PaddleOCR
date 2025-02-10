@@ -24,7 +24,7 @@
 /// complete library rebuild. Including a generated header file in a single
 /// translation unit makes this problem go away.
 /// Git commit hash
-#define DNNL_VERSION_HASH  "N/A"
+#define DNNL_VERSION_HASH  "c5291ae7b85780985b9622b231b8c643b88e6a87"
 
 // clang-format on
 

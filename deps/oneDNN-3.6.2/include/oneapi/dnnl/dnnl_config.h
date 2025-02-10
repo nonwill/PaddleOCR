@@ -170,7 +170,7 @@
 /* #undef DNNL_EXPERIMENTAL_UKERNEL */
 
 // When defined, graph component is enabled.
-#define ONEDNN_BUILD_GRAPH
+/* #undef ONEDNN_BUILD_GRAPH */
 
 // When defined, experimental profiling capabilities are enabled.
 /* #undef DNNL_EXPERIMENTAL_PROFILING */
@@ -182,8 +182,8 @@
 
 // List of configurating build controls
 // Workload controls
-#define BUILD_TRAINING 1
-#define BUILD_INFERENCE 0
+#define BUILD_TRAINING 0
+#define BUILD_INFERENCE 1
 // Primitive controls
 #define BUILD_PRIMITIVE_ALL 1
 #define BUILD_BATCH_NORMALIZATION 0

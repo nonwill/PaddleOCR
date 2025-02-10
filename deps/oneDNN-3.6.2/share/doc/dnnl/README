@@ -10,7 +10,7 @@ and Intel Graphics.
 oneDNN is intended for deep learning applications and framework
 developers interested in improving application performance on CPUs and GPUs.
 
-This package contains oneDNN v3.6.2 (N/A).
+This package contains oneDNN v3.6.2 (c5291ae7b85780985b9622b231b8c643b88e6a87).
 
 You can find information about the latest version and release notes
 at the oneDNN Github (https://github.com/oneapi-src/oneDNN/releases).

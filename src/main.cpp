@@ -206,12 +206,12 @@ int main(int argc, char **argv) {
   if (!Utility::PathExists(args.output)) {
     Utility::CreateDir(args.output);
   }
-  if (args.type == 1) {
+  if (args.type == "ocr") {
     ocr(cv_all_img_names, args);
-  } else if (args.type == 2) {
+  } else if (args.type == "structure") {
     structure(cv_all_img_names, args);
   } else {
-    std::cout << "only value in ['ocr','structure'] is supported" << std::endl;
+    std::cerr << "Only type in ['ocr','structure'] is supported" << std::endl;
   }
   return 0;
 }
