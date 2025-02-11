@@ -162,18 +162,15 @@ Utility::GetRotateCropImage(const cv::Mat &srcimage,
                                  pow(points[0][1] - points[3][1], 2)));
 
   const cv::Point2f pts_std[4] = {
-      { 0., 0. },
-      { (float)img_crop_width, 0. },
-      { (float)img_crop_width, (float)img_crop_height },
-      { 0.f, (float)img_crop_height }
-  };
+      {0., 0.},
+      {(float)img_crop_width, 0.},
+      {(float)img_crop_width, (float)img_crop_height},
+      {0.f, (float)img_crop_height}};
 
-  const cv::Point2f pointsf[4] = {
-      { (float)points[0][0], (float)points[0][1] },
-      { (float)points[1][0], (float)points[1][1] },
-      { (float)points[2][0], (float)points[2][1] },
-      { (float)points[3][0], (float)points[3][1] }
-  };
+  const cv::Point2f pointsf[4] = {{(float)points[0][0], (float)points[0][1]},
+                                  {(float)points[1][0], (float)points[1][1]},
+                                  {(float)points[2][0], (float)points[2][1]},
+                                  {(float)points[3][0], (float)points[3][1]}};
 
   cv::Mat M = cv::getPerspectiveTransform(pointsf, pts_std);
 
@@ -348,7 +345,7 @@ Utility::xyxyxyxy2xyxy(const std::vector<std::vector<int>> &box) noexcept {
   int right = int(*std::max_element(x_collect, x_collect + 4));
   int top = int(*std::min_element(y_collect, y_collect + 4));
   int bottom = int(*std::max_element(y_collect, y_collect + 4));
-  return { left, top, right, bottom };
+  return {left, top, right, bottom};
 }
 
 std::vector<int> Utility::xyxyxyxy2xyxy(const std::vector<int> &box) noexcept {
@@ -358,7 +355,7 @@ std::vector<int> Utility::xyxyxyxy2xyxy(const std::vector<int> &box) noexcept {
   int right = int(*std::max_element(x_collect, x_collect + 4));
   int top = int(*std::min_element(y_collect, y_collect + 4));
   int bottom = int(*std::max_element(y_collect, y_collect + 4));
-  return { left, top, right, bottom };
+  return {left, top, right, bottom};
 }
 
 float Utility::fast_exp(float x) noexcept {
