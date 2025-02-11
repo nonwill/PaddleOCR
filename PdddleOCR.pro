@@ -2,7 +2,7 @@ TEMPLATE = subdirs
 
 CONFIG += ordered
 
-SUBDIRS += deps
+SUBDIRS += paddle
 
 SUBDIRS += libs
 

@@ -135,54 +135,54 @@
 #define MKL_DC_ZERO_IMAG(x) ((x).real = (x).real, (x).imag = 0.0)
 #define MKL_DC_NON_POS(x) (!((x).real > 0.0))
 #define MKL_DC_ADD(x, y, z) do { \
-	(x).real = (y).real + (z).real; \
-	(x).imag = (y).imag + (z).imag; \
+    (x).real = (y).real + (z).real; \
+    (x).imag = (y).imag + (z).imag; \
 } while (0)
 #define MKL_DC_SUB(x, y, z) do { \
-	(x).real = (y).real - (z).real; \
-	(x).imag = (y).imag - (z).imag; \
+    (x).real = (y).real - (z).real; \
+    (x).imag = (y).imag - (z).imag; \
 } while (0)
 #define MKL_DC_CONJ(x, y) ((x).real = (y).real, (x).imag = - (y).imag)
 #define MKL_DC_MUL(z, x, y) do { \
-	mkl_dc_type t; \
-	t.real = (x).real * (y).real - (x).imag * (y).imag; \
-	t.imag = (x).real * (y).imag + (x).imag * (y).real; \
-	(z) = t; \
+    mkl_dc_type t; \
+    t.real = (x).real * (y).real - (x).imag * (y).imag; \
+    t.imag = (x).real * (y).imag + (x).imag * (y).real; \
+    (z) = t; \
 } while (0)
 #define MKL_DC_MUL_ADD(r, x, y, z) do { \
-	mkl_dc_type t; \
-	t.real = (x).real * (y).real - (x).imag * (y).imag; \
-	t.imag = (x).real * (y).imag + (x).imag * (y).real; \
-	(r).real = t.real + (z).real; \
-	(r).imag = t.imag + (z).imag; \
+    mkl_dc_type t; \
+    t.real = (x).real * (y).real - (x).imag * (y).imag; \
+    t.imag = (x).real * (y).imag + (x).imag * (y).real; \
+    (r).real = t.real + (z).real; \
+    (r).imag = t.imag + (z).imag; \
 } while (0)
 #define MKL_DC_DIV(z, x, y) do { \
-	mkl_dc_type t; \
-	mkl_dc_real_type r; \
-	if (MKL_DC_ABS((y).imag) <= MKL_DC_ABS((y).real)) { \
-		r = (y).imag / (y).real; \
-		t.real = ((x).real + (x).imag * r) / ((y).real + (y).imag * r); \
-		t.imag = ((x).imag - (x).real * r) / ((y).real + (y).imag * r); \
-	} else { \
-		r = (y).real / (y).imag; \
-		t.real = ((x).imag + (x).real * r) / ((y).imag + (y).real * r); \
-		t.imag = (-(x).real + (x).imag * r) / ((y).imag + (y).real * r); \
-	} \
-	(z) = t; \
+    mkl_dc_type t; \
+    mkl_dc_real_type r; \
+    if (MKL_DC_ABS((y).imag) <= MKL_DC_ABS((y).real)) { \
+        r = (y).imag / (y).real; \
+        t.real = ((x).real + (x).imag * r) / ((y).real + (y).imag * r); \
+        t.imag = ((x).imag - (x).real * r) / ((y).real + (y).imag * r); \
+    } else { \
+        r = (y).real / (y).imag; \
+        t.real = ((x).imag + (x).real * r) / ((y).imag + (y).real * r); \
+        t.imag = (-(x).real + (x).imag * r) / ((y).imag + (y).real * r); \
+    } \
+    (z) = t; \
 } while (0)
 #define MKL_DC_SUB_MUL(r, x, y, z) do { \
-	mkl_dc_type t; \
-	t.real = (y).real * (z).real - (y).imag * (z).imag; \
-	t.imag = (y).real * (z).imag + (y).imag * (z).real; \
-	(r).real = (x).real - t.real; \
-	(r).imag = (x).imag - t.imag; \
+    mkl_dc_type t; \
+    t.real = (y).real * (z).real - (y).imag * (z).imag; \
+    t.imag = (y).real * (z).imag + (y).imag * (z).real; \
+    (r).real = (x).real - t.real; \
+    (r).imag = (x).imag - t.imag; \
 } while (0)
 #define MKL_DC_SUB_MUL_CONJ(r, x, y, z) do { \
-	mkl_dc_type t; \
-	t.real = (y).real * (z).real + (y).imag * (z).imag; \
-	t.imag = (y).imag * (z).real - (y).real * (z).imag; \
-	(r).real = (x).real - t.real; \
-	(r).imag = (x).imag - t.imag; \
+    mkl_dc_type t; \
+    t.real = (y).real * (z).real + (y).imag * (z).imag; \
+    t.imag = (y).imag * (z).real - (y).real * (z).imag; \
+    (r).real = (x).real - t.real; \
+    (r).imag = (x).imag - t.imag; \
 } while (0)
 #define MKL_DC_SWAP(x, y) do { \
     mkl_dc_type t; \
@@ -294,7 +294,7 @@
 #endif
 
 #ifdef __GNUC__
-#define MKL_DC_PRAGMA_VECTOR 
+#define MKL_DC_PRAGMA_VECTOR
 #else
 #define MKL_DC_PRAGMA_VECTOR __pragma(vector always)
 #endif

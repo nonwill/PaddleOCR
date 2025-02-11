@@ -56,7 +56,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_nn_mnk)
  const mkl_dc_type * A, MKL_INT lda,
  const mkl_dc_type * B, MKL_INT ldb,
  const mkl_dc_type * BETA,
- mkl_dc_type * C, MKL_INT ldc) 
+ mkl_dc_type * C, MKL_INT ldc)
 {
 #undef MKL_DC_AA
 #undef MKL_DC_BB
@@ -1790,7 +1790,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_nn_mnk)
 
             i += MKER3;
         }
-        
+
     } else if ((n-j) == 2) {
 
         MKL_INT i;
@@ -2697,7 +2697,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_nt_mnk)
  const mkl_dc_type * A, MKL_INT lda,
  const mkl_dc_type * B, MKL_INT ldb,
  const mkl_dc_type * BETA,
- mkl_dc_type * C, MKL_INT ldc) 
+ mkl_dc_type * C, MKL_INT ldc)
 {
 #undef MKL_DC_AA
 #undef MKL_DC_BB
@@ -4431,7 +4431,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_nt_mnk)
 
             i += MKER3;
         }
-        
+
     } else if ((n-j) == 2) {
 
         MKL_INT i;
@@ -5338,7 +5338,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tn_mnk)
  const mkl_dc_type * A, MKL_INT lda,
  const mkl_dc_type * B, MKL_INT ldb,
  const mkl_dc_type * BETA,
- mkl_dc_type * C, MKL_INT ldc) 
+ mkl_dc_type * C, MKL_INT ldc)
 {
 #undef MKL_DC_AA
 #undef MKL_DC_BB
@@ -6001,7 +6001,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
  const mkl_dc_type * A, MKL_INT lda,
  const mkl_dc_type * B, MKL_INT ldb,
  const mkl_dc_type * BETA,
- mkl_dc_type * C, MKL_INT ldc) 
+ mkl_dc_type * C, MKL_INT ldc)
 {
 #undef MKL_DC_AA
 #undef MKL_DC_BB
@@ -6478,7 +6478,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
                 MKL_DC_MUL_ADD_YMM(ymm_a, ymm_b2, ymm_temp3, ymm_temp);
             }
 
-            ymm_temp4 = MKL_DC_UNPACKLO_YMM(ymm_temp0, ymm_temp2);             
+            ymm_temp4 = MKL_DC_UNPACKLO_YMM(ymm_temp0, ymm_temp2);
             xmm_temp4 = MKL_DC_CAST_YMM_TO_XMM(ymm_temp4);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c0 = MKL_DC_LOAD_XMM(&MKL_DC_CC(i,j+0));
@@ -6499,7 +6499,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
 #endif
             MKL_DC_STORE_XMM(&MKL_DC_CC(i,j+0),xmm_c0);
 
-            ymm_temp5 = MKL_DC_UNPACKHI_YMM(ymm_temp0, ymm_temp2);             
+            ymm_temp5 = MKL_DC_UNPACKHI_YMM(ymm_temp0, ymm_temp2);
             xmm_temp5 = MKL_DC_CAST_YMM_TO_XMM(ymm_temp5);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c2 = MKL_DC_LOAD_XMM(&MKL_DC_CC(i,j+1));
@@ -6520,7 +6520,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
 #endif
             MKL_DC_STORE_XMM(&MKL_DC_CC(i,j+1),xmm_c2);
 
-            ymm_temp0 = MKL_DC_PERM2F128_YMM(ymm_temp4, ymm_temp4, 0x11); 
+            ymm_temp0 = MKL_DC_PERM2F128_YMM(ymm_temp4, ymm_temp4, 0x11);
             xmm_temp0 = MKL_DC_CAST_YMM_TO_XMM(ymm_temp0);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c0 = MKL_DC_LOAD_XMM(&MKL_DC_CC(i,j+2));
@@ -6541,7 +6541,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
 #endif
             MKL_DC_STORE_XMM(&MKL_DC_CC(i,j+2),xmm_c0);
 
-            ymm_temp0 = MKL_DC_PERM2F128_YMM(ymm_temp5, ymm_temp5, 0x11); 
+            ymm_temp0 = MKL_DC_PERM2F128_YMM(ymm_temp5, ymm_temp5, 0x11);
             xmm_temp0 = MKL_DC_CAST_YMM_TO_XMM(ymm_temp0);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c2 = MKL_DC_LOAD_XMM(&MKL_DC_CC(i,j+3));
@@ -6562,7 +6562,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
 #endif
             MKL_DC_STORE_XMM(&MKL_DC_CC(i,j+3),xmm_c2);
 
-            ymm_temp4 = MKL_DC_UNPACKLO_YMM(ymm_temp1, ymm_temp3);             
+            ymm_temp4 = MKL_DC_UNPACKLO_YMM(ymm_temp1, ymm_temp3);
             xmm_temp4 = MKL_DC_CAST_YMM_TO_XMM(ymm_temp4);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c0 = MKL_DC_LOAD_XMM(&MKL_DC_CC(i,j+4));
@@ -6583,7 +6583,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
 #endif
             MKL_DC_STORE_XMM(&MKL_DC_CC(i,j+4),xmm_c0);
 
-            ymm_temp5 = MKL_DC_UNPACKHI_YMM(ymm_temp1, ymm_temp3);             
+            ymm_temp5 = MKL_DC_UNPACKHI_YMM(ymm_temp1, ymm_temp3);
             xmm_temp5 = MKL_DC_CAST_YMM_TO_XMM(ymm_temp5);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c2 = MKL_DC_LOAD_XMM(&MKL_DC_CC(i,j+5));
@@ -6604,7 +6604,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
 #endif
             MKL_DC_STORE_XMM(&MKL_DC_CC(i,j+5),xmm_c2);
 
-            ymm_temp0 = MKL_DC_PERM2F128_YMM(ymm_temp4, ymm_temp4, 0x11); 
+            ymm_temp0 = MKL_DC_PERM2F128_YMM(ymm_temp4, ymm_temp4, 0x11);
             xmm_temp0 = MKL_DC_CAST_YMM_TO_XMM(ymm_temp0);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c0 = MKL_DC_LOAD_XMM(&MKL_DC_CC(i,j+6));
@@ -6625,7 +6625,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
 #endif
             MKL_DC_STORE_XMM(&MKL_DC_CC(i,j+6),xmm_c0);
 
-            ymm_temp1 = MKL_DC_PERM2F128_YMM(ymm_temp5, ymm_temp5, 0x11); 
+            ymm_temp1 = MKL_DC_PERM2F128_YMM(ymm_temp5, ymm_temp5, 0x11);
             xmm_temp1 = MKL_DC_CAST_YMM_TO_XMM(ymm_temp1);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c2 = MKL_DC_LOAD_XMM(&MKL_DC_CC(i,j+7));
@@ -6729,7 +6729,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
 #endif
             MKL_DC_STORE_XMM_S(&MKL_DC_CC(i,j+0),xmm_c0);
 
-            xmm_temp4 = MKL_DC_UNPACKHI_XMM(xmm_temp4, xmm_temp4);             
+            xmm_temp4 = MKL_DC_UNPACKHI_XMM(xmm_temp4, xmm_temp4);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c0 = MKL_DC_LOAD_XMM_S(&MKL_DC_CC(i,j+1));
 #if !defined(MKL_DC_BETA_ONE)
@@ -6749,7 +6749,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
 #endif
             MKL_DC_STORE_XMM_S(&MKL_DC_CC(i,j+1),xmm_c0);
 
-            ymm_temp4 = MKL_DC_PERM2F128_YMM(ymm_temp0, ymm_temp0, 0x11); 
+            ymm_temp4 = MKL_DC_PERM2F128_YMM(ymm_temp0, ymm_temp0, 0x11);
             xmm_temp4 = MKL_DC_CAST_YMM_TO_XMM(ymm_temp4);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c0 = MKL_DC_LOAD_XMM_S(&MKL_DC_CC(i,j+2));
@@ -6770,7 +6770,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
 #endif
             MKL_DC_STORE_XMM_S(&MKL_DC_CC(i,j+2),xmm_c0);
 
-            xmm_temp4 = MKL_DC_UNPACKHI_XMM(xmm_temp4, xmm_temp4);             
+            xmm_temp4 = MKL_DC_UNPACKHI_XMM(xmm_temp4, xmm_temp4);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c0 = MKL_DC_LOAD_XMM_S(&MKL_DC_CC(i,j+3));
 #if !defined(MKL_DC_BETA_ONE)
@@ -6810,7 +6810,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
 #endif
             MKL_DC_STORE_XMM_S(&MKL_DC_CC(i,j+4),xmm_c0);
 
-            xmm_temp4 = MKL_DC_UNPACKHI_XMM(xmm_temp4, xmm_temp4);             
+            xmm_temp4 = MKL_DC_UNPACKHI_XMM(xmm_temp4, xmm_temp4);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c0 = MKL_DC_LOAD_XMM_S(&MKL_DC_CC(i,j+5));
 #if !defined(MKL_DC_BETA_ONE)
@@ -6830,7 +6830,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
 #endif
             MKL_DC_STORE_XMM_S(&MKL_DC_CC(i,j+5),xmm_c0);
 
-            ymm_temp4 = MKL_DC_PERM2F128_YMM(ymm_temp1, ymm_temp1, 0x11); 
+            ymm_temp4 = MKL_DC_PERM2F128_YMM(ymm_temp1, ymm_temp1, 0x11);
             xmm_temp4 = MKL_DC_CAST_YMM_TO_XMM(ymm_temp4);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c0 = MKL_DC_LOAD_XMM_S(&MKL_DC_CC(i,j+6));
@@ -6851,7 +6851,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
 #endif
             MKL_DC_STORE_XMM_S(&MKL_DC_CC(i,j+6),xmm_c0);
 
-            xmm_temp4 = MKL_DC_UNPACKHI_XMM(xmm_temp4, xmm_temp4);             
+            xmm_temp4 = MKL_DC_UNPACKHI_XMM(xmm_temp4, xmm_temp4);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c0 = MKL_DC_LOAD_XMM_S(&MKL_DC_CC(i,j+7));
 #if !defined(MKL_DC_BETA_ONE)
@@ -7141,7 +7141,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
                 MKL_DC_MUL_ADD_YMM(ymm_a, ymm_b1, ymm_temp2, ymm_temp);
             }
 
-            ymm_temp4 = MKL_DC_UNPACKLO_YMM(ymm_temp0, ymm_temp2);             
+            ymm_temp4 = MKL_DC_UNPACKLO_YMM(ymm_temp0, ymm_temp2);
             xmm_temp4 = MKL_DC_CAST_YMM_TO_XMM(ymm_temp4);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c0 = MKL_DC_LOAD_XMM(&MKL_DC_CC(i,j+0));
@@ -7162,7 +7162,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
 #endif
             MKL_DC_STORE_XMM(&MKL_DC_CC(i,j+0),xmm_c0);
 
-            ymm_temp5 = MKL_DC_UNPACKHI_YMM(ymm_temp0, ymm_temp2);             
+            ymm_temp5 = MKL_DC_UNPACKHI_YMM(ymm_temp0, ymm_temp2);
             xmm_temp5 = MKL_DC_CAST_YMM_TO_XMM(ymm_temp5);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c2 = MKL_DC_LOAD_XMM(&MKL_DC_CC(i,j+1));
@@ -7183,7 +7183,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
 #endif
             MKL_DC_STORE_XMM(&MKL_DC_CC(i,j+1),xmm_c2);
 
-            ymm_temp0 = MKL_DC_PERM2F128_YMM(ymm_temp4, ymm_temp4, 0x11); 
+            ymm_temp0 = MKL_DC_PERM2F128_YMM(ymm_temp4, ymm_temp4, 0x11);
             xmm_temp0 = MKL_DC_CAST_YMM_TO_XMM(ymm_temp0);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c0 = MKL_DC_LOAD_XMM(&MKL_DC_CC(i,j+2));
@@ -7204,7 +7204,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
 #endif
             MKL_DC_STORE_XMM(&MKL_DC_CC(i,j+2),xmm_c0);
 
-            ymm_temp0 = MKL_DC_PERM2F128_YMM(ymm_temp5, ymm_temp5, 0x11); 
+            ymm_temp0 = MKL_DC_PERM2F128_YMM(ymm_temp5, ymm_temp5, 0x11);
             xmm_temp0 = MKL_DC_CAST_YMM_TO_XMM(ymm_temp0);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c2 = MKL_DC_LOAD_XMM(&MKL_DC_CC(i,j+3));
@@ -7292,7 +7292,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
 #endif
             MKL_DC_STORE_XMM_S(&MKL_DC_CC(i,j+0),xmm_c0);
 
-            xmm_temp4 = MKL_DC_UNPACKHI_XMM(xmm_temp4, xmm_temp4);             
+            xmm_temp4 = MKL_DC_UNPACKHI_XMM(xmm_temp4, xmm_temp4);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c0 = MKL_DC_LOAD_XMM_S(&MKL_DC_CC(i,j+1));
 #if !defined(MKL_DC_BETA_ONE)
@@ -7312,7 +7312,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
 #endif
             MKL_DC_STORE_XMM_S(&MKL_DC_CC(i,j+1),xmm_c0);
 
-            ymm_temp4 = MKL_DC_PERM2F128_YMM(ymm_temp0, ymm_temp0, 0x11); 
+            ymm_temp4 = MKL_DC_PERM2F128_YMM(ymm_temp0, ymm_temp0, 0x11);
             xmm_temp4 = MKL_DC_CAST_YMM_TO_XMM(ymm_temp4);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c0 = MKL_DC_LOAD_XMM_S(&MKL_DC_CC(i,j+2));
@@ -7333,7 +7333,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
 #endif
             MKL_DC_STORE_XMM_S(&MKL_DC_CC(i,j+2),xmm_c0);
 
-            xmm_temp4 = MKL_DC_UNPACKHI_XMM(xmm_temp4, xmm_temp4);             
+            xmm_temp4 = MKL_DC_UNPACKHI_XMM(xmm_temp4, xmm_temp4);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c0 = MKL_DC_LOAD_XMM_S(&MKL_DC_CC(i,j+3));
 #if !defined(MKL_DC_BETA_ONE)
@@ -7594,7 +7594,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
             if ((kK-k) & 2) {
                 xmm_b1      = MKL_DC_LOAD_XMM(&MKL_DC_BB(k+0, j));
                 xmm_a       = MKL_DC_LOADDUP_XMM(&MKL_DC_AA(i, k+0));
-                MKL_DC_MUL_ADD_XMM(xmm_a, xmm_b1, xmm_temp0, xmm_temp); 
+                MKL_DC_MUL_ADD_XMM(xmm_a, xmm_b1, xmm_temp0, xmm_temp);
                 xmm_a       = MKL_DC_LOADDUP_XMM(&MKL_DC_AA(i+1, k+0));
                 MKL_DC_MUL_ADD_XMM(xmm_a, xmm_b1, xmm_temp2, xmm_temp);
 
@@ -7622,7 +7622,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
                 MKL_DC_MUL_ADD_XMM(xmm_a, xmm_b1, xmm_temp2, xmm_temp);
             }
 
-            xmm_temp4 = MKL_DC_UNPACKLO_XMM(xmm_temp0, xmm_temp2);             
+            xmm_temp4 = MKL_DC_UNPACKLO_XMM(xmm_temp0, xmm_temp2);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c0 = MKL_DC_LOAD_XMM(&MKL_DC_CC(i,j+0));
 #if !defined(MKL_DC_BETA_ONE)
@@ -7642,7 +7642,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
 #endif
             MKL_DC_STORE_XMM(&MKL_DC_CC(i,j+0),xmm_c0);
 
-            xmm_temp5 = MKL_DC_UNPACKHI_XMM(xmm_temp0, xmm_temp2);             
+            xmm_temp5 = MKL_DC_UNPACKHI_XMM(xmm_temp0, xmm_temp2);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c2 = MKL_DC_LOAD_XMM(&MKL_DC_CC(i,j+1));
 #if !defined(MKL_DC_BETA_ONE)
@@ -7728,7 +7728,7 @@ static __inline void MKL_DC_FNAME_GEMM_KERNEL(dgemm_tt_mnk)
 #endif
             MKL_DC_STORE_XMM_S(&MKL_DC_CC(i,j+0),xmm_c0);
 
-            xmm_temp4 = MKL_DC_UNPACKHI_XMM(xmm_temp0, xmm_temp0);             
+            xmm_temp4 = MKL_DC_UNPACKHI_XMM(xmm_temp0, xmm_temp0);
 #if !defined(MKL_DC_BETA_ZERO)
             xmm_c0 = MKL_DC_LOAD_XMM_S(&MKL_DC_CC(i,j+1));
 #if !defined(MKL_DC_BETA_ONE)

@@ -70,27 +70,27 @@ void __stdcall sgemm_direct(const char *transa, int transa_len, const char *tran
 void __stdcall cgemm_direct(const char *transa, int transa_len, const char *transb, int transb_len, const MKL_INT *m, const MKL_INT *n, const MKL_INT *k, const MKL_Complex8 *alpha, const MKL_Complex8 *a, const MKL_INT *lda, const MKL_Complex8 *b, const MKL_INT *ldb, const MKL_Complex8 *beta, MKL_Complex8 *c, const MKL_INT *ldc, const MKL_INT* flag);
 void __stdcall zgemm_direct(const char *transa, int transa_len, const char *transb, int transb_len, const MKL_INT *m, const MKL_INT *n, const MKL_INT *k, const MKL_Complex16 *alpha, const MKL_Complex16 *a, const MKL_INT *lda, const MKL_Complex16 *b, const MKL_INT *ldb, const MKL_Complex16 *beta, MKL_Complex16 *c, const MKL_INT *ldc, const MKL_INT* flag);
 
-void __stdcall mkl_dgemm_jit(const char *transa, int transa_len, const char *transb, int transb_len, 
+void __stdcall mkl_dgemm_jit(const char *transa, int transa_len, const char *transb, int transb_len,
                              const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
-                             const double *alpha, const double *a, const MKL_INT *lda, 
+                             const double *alpha, const double *a, const MKL_INT *lda,
                              const double *b, const MKL_INT *ldb,
                              const double *beta, double *c, const MKL_INT *ldc);
 
-void __stdcall mkl_sgemm_jit(const char *transa, int transa_len, const char *transb, int transb_len, 
+void __stdcall mkl_sgemm_jit(const char *transa, int transa_len, const char *transb, int transb_len,
                              const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
-                             const float *alpha, const float *a, const MKL_INT *lda, 
+                             const float *alpha, const float *a, const MKL_INT *lda,
                              const float *b, const MKL_INT *ldb,
                              const float *beta, float *c, const MKL_INT *ldc);
 
-void __stdcall mkl_cgemm_jit(const char *transa, int transa_len, const char *transb, int transb_len, 
+void __stdcall mkl_cgemm_jit(const char *transa, int transa_len, const char *transb, int transb_len,
                              const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
-                             const MKL_Complex8 *alpha, const MKL_Complex8 *a, const MKL_INT *lda, 
+                             const MKL_Complex8 *alpha, const MKL_Complex8 *a, const MKL_INT *lda,
                              const MKL_Complex8 *b, const MKL_INT *ldb,
                              const MKL_Complex8 *beta, MKL_Complex8 *c, const MKL_INT *ldc);
 
-void __stdcall mkl_zgemm_jit(const char *transa, int transa_len, const char *transb, int transb_len, 
+void __stdcall mkl_zgemm_jit(const char *transa, int transa_len, const char *transb, int transb_len,
                              const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
-                             const MKL_Complex16 *alpha, const MKL_Complex16 *a, const MKL_INT *lda, 
+                             const MKL_Complex16 *alpha, const MKL_Complex16 *a, const MKL_INT *lda,
                              const MKL_Complex16 *b, const MKL_INT *ldb,
                              const MKL_Complex16 *beta, MKL_Complex16 *c, const MKL_INT *ldc);
 
@@ -121,27 +121,27 @@ void sgemm_direct(const char *transa, const char *transb, const MKL_INT *m, cons
 void cgemm_direct(const char *transa, const char *transb, const MKL_INT *m, const MKL_INT *n, const MKL_INT *k, const MKL_Complex8 *alpha, const MKL_Complex8 *a, const MKL_INT *lda, const MKL_Complex8 *b, const MKL_INT *ldb, const MKL_Complex8 *beta, MKL_Complex8 *c, const MKL_INT *ldc, const MKL_INT* flag);
 void zgemm_direct(const char *transa, const char *transb, const MKL_INT *m, const MKL_INT *n, const MKL_INT *k, const MKL_Complex16 *alpha, const MKL_Complex16 *a, const MKL_INT *lda, const MKL_Complex16 *b, const MKL_INT *ldb, const MKL_Complex16 *beta, MKL_Complex16 *c, const MKL_INT *ldc, const MKL_INT* flag);
 
-void mkl_dgemm_jit(const char *transa, const char *transb, 
+void mkl_dgemm_jit(const char *transa, const char *transb,
                    const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
-                   const double *alpha, const double *a, const MKL_INT *lda, 
+                   const double *alpha, const double *a, const MKL_INT *lda,
                    const double *b, const MKL_INT *ldb,
                    const double *beta, double *c, const MKL_INT *ldc);
 
 void mkl_sgemm_jit(const char *transa, const char *transb,
                    const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
-                   const float *alpha, const float *a, const MKL_INT *lda, 
+                   const float *alpha, const float *a, const MKL_INT *lda,
                    const float *b, const MKL_INT *ldb,
                    const float *beta, float *c, const MKL_INT *ldc);
 
-void mkl_cgemm_jit(const char *transa, const char *transb, 
+void mkl_cgemm_jit(const char *transa, const char *transb,
                    const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
-                   const MKL_Complex8 *alpha, const MKL_Complex8 *a, const MKL_INT *lda, 
+                   const MKL_Complex8 *alpha, const MKL_Complex8 *a, const MKL_INT *lda,
                    const MKL_Complex8 *b, const MKL_INT *ldb,
                    const MKL_Complex8 *beta, MKL_Complex8 *c, const MKL_INT *ldc);
 
 void mkl_zgemm_jit(const char *transa, const char *transb,
                    const MKL_INT *m, const MKL_INT *n, const MKL_INT *k,
-                   const MKL_Complex16 *alpha, const MKL_Complex16 *a, const MKL_INT *lda, 
+                   const MKL_Complex16 *alpha, const MKL_Complex16 *a, const MKL_INT *lda,
                    const MKL_Complex16 *b, const MKL_INT *ldb,
                    const MKL_Complex16 *beta, MKL_Complex16 *c, const MKL_INT *ldc);
 
@@ -296,7 +296,7 @@ float  sdot_direct(const MKL_INT *n, const float *x, const MKL_INT *incx, const 
 
 /* JIT will be activated if:
     - A and C matrices are not too large (*JIT_MAX_AC_ELEMENTS max)
-    - m*n*k is not too large             (*JIT_MAX_MNK max)	          */
+    - m*n*k is not too large             (*JIT_MAX_MNK max)           */
 #define DJIT_MAX_AC_ELEMENTS 4096
 #define DJIT_MAX_MNK 131072
 #define SJIT_MAX_AC_ELEMENTS 8192

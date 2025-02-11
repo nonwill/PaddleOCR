@@ -45,7 +45,7 @@
  * - i_free
  *
  * C++ new and delete operators are changed to also use these function
- * pointers, if they occur in a library at all. No library supporting memory 
+ * pointers, if they occur in a library at all. No library supporting memory
  * allocation replacement will allocate memory before it is invoked explicitly
  * by the application for the first time.
  *

@@ -1242,7 +1242,7 @@ do { \
 
 static __inline void mkl_dc_getrfnp(MKL_INT m, MKL_INT n, mkl_dc_type* a, MKL_INT lda, MKL_INT* info)
 {
-    *info = 0; 
+    *info = 0;
     mkl_dc_getrfnp_generic(m, n, a, lda, info, MKL_DC_MN);
 }
 

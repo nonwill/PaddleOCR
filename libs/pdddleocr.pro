@@ -9,7 +9,7 @@ TARGET = pdddleocr
 mac:CONFIG += static
 
 win32:DEFINES += PPOCR_LIBRARY
-#CONFIG += Clipper2Lib
+CONFIG += Clipper2Lib
 
 include($$PWD/../../nwDeployed/nwDeployed.pri)
 
@@ -79,13 +79,13 @@ win32:equals(ARCHITECTURE,x64) {
   ppmkl {
     _ = $$nwCopyFileToDir($${PPOCR_DEPS_DIR}/oneDNN-3.6.2/bin/dnnl.dll,$${DESTDIR},mkldnn.dll)
     _ = $$nwCopyFileToDir($${PPOCR_DEPS_DIR}/mklml/lib/win-x64/native/*.dll,$${DESTDIR})
-    _ = $$nwCopyFileToDir($${PADDLE_LIB}/paddle/lib/mkl/*.dll,$${DESTDIR})
-    _ = $$nwCopyFileToDir($${PADDLE_LIB}/paddle/lib/mkl/*.manifest,$${DESTDIR})
+    _ = $$nwCopyFileToDir($${PADDLE_LIB}/paddle/lib/mkl/paddle_inference.dll,$${DESTDIR})
+    _ = $$nwCopyFileToDir($${PADDLE_LIB}/paddle/lib/mkl/paddle_inference.manifest,$${DESTDIR})
     LIBS += -L$${PADDLE_LIB}/paddle/lib/mkl
   } else {
     _ = $$nwCopyFileToDir($${PPOCR_DEPS_DIR}/OpenBLAS-0.3.29/bin/openblas.dll,$${DESTDIR})
-    _ = $$nwCopyFileToDir($${PADDLE_LIB}/paddle/lib/*.dll,$${DESTDIR})
-    _ = $$nwCopyFileToDir($${PADDLE_LIB}/paddle/lib/*.manifest,$${DESTDIR})
+    _ = $$nwCopyFileToDir($${PADDLE_LIB}/paddle/lib/paddle_inference.dll,$${DESTDIR})
+    _ = $$nwCopyFileToDir($${PADDLE_LIB}/paddle/lib/paddle_inference.manifest,$${DESTDIR})
     LIBS += -L$${PADDLE_LIB}/paddle/lib
   }
 }

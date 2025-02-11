@@ -68,49 +68,49 @@
 #endif
 
 #define mkl_dc_gemm_xx_mnk_pst_beta(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, \
-		a_op, b_op, c_op, a_access, b_access) \
+        a_op, b_op, c_op, a_access, b_access) \
 do { \
-	MKL_INT i, j, l; \
-	MKL_DC_PRAGMA_VECTOR \
-	for (i = 0; i < m; i++) \
-	for (j = 0; j < n; j++) { \
-		mkl_dc_type c, temp; MKL_DC_SET_ZERO(temp); \
-		for (l = 0; l < k; l++) { \
-			mkl_dc_type a, b, temp1; \
-			a = a_access(A, lda, i, l); a_op(a, a); \
-			b = b_access(B, ldb, l, j); b_op(b, b); \
-			MKL_DC_MUL(temp1, a, b); \
-			MKL_DC_ADD(temp, temp, temp1); \
-		} \
-		MKL_DC_MUL(temp, alpha, temp); \
-		c = C[i + j * ldc]; \
-		c_op(c, beta); \
-		MKL_DC_ADD(C[i + j * ldc], c, temp); \
-	} \
+    MKL_INT i, j, l; \
+    MKL_DC_PRAGMA_VECTOR \
+    for (i = 0; i < m; i++) \
+    for (j = 0; j < n; j++) { \
+        mkl_dc_type c, temp; MKL_DC_SET_ZERO(temp); \
+        for (l = 0; l < k; l++) { \
+            mkl_dc_type a, b, temp1; \
+            a = a_access(A, lda, i, l); a_op(a, a); \
+            b = b_access(B, ldb, l, j); b_op(b, b); \
+            MKL_DC_MUL(temp1, a, b); \
+            MKL_DC_ADD(temp, temp, temp1); \
+        } \
+        MKL_DC_MUL(temp, alpha, temp); \
+        c = C[i + j * ldc]; \
+        c_op(c, beta); \
+        MKL_DC_ADD(C[i + j * ldc], c, temp); \
+    } \
 } while (0)
 
 #define mkl_dc_gemm_xx_mnk_pst(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, \
-		a_op, b_op, a_access, b_access) \
+        a_op, b_op, a_access, b_access) \
 do { \
-	if (MKL_DC_IS_ZERO(beta)) \
-		mkl_dc_gemm_xx_mnk_pst_beta(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, \
-				a_op, b_op, MKL_DC_ZERO_C, a_access, b_access); \
-	else \
-		mkl_dc_gemm_xx_mnk_pst_beta(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, \
-				a_op, b_op, MKL_DC_MUL_C, a_access, b_access); \
+    if (MKL_DC_IS_ZERO(beta)) \
+        mkl_dc_gemm_xx_mnk_pst_beta(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, \
+                a_op, b_op, MKL_DC_ZERO_C, a_access, b_access); \
+    else \
+        mkl_dc_gemm_xx_mnk_pst_beta(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, \
+                a_op, b_op, MKL_DC_MUL_C, a_access, b_access); \
 } while (0)
 
 #ifdef __AVX2__
 #ifdef MKL_DOUBLE
 
 #define MKL_DC_MUL_ADD_YMM(ymm_a, ymm_b, ymm_c, ymm_tmp)  \
-    ymm_c = _mm256_fmadd_pd(ymm_a, ymm_b, ymm_c); 
+    ymm_c = _mm256_fmadd_pd(ymm_a, ymm_b, ymm_c);
 
 #define MKL_DC_MUL_ADD_XMM(xmm_a, xmm_b, xmm_c, xmm_tmp)  \
-    xmm_c = _mm_fmadd_pd(xmm_a, xmm_b, xmm_c); 
+    xmm_c = _mm_fmadd_pd(xmm_a, xmm_b, xmm_c);
 
 #define MKL_DC_MUL_ADD_XMM_S(xmm_a, xmm_b, xmm_c, xmm_tmp)  \
-    xmm_c = _mm_fmadd_sd(xmm_a, xmm_b, xmm_c); 
+    xmm_c = _mm_fmadd_sd(xmm_a, xmm_b, xmm_c);
 
 #define MKL_DC_XOR_YMM _mm256_xor_pd
 #define MKL_DC_SETZERO_YMM _mm256_setzero_pd
@@ -156,13 +156,13 @@ do { \
         x2 = _mm256_permute2f128_pd(tmp2, tmp4, 0x20); \
         x3 = _mm256_permute2f128_pd(tmp1, tmp3, 0x31); \
         x4 = _mm256_permute2f128_pd(tmp2, tmp4, 0x31); \
-    } while (0)  
+    } while (0)
 
 #define MKL_DC_VEC_TRANSPOSE_XMM(out1, out2, in1, in2) \
     do { \
         out1 = _mm_unpacklo_pd(in1, in2);       \
         out2 = _mm_unpackhi_pd(in1, in2);       \
-    } while (0)  
+    } while (0)
 
 
 typedef __m128d MKL_DC_XMMTYPE;
@@ -182,7 +182,7 @@ typedef __m256d MKL_DC_YMMTYPE;
         } else { \
             mkl_dc_dgemm_tt_mnk_ ## kernel_type ## _ ## arch ## _pst(m, n, k, ALPHA, A, lda, B, ldb, BETA, C, ldc); \
         } \
-    } while (0) 
+    } while (0)
 
 
 #include "mkl_direct_blas_kernels.h"
@@ -217,43 +217,43 @@ typedef __m256d MKL_DC_YMMTYPE;
 static __inline void mkl_dc_gemm(const char * TRANSA, const char * TRANSB,
             const MKL_INT * M, const MKL_INT * N, const MKL_INT * K,
             const mkl_dc_type * ALPHA,
-			const mkl_dc_type * A, const MKL_INT * LDA,
+            const mkl_dc_type * A, const MKL_INT * LDA,
             const mkl_dc_type * B, const MKL_INT * LDB,
             const mkl_dc_type * BETA,
             mkl_dc_type * C, const MKL_INT * LDC)
 {
-	int AisN, AisT, AisC;
-	int BisN, BisT, BisC;
-	mkl_dc_type temp, alpha = *ALPHA, beta = *BETA;
-	MKL_INT m = *M, n = *N, k = *K;
-	MKL_INT lda = *LDA, ldb = *LDB, ldc = *LDC;
+    int AisN, AisT, AisC;
+    int BisN, BisT, BisC;
+    mkl_dc_type temp, alpha = *ALPHA, beta = *BETA;
+    MKL_INT m = *M, n = *N, k = *K;
+    MKL_INT lda = *LDA, ldb = *LDB, ldc = *LDC;
 
-	if (m <= 0 || n <= 0 || ((MKL_DC_IS_ZERO(alpha) || k <= 0) && MKL_DC_IS_ONE(beta)))
-		return;
+    if (m <= 0 || n <= 0 || ((MKL_DC_IS_ZERO(alpha) || k <= 0) && MKL_DC_IS_ONE(beta)))
+        return;
 
-	AisN = MKL_DC_MisN(*TRANSA);
-	BisN = MKL_DC_MisN(*TRANSB);
+    AisN = MKL_DC_MisN(*TRANSA);
+    BisN = MKL_DC_MisN(*TRANSB);
 #ifndef MKL_REAL_DATA_TYPE
-	AisT = MKL_DC_MisT(*TRANSA);
-	BisT = MKL_DC_MisT(*TRANSB);
-	AisC = !(AisN || AisT);
-	BisC = !(BisN || BisT);
+    AisT = MKL_DC_MisT(*TRANSA);
+    BisT = MKL_DC_MisT(*TRANSB);
+    AisC = !(AisN || AisT);
+    BisC = !(BisN || BisT);
 #endif
 
-	if (MKL_DC_IS_ZERO(alpha)) {
-		MKL_INT i, j;
-		if (MKL_DC_IS_ZERO(beta))
-			for (j = 0; j < n; j++)
+    if (MKL_DC_IS_ZERO(alpha)) {
+        MKL_INT i, j;
+        if (MKL_DC_IS_ZERO(beta))
+            for (j = 0; j < n; j++)
 #pragma vector
-				for (i = 0; i < m; i++)
-					MKL_DC_SET_ZERO(C[i + ldc * j]);
-		else
-			for (j = 0; j < n; j++)
+                for (i = 0; i < m; i++)
+                    MKL_DC_SET_ZERO(C[i + ldc * j]);
+        else
+            for (j = 0; j < n; j++)
 #pragma vector
-				for (i = 0; i < m; i++)
-					MKL_DC_MUL(C[i + ldc * j], beta, C[i + ldc * j]);
-		return;
-	}
+                for (i = 0; i < m; i++)
+                    MKL_DC_MUL(C[i + ldc * j], beta, C[i + ldc * j]);
+        return;
+    }
 
 #if defined(MKL_DOUBLE) && defined(__AVX2__)
     if (MKL_DC_IS_ONE(alpha) && MKL_DC_IS_ONE(beta)) {
@@ -270,26 +270,26 @@ static __inline void mkl_dc_gemm(const char * TRANSA, const char * TRANSB,
         MKL_DC_DGEMM_KERNELS(axbx, avx2);
     }
 #else
-	if (AisN && BisN)
-		mkl_dc_gemm_xx_mnk_pst(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, MKL_DC_MOV, MKL_DC_MOV, MKL_DC_MN, MKL_DC_MN);
+    if (AisN && BisN)
+        mkl_dc_gemm_xx_mnk_pst(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, MKL_DC_MOV, MKL_DC_MOV, MKL_DC_MN, MKL_DC_MN);
 #ifndef MKL_REAL_DATA_TYPE
-	else if (AisC && BisN)
-		mkl_dc_gemm_xx_mnk_pst(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, MKL_DC_CONJ, MKL_DC_MOV, MKL_DC_MT, MKL_DC_MN);
-	else if (AisC && BisT)
-		mkl_dc_gemm_xx_mnk_pst(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, MKL_DC_CONJ, MKL_DC_MOV, MKL_DC_MT, MKL_DC_MT);
-	else if (AisN && BisC)
-		mkl_dc_gemm_xx_mnk_pst(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, MKL_DC_MOV, MKL_DC_CONJ, MKL_DC_MN, MKL_DC_MT);
-	else if (AisT && BisC)
-		mkl_dc_gemm_xx_mnk_pst(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, MKL_DC_MOV, MKL_DC_CONJ, MKL_DC_MT, MKL_DC_MT);
-	else if (AisC && BisC)
-		mkl_dc_gemm_xx_mnk_pst(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, MKL_DC_CONJ, MKL_DC_CONJ, MKL_DC_MT, MKL_DC_MT);
+    else if (AisC && BisN)
+        mkl_dc_gemm_xx_mnk_pst(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, MKL_DC_CONJ, MKL_DC_MOV, MKL_DC_MT, MKL_DC_MN);
+    else if (AisC && BisT)
+        mkl_dc_gemm_xx_mnk_pst(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, MKL_DC_CONJ, MKL_DC_MOV, MKL_DC_MT, MKL_DC_MT);
+    else if (AisN && BisC)
+        mkl_dc_gemm_xx_mnk_pst(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, MKL_DC_MOV, MKL_DC_CONJ, MKL_DC_MN, MKL_DC_MT);
+    else if (AisT && BisC)
+        mkl_dc_gemm_xx_mnk_pst(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, MKL_DC_MOV, MKL_DC_CONJ, MKL_DC_MT, MKL_DC_MT);
+    else if (AisC && BisC)
+        mkl_dc_gemm_xx_mnk_pst(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, MKL_DC_CONJ, MKL_DC_CONJ, MKL_DC_MT, MKL_DC_MT);
 #endif
-	else if (AisN && !BisN)
-		mkl_dc_gemm_xx_mnk_pst(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, MKL_DC_MOV, MKL_DC_MOV, MKL_DC_MN, MKL_DC_MT);
-	else if (!AisN && BisN)
-		mkl_dc_gemm_xx_mnk_pst(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, MKL_DC_MOV, MKL_DC_MOV, MKL_DC_MT, MKL_DC_MN);
-	else
-		mkl_dc_gemm_xx_mnk_pst(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, MKL_DC_MOV, MKL_DC_MOV, MKL_DC_MT, MKL_DC_MT);
+    else if (AisN && !BisN)
+        mkl_dc_gemm_xx_mnk_pst(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, MKL_DC_MOV, MKL_DC_MOV, MKL_DC_MN, MKL_DC_MT);
+    else if (!AisN && BisN)
+        mkl_dc_gemm_xx_mnk_pst(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, MKL_DC_MOV, MKL_DC_MOV, MKL_DC_MT, MKL_DC_MN);
+    else
+        mkl_dc_gemm_xx_mnk_pst(m, n, k, alpha, A, lda, B, ldb, beta, C, ldc, MKL_DC_MOV, MKL_DC_MOV, MKL_DC_MT, MKL_DC_MT);
 #endif
 
 }
@@ -297,15 +297,15 @@ static __inline void mkl_dc_gemm(const char * TRANSA, const char * TRANSB,
 /* ?TRSM */
 #define mkl_dc_trsm_lxnx_mn_pst(uplo, m, n, alpha, A, lda, B, ldb, diag_op ) \
 do { \
-	MKL_INT i, j, k; \
+    MKL_INT i, j, k; \
     if ( MKL_DC_MisU(uplo) ) { \
-	for (j = 0; j < n; j++) { \
+    for (j = 0; j < n; j++) { \
         if ( !(MKL_DC_IS_ONE(alpha)) ) { \
             for(i = 0; i < m; i++) { \
                 MKL_DC_MUL_C( B[i+j*ldb], alpha ); \
             } \
         } \
-	    for (k = m-1; k >= 0; k--) { \
+        for (k = m-1; k >= 0; k--) { \
             diag_op( B[k + j * ldb], A[k + k * lda] ); \
             MKL_DC_PRAGMA_VECTOR \
             for ( i = 0; i <= k-1; i++ ) { \
@@ -313,17 +313,17 @@ do { \
                 a = A[i + k * lda]; \
                 MKL_DC_MUL(temp1, B[k + j * ldb], a); \
                 MKL_DC_SUB(B[i + j * ldb], B[i + j * ldb], temp1); \
-	        } \
-	    } \
-	} \
+            } \
+        } \
+    } \
     } else { \
-	for (j = 0; j < n; j++) { \
+    for (j = 0; j < n; j++) { \
         if ( !(MKL_DC_IS_ONE(alpha)) ) { \
             for(i = 0; i < m; i++) { \
                 MKL_DC_MUL_C( B[i+j*ldb], alpha ); \
             } \
         } \
-	    for (k = 0; k < m; k++) { \
+        for (k = 0; k < m; k++) { \
             diag_op( B[k + j * ldb], A[k + k * lda] ); \
             MKL_DC_PRAGMA_VECTOR \
             for ( i = k+1; i < m; i++ ) { \
@@ -331,22 +331,22 @@ do { \
                 a = A[i + k * lda]; \
                 MKL_DC_MUL(temp1, B[k + j * ldb], a); \
                 MKL_DC_SUB(B[i + j * ldb], B[i + j * ldb], temp1); \
-	        } \
-	    } \
-	} \
+            } \
+        } \
+    } \
     } \
 } while (0)
 
 #define mkl_dc_trsm_lxtx_mn_pst(uplo, m, n, alpha, A, lda, B, ldb, diag_op ) \
 do { \
-	MKL_INT i, j, k; \
+    MKL_INT i, j, k; \
     if ( MKL_DC_MisU(uplo) ) { \
-	for (j = 0; j < n; j++) { \
+    for (j = 0; j < n; j++) { \
         mkl_dc_type temp; \
         for(i = 0; i < m; i++) { \
             MKL_DC_MUL(temp, alpha, B[i+j*ldb]); \
             MKL_DC_PRAGMA_VECTOR \
-	        for (k = 0; k <= i-1; k++) { \
+            for (k = 0; k <= i-1; k++) { \
                 mkl_dc_type a, temp1; \
                 a = A[k + i * lda]; \
                 MKL_DC_MUL(temp1, B[k + j * ldb], a); \
@@ -354,15 +354,15 @@ do { \
             } \
             diag_op( temp, A[i + i * lda] ); \
             MKL_DC_MOV(B[i+j*ldb], temp); \
-	    } \
-	} \
+        } \
+    } \
     } else { \
-	for (j = 0; j < n; j++) { \
+    for (j = 0; j < n; j++) { \
         mkl_dc_type temp; \
         for(i = m-1; i >= 0; i--) { \
             MKL_DC_MUL(temp, alpha, B[i+j*ldb]); \
             MKL_DC_PRAGMA_VECTOR \
-	        for (k = i+1; k < m; k++) { \
+            for (k = i+1; k < m; k++) { \
                 mkl_dc_type a, temp1; \
                 a = A[k + i * lda]; \
                 MKL_DC_MUL(temp1, B[k + j * ldb], a); \
@@ -370,21 +370,21 @@ do { \
             } \
             diag_op( temp, A[i + i * lda] ); \
             MKL_DC_MOV(B[i+j*ldb], temp); \
-	    } \
-	} \
+        } \
+    } \
     } \
 } while (0)
 
 #define mkl_dc_trsm_lxcx_mn_pst(uplo, m, n, alpha, A, lda, B, ldb, diag_op ) \
 do { \
-	MKL_INT i, j, k; \
+    MKL_INT i, j, k; \
     if ( MKL_DC_MisU(uplo) ) { \
-	for (j = 0; j < n; j++) { \
+    for (j = 0; j < n; j++) { \
         mkl_dc_type temp; \
         for(i = 0; i < m; i++) { \
             MKL_DC_MUL(temp, alpha, B[i+j*ldb]); \
             MKL_DC_PRAGMA_VECTOR \
-	        for (k = 0; k <= i-1; k++) { \
+            for (k = 0; k <= i-1; k++) { \
                 mkl_dc_type a, temp1; \
                 a = A[k + i * lda]; \
                 MKL_DC_CONJ(a, a); \
@@ -396,15 +396,15 @@ do { \
             MKL_DC_CONJ(a, a); \
             diag_op( temp, a ); \
             MKL_DC_MOV(B[i+j*ldb], temp); \
-	    } \
-	} \
+        } \
+    } \
     } else { \
-	for (j = 0; j < n; j++) { \
+    for (j = 0; j < n; j++) { \
         mkl_dc_type temp; \
         for(i = m-1; i >= 0; i--) { \
             MKL_DC_MUL(temp, alpha, B[i+j*ldb]); \
             MKL_DC_PRAGMA_VECTOR \
-	        for (k = i+1; k < m; k++) { \
+            for (k = i+1; k < m; k++) { \
                 mkl_dc_type a, temp1; \
                 a = A[k + i * lda]; \
                 MKL_DC_CONJ(a, a); \
@@ -416,108 +416,108 @@ do { \
             MKL_DC_CONJ(a, a); \
             diag_op( temp, a ); \
             MKL_DC_MOV(B[i+j*ldb], temp); \
-	    } \
-	} \
+        } \
+    } \
     } \
 } while (0)
 
 #define mkl_dc_trsm_rxnn_mn_pst(uplo, m, n, alpha, A, lda, B, ldb ) \
 do { \
-	MKL_INT i, j, k; \
+    MKL_INT i, j, k; \
     if ( MKL_DC_MisU(uplo) ) { \
-	for (j = 0; j < n; j++) { \
+    for (j = 0; j < n; j++) { \
         if ( !(MKL_DC_IS_ONE(alpha)) ) { \
             for(i = 0; i < m; i++) { \
                 MKL_DC_MUL_C( B[i+j*ldb], alpha ); \
             } \
         } \
-	    for (k = 0; k <= j-1; k++) { \
+        for (k = 0; k <= j-1; k++) { \
             MKL_DC_PRAGMA_VECTOR \
             for ( i = 0; i < m; i++ ) { \
                 mkl_dc_type a, temp1; \
                 a = A[k + j * lda]; \
                 MKL_DC_MUL(temp1, B[i + k * ldb], a); \
                 MKL_DC_SUB(B[i + j * ldb], B[i + j * ldb], temp1); \
-	        } \
-	    } \
+            } \
+        } \
         mkl_dc_type temp, one; \
         MKL_DC_SET_ONE(one); \
         MKL_DC_DIV(temp, one, A[j + j * lda]); \
         for ( i = 0; i < m; i++ ) { \
             MKL_DC_MUL(B[i + j * ldb], temp, B[i + j * ldb]); \
         } \
-	} \
+    } \
     } else { \
-	for (j = n-1; j >= 0; j--) { \
+    for (j = n-1; j >= 0; j--) { \
         if ( !(MKL_DC_IS_ONE(alpha)) ) { \
             for(i = 0; i < m; i++) { \
                 MKL_DC_MUL_C( B[i+j*ldb], alpha ); \
             } \
         } \
-	    for (k = j+1; k < n; k++) { \
+        for (k = j+1; k < n; k++) { \
             MKL_DC_PRAGMA_VECTOR \
             for ( i = 0; i < m; i++ ) { \
                 mkl_dc_type a, temp1; \
                 a = A[k + j * lda]; \
                 MKL_DC_MUL(temp1, B[i + k * ldb], a); \
                 MKL_DC_SUB(B[i + j * ldb], B[i + j * ldb], temp1); \
-	        } \
-	    } \
+            } \
+        } \
         mkl_dc_type temp, one; \
         MKL_DC_SET_ONE(one); \
         MKL_DC_DIV(temp, one, A[j + j * lda]); \
         for ( i = 0; i < m; i++ ) { \
             MKL_DC_MUL(B[i + j * ldb], temp, B[i + j * ldb]); \
         } \
-	} \
+    } \
     } \
 } while (0)
 
 #define mkl_dc_trsm_rxnu_mn_pst(uplo, m, n, alpha, A, lda, B, ldb ) \
 do { \
-	MKL_INT i, j, k; \
+    MKL_INT i, j, k; \
     if ( MKL_DC_MisU(uplo) ) { \
-	for (j = 0; j < n; j++) { \
+    for (j = 0; j < n; j++) { \
         if ( !(MKL_DC_IS_ONE(alpha)) ) { \
             for(i = 0; i < m; i++) { \
                 MKL_DC_MUL_C( B[i+j*ldb], alpha ); \
             } \
         } \
-	    for (k = 0; k <= j-1; k++) { \
+        for (k = 0; k <= j-1; k++) { \
             MKL_DC_PRAGMA_VECTOR \
             for ( i = 0; i < m; i++ ) { \
                 mkl_dc_type a, temp1; \
                 a = A[k + j * lda]; \
                 MKL_DC_MUL(temp1, B[i + k * ldb], a); \
                 MKL_DC_SUB(B[i + j * ldb], B[i + j * ldb], temp1); \
-	        } \
-	    } \
-	} \
+            } \
+        } \
+    } \
     } else { \
-	for (j = n-1; j >= 0; j--) { \
+    for (j = n-1; j >= 0; j--) { \
         if ( !(MKL_DC_IS_ONE(alpha)) ) { \
             for(i = 0; i < m; i++) { \
                 MKL_DC_MUL_C( B[i+j*ldb], alpha ); \
             } \
         } \
-	    for (k = j+1; k < n; k++) { \
+        for (k = j+1; k < n; k++) { \
             MKL_DC_PRAGMA_VECTOR \
             for ( i = 0; i < m; i++ ) { \
                 mkl_dc_type a, temp1; \
                 a = A[k + j * lda]; \
                 MKL_DC_MUL(temp1, B[i + k * ldb], a); \
                 MKL_DC_SUB(B[i + j * ldb], B[i + j * ldb], temp1); \
-	        } \
-	    } \
-	} \
+            } \
+        } \
+    } \
     } \
 } while (0)
 
 #define mkl_dc_trsm_rxtn_mn_pst(uplo, m, n, alpha, A, lda, B, ldb) \
 do { \
-	MKL_INT i, j, k; \
+    MKL_INT i, j, k; \
     if ( MKL_DC_MisU(uplo) ) { \
-	for (k = n-1; k >= 0; k--) { \
+    for (k = n-1; k >= 0; k--) { \
         mkl_dc_type temp, one; \
         MKL_DC_SET_ONE(one); \
         MKL_DC_DIV(temp, one, A[k + k * lda]); \
@@ -527,21 +527,21 @@ do { \
         for(j = 0; j <= k-1; j++) { \
             MKL_DC_MOV(temp, A[j+k*lda]); \
             MKL_DC_PRAGMA_VECTOR \
-	        for (i = 0; i < m; i++) { \
+            for (i = 0; i < m; i++) { \
                 mkl_dc_type b, temp1; \
                 b = B[i + k * ldb]; \
                 MKL_DC_MUL(temp1, temp, b); \
                 MKL_DC_SUB(B[i + j * ldb], B[i + j * ldb], temp1); \
             } \
-	    } \
+        } \
         if ( !(MKL_DC_IS_ONE(alpha)) ) { \
             for ( i = 0; i < m; i++ ) { \
                 MKL_DC_MUL(B[i + k * ldb], alpha, B[i + k * ldb]); \
             } \
         } \
-	} \
+    } \
     } else { \
-	for (k = 0; k < n; k++) { \
+    for (k = 0; k < n; k++) { \
         mkl_dc_type temp, one; \
         MKL_DC_SET_ONE(one); \
         MKL_DC_DIV(temp, one, A[k + k * lda]); \
@@ -551,27 +551,27 @@ do { \
         for(j = k+1; j < n; j++) { \
             MKL_DC_MOV(temp, A[j+k*lda]); \
             MKL_DC_PRAGMA_VECTOR \
-	        for (i = 0; i < m; i++) { \
+            for (i = 0; i < m; i++) { \
                 mkl_dc_type b, temp1; \
                 b = B[i + k * ldb]; \
                 MKL_DC_MUL(temp1, temp, b); \
                 MKL_DC_SUB(B[i + j * ldb], B[i + j * ldb], temp1); \
             } \
-	    } \
+        } \
         if ( !(MKL_DC_IS_ONE(alpha)) ) { \
             for ( i = 0; i < m; i++ ) { \
                 MKL_DC_MUL(B[i + k * ldb], alpha, B[i + k * ldb]); \
             } \
         } \
-	} \
+    } \
     } \
 } while (0)
 
 #define mkl_dc_trsm_rxcn_mn_pst(uplo, m, n, alpha, A, lda, B, ldb) \
 do { \
-	MKL_INT i, j, k; \
+    MKL_INT i, j, k; \
     if ( MKL_DC_MisU(uplo) ) { \
-	for (k = n-1; k >= 0; k--) { \
+    for (k = n-1; k >= 0; k--) { \
         mkl_dc_type temp, one, a; \
         MKL_DC_SET_ONE(one); \
         a = A[k + k * lda]; \
@@ -584,21 +584,21 @@ do { \
             MKL_DC_MOV(temp, A[j+k*lda]); \
             MKL_DC_CONJ(temp, temp); \
             MKL_DC_PRAGMA_VECTOR \
-	        for (i = 0; i < m; i++) { \
+            for (i = 0; i < m; i++) { \
                 mkl_dc_type b, temp1; \
                 b = B[i + k * ldb]; \
                 MKL_DC_MUL(temp1, temp, b); \
                 MKL_DC_SUB(B[i + j * ldb], B[i + j * ldb], temp1); \
             } \
-	    } \
+        } \
         if ( !(MKL_DC_IS_ONE(alpha)) ) { \
             for ( i = 0; i < m; i++ ) { \
                 MKL_DC_MUL(B[i + k * ldb], alpha, B[i + k * ldb]); \
             } \
         } \
-	} \
+    } \
     } else { \
-	for (k = 0; k < n; k++) { \
+    for (k = 0; k < n; k++) { \
         mkl_dc_type temp, one, a; \
         MKL_DC_SET_ONE(one); \
         a = A[k + k * lda]; \
@@ -611,109 +611,109 @@ do { \
             MKL_DC_MOV(temp, A[j+k*lda]); \
             MKL_DC_CONJ(temp, temp); \
             MKL_DC_PRAGMA_VECTOR \
-	        for (i = 0; i < m; i++) { \
+            for (i = 0; i < m; i++) { \
                 mkl_dc_type b, temp1; \
                 b = B[i + k * ldb]; \
                 MKL_DC_MUL(temp1, temp, b); \
                 MKL_DC_SUB(B[i + j * ldb], B[i + j * ldb], temp1); \
             } \
-	    } \
+        } \
         if ( !(MKL_DC_IS_ONE(alpha)) ) { \
             for ( i = 0; i < m; i++ ) { \
                 MKL_DC_MUL(B[i + k * ldb], alpha, B[i + k * ldb]); \
             } \
         } \
-	} \
+    } \
     } \
 } while (0)
 
 #define mkl_dc_trsm_rxtu_mn_pst(uplo, m, n, alpha, A, lda, B, ldb) \
 do { \
-	MKL_INT i, j, k; \
+    MKL_INT i, j, k; \
     if ( MKL_DC_MisU(uplo) ) { \
-	for (k = n-1; k >= 0; k--) { \
+    for (k = n-1; k >= 0; k--) { \
         for(j = 0; j <= k-1; j++) { \
             mkl_dc_type temp; \
             MKL_DC_MOV(temp, A[j+k*lda]); \
             MKL_DC_PRAGMA_VECTOR \
-	        for (i = 0; i < m; i++) { \
+            for (i = 0; i < m; i++) { \
                 mkl_dc_type b, temp1; \
                 b = B[i + k * ldb]; \
                 MKL_DC_MUL(temp1, temp, b); \
                 MKL_DC_SUB(B[i + j * ldb], B[i + j * ldb], temp1); \
             } \
-	    } \
+        } \
         if ( !(MKL_DC_IS_ONE(alpha)) ) { \
             for ( i = 0; i < m; i++ ) { \
                 MKL_DC_MUL(B[i + k * ldb], alpha, B[i + k * ldb]); \
             } \
         } \
-	} \
+    } \
     } else { \
-	for (k = 0; k < n; k++) { \
+    for (k = 0; k < n; k++) { \
         for(j = k+1; j < n; j++) { \
             mkl_dc_type temp; \
             MKL_DC_MOV(temp, A[j+k*lda]); \
             MKL_DC_PRAGMA_VECTOR \
-	        for (i = 0; i < m; i++) { \
+            for (i = 0; i < m; i++) { \
                 mkl_dc_type b, temp1; \
                 b = B[i + k * ldb]; \
                 MKL_DC_MUL(temp1, temp, b); \
                 MKL_DC_SUB(B[i + j * ldb], B[i + j * ldb], temp1); \
             } \
-	    } \
+        } \
         if ( !(MKL_DC_IS_ONE(alpha)) ) { \
             for ( i = 0; i < m; i++ ) { \
                 MKL_DC_MUL(B[i + k * ldb], alpha, B[i + k * ldb]); \
             } \
         } \
-	} \
+    } \
     } \
 } while (0)
 
 #define mkl_dc_trsm_rxcu_mn_pst(uplo, m, n, alpha, A, lda, B, ldb) \
 do { \
-	MKL_INT i, j, k; \
+    MKL_INT i, j, k; \
     if ( MKL_DC_MisU(uplo) ) { \
-	for (k = n-1; k >= 0; k--) { \
+    for (k = n-1; k >= 0; k--) { \
         for(j = 0; j <= k-1; j++) { \
             mkl_dc_type temp; \
             temp = A[j+k*lda]; \
             MKL_DC_CONJ(temp, temp); \
             MKL_DC_PRAGMA_VECTOR \
-	        for (i = 0; i < m; i++) { \
+            for (i = 0; i < m; i++) { \
                 mkl_dc_type b, temp1; \
                 b = B[i + k * ldb]; \
                 MKL_DC_MUL(temp1, temp, b); \
                 MKL_DC_SUB(B[i + j * ldb], B[i + j * ldb], temp1); \
             } \
-	    } \
+        } \
         if ( !(MKL_DC_IS_ONE(alpha)) ) { \
             for ( i = 0; i < m; i++ ) { \
                 MKL_DC_MUL(B[i + k * ldb], alpha, B[i + k * ldb]); \
             } \
         } \
-	} \
+    } \
     } else { \
-	for (k = 0; k < n; k++) { \
+    for (k = 0; k < n; k++) { \
         for(j = k+1; j < n; j++) { \
             mkl_dc_type temp; \
             temp = A[j+k*lda]; \
             MKL_DC_CONJ(temp, temp); \
             MKL_DC_PRAGMA_VECTOR \
-	        for (i = 0; i < m; i++) { \
+            for (i = 0; i < m; i++) { \
                 mkl_dc_type b, temp1; \
                 b = B[i + k * ldb]; \
                 MKL_DC_MUL(temp1, temp, b); \
                 MKL_DC_SUB(B[i + j * ldb], B[i + j * ldb], temp1); \
             } \
-	    } \
+        } \
         if ( !(MKL_DC_IS_ONE(alpha)) ) { \
             for ( i = 0; i < m; i++ ) { \
                 MKL_DC_MUL(B[i + k * ldb], alpha, B[i + k * ldb]); \
             } \
         } \
-	} \
+    } \
     } \
 } while (0)
 
@@ -721,33 +721,33 @@ static __inline void mkl_dc_trsm(const char * SIDE, const char * UPLO,
             const char * TRANSA, const char * DIAG,
             const MKL_INT * M, const MKL_INT * N,
             const mkl_dc_type * ALPHA,
-			const mkl_dc_type * A, const MKL_INT * LDA,
+            const mkl_dc_type * A, const MKL_INT * LDA,
             mkl_dc_type * B, const MKL_INT * LDB)
 {
-	int AisN;
-	int lside, noconj, unit, upper;
-	mkl_dc_type temp, alpha = *ALPHA;
-	MKL_INT m = *M, n = *N;
-	MKL_INT lda = *LDA, ldb = *LDB;
+    int AisN;
+    int lside, noconj, unit, upper;
+    mkl_dc_type temp, alpha = *ALPHA;
+    MKL_INT m = *M, n = *N;
+    MKL_INT lda = *LDA, ldb = *LDB;
     char uplo = *UPLO;
 
-	if (m <= 0 || n <= 0 )
-		return;
+    if (m <= 0 || n <= 0 )
+        return;
 
-	AisN = MKL_DC_MisN(*TRANSA);
-	lside = MKL_DC_MisL(*SIDE);
+    AisN = MKL_DC_MisN(*TRANSA);
+    lside = MKL_DC_MisL(*SIDE);
     noconj = MKL_DC_MisT(*TRANSA);
     unit = MKL_DC_MisU(*DIAG);
     upper = MKL_DC_MisU(*UPLO);
 
-	if (MKL_DC_IS_ZERO(alpha)) {
-		MKL_INT i, j;
-			for (j = 0; j < n; j++)
+    if (MKL_DC_IS_ZERO(alpha)) {
+        MKL_INT i, j;
+            for (j = 0; j < n; j++)
 #pragma vector
-				for (i = 0; i < m; i++)
-					MKL_DC_SET_ZERO(B[i + ldb * j]);
-		return;
-	}
+                for (i = 0; i < m; i++)
+                    MKL_DC_SET_ZERO(B[i + ldb * j]);
+        return;
+    }
 
     if (lside)
         if (AisN)
@@ -791,108 +791,108 @@ static __inline void mkl_dc_trsm(const char * SIDE, const char * UPLO,
 
 /* ?SYRK */
 #define mkl_dc_syrk_xx_nk_pst_beta(uplo, n, k, alpha, A, lda, beta, C, ldc, \
-		c_op, a_access) \
+        c_op, a_access) \
 do { \
-	MKL_INT i, j, l; \
+    MKL_INT i, j, l; \
     if (MKL_DC_MisU(uplo)) { \
-	    for (j = 0; j < n; j++) \
-		MKL_DC_PRAGMA_VECTOR \
-	    for (i = 0; i <= j; i++) { \
-		    mkl_dc_type c, temp; MKL_DC_SET_ZERO(temp); \
-		    for (l = 0; l < k; l++) { \
-			    mkl_dc_type a, b, temp1; \
-			    a = a_access(A, lda, j, l); \
-			    b = a_access(A, lda, i, l); \
-			    MKL_DC_MUL(temp1, a, b); \
-			    MKL_DC_ADD(temp, temp, temp1); \
-		    } \
-		    MKL_DC_MUL(temp, alpha, temp); \
-		    c = C[i + j * ldc]; \
-		    c_op(c, beta); \
-		    MKL_DC_ADD(C[i + j * ldc], c, temp); \
-	    } \
+        for (j = 0; j < n; j++) \
+        MKL_DC_PRAGMA_VECTOR \
+        for (i = 0; i <= j; i++) { \
+            mkl_dc_type c, temp; MKL_DC_SET_ZERO(temp); \
+            for (l = 0; l < k; l++) { \
+                mkl_dc_type a, b, temp1; \
+                a = a_access(A, lda, j, l); \
+                b = a_access(A, lda, i, l); \
+                MKL_DC_MUL(temp1, a, b); \
+                MKL_DC_ADD(temp, temp, temp1); \
+            } \
+            MKL_DC_MUL(temp, alpha, temp); \
+            c = C[i + j * ldc]; \
+            c_op(c, beta); \
+            MKL_DC_ADD(C[i + j * ldc], c, temp); \
+        } \
     } else { \
-	    for (j = 0; j < n; j++) \
-		MKL_DC_PRAGMA_VECTOR \
-	    for (i = j; i < n; i++) { \
-		    mkl_dc_type c, temp; MKL_DC_SET_ZERO(temp); \
-		    for (l = 0; l < k; l++) { \
-			    mkl_dc_type a, b, temp1; \
-			    a = a_access(A, lda, j, l); \
-			    b = a_access(A, lda, i, l); \
-			    MKL_DC_MUL(temp1, a, b); \
-			    MKL_DC_ADD(temp, temp, temp1); \
-		    } \
-		    MKL_DC_MUL(temp, alpha, temp); \
-		    c = C[i + j * ldc]; \
-		    c_op(c, beta); \
-		    MKL_DC_ADD(C[i + j * ldc], c, temp); \
-	    } \
+        for (j = 0; j < n; j++) \
+        MKL_DC_PRAGMA_VECTOR \
+        for (i = j; i < n; i++) { \
+            mkl_dc_type c, temp; MKL_DC_SET_ZERO(temp); \
+            for (l = 0; l < k; l++) { \
+                mkl_dc_type a, b, temp1; \
+                a = a_access(A, lda, j, l); \
+                b = a_access(A, lda, i, l); \
+                MKL_DC_MUL(temp1, a, b); \
+                MKL_DC_ADD(temp, temp, temp1); \
+            } \
+            MKL_DC_MUL(temp, alpha, temp); \
+            c = C[i + j * ldc]; \
+            c_op(c, beta); \
+            MKL_DC_ADD(C[i + j * ldc], c, temp); \
+        } \
     } \
 } while (0)
 
 
 #define mkl_dc_syrk_xx_nk_pst(uplo, n, k, alpha, A, lda, beta, C, ldc, \
-		a_access) \
+        a_access) \
 do { \
-	if (MKL_DC_IS_ZERO(beta)) \
-		mkl_dc_syrk_xx_nk_pst_beta(uplo, n, k, alpha, A, lda, beta, C, ldc, \
-				MKL_DC_ZERO_C, a_access); \
-	else \
-		mkl_dc_syrk_xx_nk_pst_beta(uplo, n, k, alpha, A, lda, beta, C, ldc, \
-				MKL_DC_MUL_C, a_access); \
+    if (MKL_DC_IS_ZERO(beta)) \
+        mkl_dc_syrk_xx_nk_pst_beta(uplo, n, k, alpha, A, lda, beta, C, ldc, \
+                MKL_DC_ZERO_C, a_access); \
+    else \
+        mkl_dc_syrk_xx_nk_pst_beta(uplo, n, k, alpha, A, lda, beta, C, ldc, \
+                MKL_DC_MUL_C, a_access); \
 } while (0)
 
 static __inline void mkl_dc_syrk(const char * UPLO, const char * TRANS,
             const MKL_INT * N, const MKL_INT * K,
             const mkl_dc_type * ALPHA,
-			const mkl_dc_type * A, const MKL_INT * LDA,
+            const mkl_dc_type * A, const MKL_INT * LDA,
             const mkl_dc_type * BETA,
             mkl_dc_type * C, const MKL_INT * LDC)
 {
-	int AisN, CisU;
-	mkl_dc_type temp, alpha = *ALPHA, beta = *BETA;
-	MKL_INT n = *N, k = *K;
-	MKL_INT lda = *LDA, ldc = *LDC;
+    int AisN, CisU;
+    mkl_dc_type temp, alpha = *ALPHA, beta = *BETA;
+    MKL_INT n = *N, k = *K;
+    MKL_INT lda = *LDA, ldc = *LDC;
     char uplo = *UPLO;
 
-	if (n <= 0 || ((MKL_DC_IS_ZERO(alpha) || k <= 0) && MKL_DC_IS_ONE(beta)))
-		return;
+    if (n <= 0 || ((MKL_DC_IS_ZERO(alpha) || k <= 0) && MKL_DC_IS_ONE(beta)))
+        return;
 
-	AisN = MKL_DC_MisN(*TRANS);
+    AisN = MKL_DC_MisN(*TRANS);
     CisU = MKL_DC_MisU(*UPLO);
 
-	if (MKL_DC_IS_ZERO(alpha)) {
-		MKL_INT i, j;
-		if (MKL_DC_IS_ZERO(beta))
+    if (MKL_DC_IS_ZERO(alpha)) {
+        MKL_INT i, j;
+        if (MKL_DC_IS_ZERO(beta))
             if (CisU)
-			    for (j = 0; j < n; j++)
+                for (j = 0; j < n; j++)
 #pragma vector
-				    for (i = 0; i <= j; i++)
-					    MKL_DC_SET_ZERO(C[i + ldc * j]);
+                    for (i = 0; i <= j; i++)
+                        MKL_DC_SET_ZERO(C[i + ldc * j]);
             else
-			    for (j = 0; j < n; j++)
+                for (j = 0; j < n; j++)
 #pragma vector
-				    for (i = j; i < n; i++)
-					    MKL_DC_SET_ZERO(C[i + ldc * j]);
-		else
+                    for (i = j; i < n; i++)
+                        MKL_DC_SET_ZERO(C[i + ldc * j]);
+        else
             if (CisU)
-			    for (j = 0; j < n; j++)
+                for (j = 0; j < n; j++)
 #pragma vector
-				    for (i = 0; i <= j; i++)
-					    MKL_DC_MUL(C[i + ldc * j], beta, C[i + ldc * j]);
+                    for (i = 0; i <= j; i++)
+                        MKL_DC_MUL(C[i + ldc * j], beta, C[i + ldc * j]);
             else
-			    for (j = 0; j < n; j++)
+                for (j = 0; j < n; j++)
 #pragma vector
-				    for (i = j; i < n; i++)
-					    MKL_DC_MUL(C[i + ldc * j], beta, C[i + ldc * j]);
-		return;
-	}
+                    for (i = j; i < n; i++)
+                        MKL_DC_MUL(C[i + ldc * j], beta, C[i + ldc * j]);
+        return;
+    }
 
-	if (AisN)
-		mkl_dc_syrk_xx_nk_pst(uplo, n, k, alpha, A, lda, beta, C, ldc, MKL_DC_MN);
+    if (AisN)
+        mkl_dc_syrk_xx_nk_pst(uplo, n, k, alpha, A, lda, beta, C, ldc, MKL_DC_MN);
     else
-		mkl_dc_syrk_xx_nk_pst(uplo, n, k, alpha, A, lda, beta, C, ldc, MKL_DC_MT);
+        mkl_dc_syrk_xx_nk_pst(uplo, n, k, alpha, A, lda, beta, C, ldc, MKL_DC_MT);
 
 }
 
@@ -901,7 +901,7 @@ static __inline void mkl_dc_axpy (const MKL_INT *N, const mkl_dc_type *ALPHA, co
     MKL_INT i;
     MKL_INT n = *N, ix = 0, iy = 0;
     if (*INCX == 1 && *INCY == 1) {
-#pragma vector vecremainder 
+#pragma vector vecremainder
         for(i = 0; i < n; i++) MKL_DC_MUL_ADD(y[i], (*ALPHA), x[i], y[i]);
     } else {
         if (*INCX < 0) ix = (-(n) + 1) * *INCX;
@@ -920,7 +920,7 @@ static __inline mkl_dc_type mkl_dc_dot (const MKL_INT* N, const mkl_dc_type *x,
     MKL_INT i;
 
     if (*INCX == 1 && *INCY == 1)
-#pragma vector vecremainder 
+#pragma vector vecremainder
         for(i = 0; i < n; i++) ret += y[i] * x[i];
     else  {
         if (*INCX < 0) ix = (-(n) + 1) * *INCX;

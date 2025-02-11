@@ -112,7 +112,7 @@ double cblas_dsdot(const MKL_INT N, const float  *X, const MKL_INT incX,
                   const float  *Y, const MKL_INT incY);
 
 float  cblas_sdsdot(const MKL_INT N, const float sb, const float  *X,
-		    const MKL_INT incX, const float  *Y, const MKL_INT incY);
+            const MKL_INT incX, const float  *Y, const MKL_INT incY);
 
 /*
  * Functions having prefixes Z and C only
@@ -571,7 +571,7 @@ void cblas_sgemm_batch(const CBLAS_LAYOUT Layout, const  CBLAS_TRANSPOSE *TransA
                        const MKL_INT group_count, const MKL_INT *group_size);
 void cblas_sgemmt(const  CBLAS_LAYOUT Layout, const  CBLAS_UPLO Uplo,
                   const  CBLAS_TRANSPOSE TransA, const  CBLAS_TRANSPOSE TransB,
-		          const MKL_INT N, const MKL_INT K,
+                  const MKL_INT N, const MKL_INT K,
                   const float alpha, const float *A, const MKL_INT lda,
                   const float *B, const MKL_INT ldb, const float beta,
                   float *C, const MKL_INT ldc);
@@ -620,7 +620,7 @@ void cblas_dgemm_batch(const CBLAS_LAYOUT Layout, const  CBLAS_TRANSPOSE *TransA
                        const MKL_INT group_count, const MKL_INT *group_size);
 void cblas_dgemmt(const  CBLAS_LAYOUT Layout, const  CBLAS_UPLO Uplo,
                   const  CBLAS_TRANSPOSE TransA, const  CBLAS_TRANSPOSE TransB,
-		          const MKL_INT N, const MKL_INT K,
+                  const MKL_INT N, const MKL_INT K,
                   const double alpha, const double *A, const MKL_INT lda,
                   const double *B, const MKL_INT ldb, const double beta,
                   double *C, const MKL_INT ldc);
@@ -680,7 +680,7 @@ void cblas_cgemm3m_batch(const CBLAS_LAYOUT Layout, const  CBLAS_TRANSPOSE *Tran
                          const MKL_INT group_count, const MKL_INT *group_size);
 void cblas_cgemmt(const  CBLAS_LAYOUT Layout, const  CBLAS_UPLO Uplo,
                   const  CBLAS_TRANSPOSE TransA, const  CBLAS_TRANSPOSE TransB,
-		          const MKL_INT N, const MKL_INT K,
+                  const MKL_INT N, const MKL_INT K,
                   const void *alpha, const void *A, const MKL_INT lda,
                   const void *B, const MKL_INT ldb, const void *beta,
                   void *C, const MKL_INT ldc);
@@ -740,7 +740,7 @@ void cblas_zgemm3m_batch(const CBLAS_LAYOUT Layout, const  CBLAS_TRANSPOSE *Tran
                          const MKL_INT group_count, const MKL_INT *group_size);
 void cblas_zgemmt(const  CBLAS_LAYOUT Layout, const  CBLAS_UPLO Uplo,
                   const  CBLAS_TRANSPOSE TransA, const  CBLAS_TRANSPOSE TransB,
-		          const MKL_INT N, const MKL_INT K,
+                  const MKL_INT N, const MKL_INT K,
                   const void *alpha, const void *A, const MKL_INT lda,
                   const void *B, const MKL_INT ldb, const void *beta,
                   void *C, const MKL_INT ldc);
@@ -871,7 +871,7 @@ void cblas_gemm_s16s16s32_pack(const  CBLAS_LAYOUT Layout, const  CBLAS_IDENTIFI
 
 void cblas_gemm_s8u8s32_compute  (const  CBLAS_LAYOUT Layout, const MKL_INT TransA,
                  const MKL_INT TransB, const CBLAS_OFFSET offsetc,
-                 const MKL_INT M, const MKL_INT N, const MKL_INT K, 
+                 const MKL_INT M, const MKL_INT N, const MKL_INT K,
                  const float alpha,
                  const void *A, const MKL_INT lda, const MKL_INT8 ao,
                  const void *B, const MKL_INT ldb, const MKL_INT8 bo,
@@ -879,7 +879,7 @@ void cblas_gemm_s8u8s32_compute  (const  CBLAS_LAYOUT Layout, const MKL_INT Tran
                  MKL_INT32 *C, const MKL_INT ldc, const MKL_INT32 *co);
 void cblas_gemm_s16s16s32_compute(const  CBLAS_LAYOUT Layout, const MKL_INT TransA,
                  const MKL_INT TransB, const CBLAS_OFFSET offsetc,
-                 const MKL_INT M, const MKL_INT N, const MKL_INT K, 
+                 const MKL_INT M, const MKL_INT N, const MKL_INT K,
                  const float alpha,
                  const MKL_INT16 *A, const MKL_INT lda, const MKL_INT16 ao,
                  const MKL_INT16 *B, const MKL_INT ldb, const MKL_INT16 bo,
@@ -888,36 +888,36 @@ void cblas_gemm_s16s16s32_compute(const  CBLAS_LAYOUT Layout, const MKL_INT Tran
 
 /*
  * Jit routines
- */ 
+ */
 #ifndef mkl_jit_create_dgemm
 #define mkl_jit_create_dgemm mkl_cblas_jit_create_dgemm
 #endif
 mkl_jit_status_t mkl_cblas_jit_create_dgemm(void** jitter, const MKL_LAYOUT layout, const MKL_TRANSPOSE transa, const MKL_TRANSPOSE transb,
-                                            const MKL_INT m, const MKL_INT n, const MKL_INT k, 
-                                            const double alpha, const MKL_INT lda, const MKL_INT ldb, 
+                                            const MKL_INT m, const MKL_INT n, const MKL_INT k,
+                                            const double alpha, const MKL_INT lda, const MKL_INT ldb,
                                             const double beta, const MKL_INT ldc);
 
 #ifndef mkl_jit_create_sgemm
 #define mkl_jit_create_sgemm mkl_cblas_jit_create_sgemm
 #endif
 mkl_jit_status_t mkl_cblas_jit_create_sgemm(void** jitter, const MKL_LAYOUT layout, const MKL_TRANSPOSE transa, const MKL_TRANSPOSE transb,
-                                            const MKL_INT m, const MKL_INT n, const MKL_INT k, 
-                                            const float alpha, const MKL_INT lda, const MKL_INT ldb, 
+                                            const MKL_INT m, const MKL_INT n, const MKL_INT k,
+                                            const float alpha, const MKL_INT lda, const MKL_INT ldb,
                                             const float beta, const MKL_INT ldc);
 #ifndef mkl_jit_create_cgemm
 #define mkl_jit_create_cgemm mkl_cblas_jit_create_cgemm
 #endif
 mkl_jit_status_t mkl_cblas_jit_create_cgemm(void** jitter, const MKL_LAYOUT layout, const MKL_TRANSPOSE transa, const MKL_TRANSPOSE transb,
-                                            const MKL_INT m, const MKL_INT n, const MKL_INT k, 
-                                            const void* alpha, const MKL_INT lda, const MKL_INT ldb, 
+                                            const MKL_INT m, const MKL_INT n, const MKL_INT k,
+                                            const void* alpha, const MKL_INT lda, const MKL_INT ldb,
                                             const void* beta, const MKL_INT ldc);
 
 #ifndef mkl_jit_create_zgemm
 #define mkl_jit_create_zgemm mkl_cblas_jit_create_zgemm
 #endif
 mkl_jit_status_t mkl_cblas_jit_create_zgemm(void** jitter, const MKL_LAYOUT layout, const MKL_TRANSPOSE transa, const MKL_TRANSPOSE transb,
-                                            const MKL_INT m, const MKL_INT n, const MKL_INT k, 
-                                            const void* alpha, const MKL_INT lda, const MKL_INT ldb, 
+                                            const MKL_INT m, const MKL_INT n, const MKL_INT k,
+                                            const void* alpha, const MKL_INT lda, const MKL_INT ldb,
                                             const void* beta, const MKL_INT ldc);
 
 
