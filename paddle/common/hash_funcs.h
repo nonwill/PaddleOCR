@@ -14,12 +14,12 @@
 
 #pragma once
 
-inline void HashCombine(std::size_t* seed) {}
+inline void HashCombine(std::size_t *seed) {}
 
 // combine hash value
 // https://stackoverflow.com/questions/2590677/how-do-i-combine-hash-values-in-c0x
 template <typename T, typename... Rest>
-inline void HashCombine(std::size_t* seed, const T& v, Rest... rest) {
+inline void HashCombine(std::size_t *seed, const T &v, Rest... rest) {
   std::hash<T> hasher;
   *seed ^= hasher(v) + 0x9e3779b9 + (*seed << 6) + (*seed >> 2);
   *seed *= 0x00000100000001B3;
@@ -29,9 +29,8 @@ inline void HashCombine(std::size_t* seed, const T& v, Rest... rest) {
 // custom specialization of std::hash can be injected in namespace std
 // ref: https://en.cppreference.com/w/cpp/utility/hash
 namespace std {
-template <typename T>
-struct hash<std::vector<T>> {
-  std::size_t operator()(std::vector<T> const& vec) const noexcept {
+template <typename T> struct hash<std::vector<T>> {
+  std::size_t operator()(std::vector<T> const &vec) const noexcept {
     std::size_t seed = 0xcbf29ce484222325;
     for (auto val : vec) {
       HashCombine(&seed, val);
@@ -39,4 +38,4 @@ struct hash<std::vector<T>> {
     return seed;
   }
 };
-}  // namespace std
+} // namespace std

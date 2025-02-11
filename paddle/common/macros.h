@@ -20,30 +20,30 @@ limitations under the License. */
 #define PADDLE_API __declspec(dllexport)
 #else
 #define PADDLE_API __declspec(dllimport)
-#endif  // PADDLE_DLL_EXPORT
-#endif  // PADDLE_API
+#endif // PADDLE_DLL_EXPORT
+#endif // PADDLE_API
 #else
 #define PADDLE_API
-#endif  // _WIN32
+#endif // _WIN32
 namespace common {
 
 // Disable the copy and assignment operator for a class.
 #ifndef DISABLE_COPY_AND_ASSIGN
-#define DISABLE_COPY_AND_ASSIGN(classname)         \
- private:                                          \
-  classname(const classname&) = delete;            \
-  classname(classname&&) = delete;                 \
-  classname& operator=(const classname&) = delete; \
-  classname& operator=(classname&&) = delete
+#define DISABLE_COPY_AND_ASSIGN(classname)                                     \
+private:                                                                       \
+  classname(const classname &) = delete;                                       \
+  classname(classname &&) = delete;                                            \
+  classname &operator=(const classname &) = delete;                            \
+  classname &operator=(classname &&) = delete
 #endif
 
-#define PD_STATIC_ASSERT_GLOBAL_NAMESPACE(uniq_name, msg) \
+#define PD_STATIC_ASSERT_GLOBAL_NAMESPACE(uniq_name, msg)                      \
   _PD_STATIC_ASSERT_GLOBAL_NAMESPACE(uniq_name, msg)
 
-#define _PD_STATIC_ASSERT_GLOBAL_NAMESPACE(uniq_name, msg)                    \
-  struct __test_global_namespace_##uniq_name##__ {};                          \
-  static_assert(std::is_same<::__test_global_namespace_##uniq_name##__,       \
-                             __test_global_namespace_##uniq_name##__>::value, \
+#define _PD_STATIC_ASSERT_GLOBAL_NAMESPACE(uniq_name, msg)                     \
+  struct __test_global_namespace_##uniq_name##__ {};                           \
+  static_assert(std::is_same<::__test_global_namespace_##uniq_name##__,        \
+                             __test_global_namespace_##uniq_name##__>::value,  \
                 msg)
 
 #ifdef __COUNTER__
@@ -90,18 +90,18 @@ namespace common {
 #endif
 
 #ifndef PADDLE_WITH_MUSL
-#ifndef FLT_MAX  //  Fix windows_cuda12.0
+#ifndef FLT_MAX //  Fix windows_cuda12.0
 #ifdef __FLT_MAX__
 #define FLT_MAX __FLT_MAX__
 #endif
-#endif  // __FLT_MAX__
-#endif  // PADDLE_WITH_MUSL
+#endif // __FLT_MAX__
+#endif // PADDLE_WITH_MUSL
 
-#define REGISTER_FILE_SYMBOLS(name) \
+#define REGISTER_FILE_SYMBOLS(name)                                            \
   int RegisterSymbolsFor##name() { return 0; }
 
-#define DECLARE_FILE_SYMBOLS(name)       \
-  extern int RegisterSymbolsFor##name(); \
+#define DECLARE_FILE_SYMBOLS(name)                                             \
+  extern int RegisterSymbolsFor##name();                                       \
   UNUSED static int use_file_##name = RegisterSymbolsFor##name()
 
-}  // namespace common
+} // namespace common

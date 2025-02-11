@@ -28,7 +28,7 @@
 namespace paddle {
 namespace flags {
 
-std::stringstream& ErrorStream() {
+std::stringstream &ErrorStream() {
   static std::stringstream err_ss;
   return err_ss;
 }
@@ -38,12 +38,12 @@ inline void exit_with_errors() {
   exit(-1);
 }
 
-#define LOG_FLAG_ERROR(message)                                             \
-  ErrorStream() << "paddle flags error: " << message << " (at " << __FILE__ \
+#define LOG_FLAG_ERROR(message)                                                \
+  ErrorStream() << "paddle flags error: " << message << " (at " << __FILE__    \
                 << ":" << __LINE__ << ")" << std::endl
 
-#define LOG_FLAG_FATAL_ERROR(message) \
-  LOG_FLAG_ERROR(message);            \
+#define LOG_FLAG_FATAL_ERROR(message)                                          \
+  LOG_FLAG_ERROR(message);                                                     \
   exit_with_errors()
 
 enum class FlagType : uint8_t {
@@ -58,77 +58,67 @@ enum class FlagType : uint8_t {
 };
 
 class Flag {
- public:
-  Flag(std::string name,
-       std::string description,
-       std::string file,
-       FlagType type,
-       const void* default_value,
-       void* value)
-      : name_(name),
-        description_(description),
-        file_(file),
-        type_(type),
-        default_value_(default_value),
-        value_(value) {}
+public:
+  Flag(std::string name, std::string description, std::string file,
+       FlagType type, const void *default_value, void *value)
+      : name_(name), description_(description), file_(file), type_(type),
+        default_value_(default_value), value_(value) {}
   ~Flag() = default;
 
   // Summary: --name_: type_, description_ (default: default_value_)
   std::string Summary() const;
 
-  void SetValueFromString(const std::string& value);
+  void SetValueFromString(const std::string &value);
 
- private:
+private:
   friend class FlagRegistry;
 
   const std::string name_;
   const std::string description_;
   const std::string file_;
   const FlagType type_;
-  const void* default_value_;
-  void* value_;
+  const void *default_value_;
+  void *value_;
 };
 
 class FlagRegistry {
- public:
-  static FlagRegistry* Instance() {
-    static FlagRegistry* global_registry_ = new FlagRegistry();
+public:
+  static FlagRegistry *Instance() {
+    static FlagRegistry *global_registry_ = new FlagRegistry();
     return global_registry_;
   }
 
-  void RegisterFlag(Flag* flag);
+  void RegisterFlag(Flag *flag);
 
-  bool SetFlagValue(const std::string& name, const std::string& value);
+  bool SetFlagValue(const std::string &name, const std::string &value);
 
-  bool HasFlag(const std::string& name) const;
+  bool HasFlag(const std::string &name) const;
 
-  void PrintAllFlagHelp(std::ostream& os) const;
+  void PrintAllFlagHelp(std::ostream &os) const;
 
- private:
+private:
   FlagRegistry() = default;
 
-  std::map<std::string, Flag*> flags_;
+  std::map<std::string, Flag *> flags_;
 
   struct FlagCompare {
-    bool operator()(const Flag* flag1, const Flag* flag2) const {
+    bool operator()(const Flag *flag1, const Flag *flag2) const {
       return flag1->name_ < flag2->name_;
     }
   };
 
-  std::map<std::string, std::set<Flag*, FlagCompare>> flags_by_file_;
+  std::map<std::string, std::set<Flag *, FlagCompare>> flags_by_file_;
 
   std::mutex mutex_;
 };
 
-template <typename T>
-struct FlagTypeTraits {
+template <typename T> struct FlagTypeTraits {
   static constexpr FlagType Type = FlagType::UNDEFINED;
 };
 
-#define DEFINE_FLAG_TYPE_TRAITS(type, flag_type) \
-  template <>                                    \
-  struct FlagTypeTraits<type> {                  \
-    static constexpr FlagType Type = flag_type;  \
+#define DEFINE_FLAG_TYPE_TRAITS(type, flag_type)                               \
+  template <> struct FlagTypeTraits<type> {                                    \
+    static constexpr FlagType Type = flag_type;                                \
   }
 
 DEFINE_FLAG_TYPE_TRAITS(bool, FlagType::BOOL);
@@ -142,23 +132,19 @@ DEFINE_FLAG_TYPE_TRAITS(std::string, FlagType::STRING);
 #undef DEFINE_FLAG_TYPE_TRAITS
 
 template <typename T>
-FlagRegisterer::FlagRegisterer(std::string name,
-                               std::string help,
-                               std::string file,
-                               const T* default_value,
-                               T* value) {
+FlagRegisterer::FlagRegisterer(std::string name, std::string help,
+                               std::string file, const T *default_value,
+                               T *value) {
   FlagType type = FlagTypeTraits<T>::Type;
-  Flag* flag = new Flag(name, help, file, type, default_value, value);
+  Flag *flag = new Flag(name, help, file, type, default_value, value);
   FlagRegistry::Instance()->RegisterFlag(flag);
 }
 
 // Instantiate FlagRegisterer for supported types.
-#define INSTANTIATE_FLAG_REGISTERER(type)                                     \
-  template TEST_API FlagRegisterer::FlagRegisterer(std::string name,          \
-                                                   std::string help,          \
-                                                   std::string file,          \
-                                                   const type* default_value, \
-                                                   type* value)
+#define INSTANTIATE_FLAG_REGISTERER(type)                                      \
+  template TEST_API FlagRegisterer::FlagRegisterer(                            \
+      std::string name, std::string help, std::string file,                    \
+      const type *default_value, type *value)
 
 INSTANTIATE_FLAG_REGISTERER(bool);
 INSTANTIATE_FLAG_REGISTERER(int32_t);
@@ -172,58 +158,58 @@ INSTANTIATE_FLAG_REGISTERER(std::string);
 
 std::string FlagType2String(FlagType type) {
   switch (type) {
-    case FlagType::BOOL:
-      return "bool";
-    case FlagType::INT32:
-      return "int32";
-    case FlagType::UINT32:
-      return "uint32";
-    case FlagType::INT64:
-      return "int64";
-    case FlagType::UINT64:
-      return "uint64";
-    case FlagType::DOUBLE:
-      return "double";
-    case FlagType::STRING:
-      return "string";
-    default:
-      return "undefined";
+  case FlagType::BOOL:
+    return "bool";
+  case FlagType::INT32:
+    return "int32";
+  case FlagType::UINT32:
+    return "uint32";
+  case FlagType::INT64:
+    return "int64";
+  case FlagType::UINT64:
+    return "uint64";
+  case FlagType::DOUBLE:
+    return "double";
+  case FlagType::STRING:
+    return "string";
+  default:
+    return "undefined";
   }
 }
 
-std::string Value2String(const void* value, FlagType type) {
+std::string Value2String(const void *value, FlagType type) {
   switch (type) {
-    case FlagType::BOOL: {
-      const bool* val = static_cast<const bool*>(value);
-      return *val ? "true" : "false";
-    }
-    case FlagType::INT32: {
-      const int32_t* val = static_cast<const int32_t*>(value);
-      return std::to_string(*val);
-    }
-    case FlagType::UINT32: {
-      const uint32_t* val = static_cast<const uint32_t*>(value);
-      return std::to_string(*val);
-    }
-    case FlagType::INT64: {
-      const int64_t* val = static_cast<const int64_t*>(value);
-      return std::to_string(*val);
-    }
-    case FlagType::UINT64: {
-      const uint64_t* val = static_cast<const uint64_t*>(value);
-      return std::to_string(*val);
-    }
-    case FlagType::DOUBLE: {
-      const double* val = static_cast<const double*>(value);
-      return std::to_string(*val);
-    }
-    case FlagType::STRING: {
-      const std::string* val = static_cast<const std::string*>(value);
-      return *val;
-    }
-    default:
-      LOG_FLAG_FATAL_ERROR("flag type is undefined.");
-      return "";
+  case FlagType::BOOL: {
+    const bool *val = static_cast<const bool *>(value);
+    return *val ? "true" : "false";
+  }
+  case FlagType::INT32: {
+    const int32_t *val = static_cast<const int32_t *>(value);
+    return std::to_string(*val);
+  }
+  case FlagType::UINT32: {
+    const uint32_t *val = static_cast<const uint32_t *>(value);
+    return std::to_string(*val);
+  }
+  case FlagType::INT64: {
+    const int64_t *val = static_cast<const int64_t *>(value);
+    return std::to_string(*val);
+  }
+  case FlagType::UINT64: {
+    const uint64_t *val = static_cast<const uint64_t *>(value);
+    return std::to_string(*val);
+  }
+  case FlagType::DOUBLE: {
+    const double *val = static_cast<const double *>(value);
+    return std::to_string(*val);
+  }
+  case FlagType::STRING: {
+    const std::string *val = static_cast<const std::string *>(value);
+    return *val;
+  }
+  default:
+    LOG_FLAG_FATAL_ERROR("flag type is undefined.");
+    return "";
   }
 }
 
@@ -232,65 +218,66 @@ std::string Flag::Summary() const {
          " (default: " + Value2String(default_value_, type_) + ")";
 }
 
-void Flag::SetValueFromString(const std::string& value) {
-    switch (type_) {
-      case FlagType::BOOL: {
-        bool* val = static_cast<bool*>(value_);
-        if (value == "true" || value == "True" || value == "TRUE" ||
-            value == "1") {
-          *val = true;
-        } else if (value == "false" || value == "False" || value == "FALSE" ||
-                   value == "0") {
-          *val = false;
-        } else {
-          std::string error_msg = "value: \"" + value + "\" is invalid for " +
-                                  FlagType2String(type_) + " flag \"" + name_ + "\"";
-          if (type_ == FlagType::BOOL) {
-            error_msg += ", please use [true, True, TRUE, 1] or [false, False, FALSE, 0].";
-          } else {
-            error_msg += ".";
-          }
-          LOG_FLAG_ERROR(error_msg);
-        }
-        break;
+void Flag::SetValueFromString(const std::string &value) {
+  switch (type_) {
+  case FlagType::BOOL: {
+    bool *val = static_cast<bool *>(value_);
+    if (value == "true" || value == "True" || value == "TRUE" || value == "1") {
+      *val = true;
+    } else if (value == "false" || value == "False" || value == "FALSE" ||
+               value == "0") {
+      *val = false;
+    } else {
+      std::string error_msg = "value: \"" + value + "\" is invalid for " +
+                              FlagType2String(type_) + " flag \"" + name_ +
+                              "\"";
+      if (type_ == FlagType::BOOL) {
+        error_msg +=
+            ", please use [true, True, TRUE, 1] or [false, False, FALSE, 0].";
+      } else {
+        error_msg += ".";
       }
-      case FlagType::INT32: {
-        int32_t* val = static_cast<int32_t*>(value_);
-        *val = std::stoi(value);
-        break;
-      }
-      case FlagType::UINT32: {
-        uint32_t* val = static_cast<uint32_t*>(value_);
-        *val = std::stoul(value);
-        break;
-      }
-      case FlagType::INT64: {
-        int64_t* val = static_cast<int64_t*>(value_);
-        *val = std::stoll(value);
-        break;
-      }
-      case FlagType::UINT64: {
-        uint64_t* val = static_cast<uint64_t*>(value_);
-        *val = std::stoull(value);
-        break;
-      }
-      case FlagType::DOUBLE: {
-        double* val = static_cast<double*>(value_);
-        *val = std::stod(value);
-        break;
-      }
-      case FlagType::STRING: {
-        std::string* val = static_cast<std::string*>(value_);
-        *val = value;
-        break;
-      }
-      default: {
-        LOG_FLAG_FATAL_ERROR("flag type is undefined.");
-      }
+      LOG_FLAG_ERROR(error_msg);
     }
+    break;
+  }
+  case FlagType::INT32: {
+    int32_t *val = static_cast<int32_t *>(value_);
+    *val = std::stoi(value);
+    break;
+  }
+  case FlagType::UINT32: {
+    uint32_t *val = static_cast<uint32_t *>(value_);
+    *val = std::stoul(value);
+    break;
+  }
+  case FlagType::INT64: {
+    int64_t *val = static_cast<int64_t *>(value_);
+    *val = std::stoll(value);
+    break;
+  }
+  case FlagType::UINT64: {
+    uint64_t *val = static_cast<uint64_t *>(value_);
+    *val = std::stoull(value);
+    break;
+  }
+  case FlagType::DOUBLE: {
+    double *val = static_cast<double *>(value_);
+    *val = std::stod(value);
+    break;
+  }
+  case FlagType::STRING: {
+    std::string *val = static_cast<std::string *>(value_);
+    *val = value;
+    break;
+  }
+  default: {
+    LOG_FLAG_FATAL_ERROR("flag type is undefined.");
+  }
+  }
 }
 
-void FlagRegistry::RegisterFlag(Flag* flag) {
+void FlagRegistry::RegisterFlag(Flag *flag) {
   auto iter = flags_.find(flag->name_);
   if (iter != flags_.end()) {
     std::string error_msg = "flag multiple definition, flag \"";
@@ -307,8 +294,8 @@ void FlagRegistry::RegisterFlag(Flag* flag) {
   }
 }
 
-bool FlagRegistry::SetFlagValue(const std::string& name,
-                                const std::string& value) {
+bool FlagRegistry::SetFlagValue(const std::string &name,
+                                const std::string &value) {
   if (HasFlag(name)) {
     std::lock_guard<std::mutex> lock(mutex_);
     flags_[name]->SetValueFromString(value);
@@ -320,21 +307,21 @@ bool FlagRegistry::SetFlagValue(const std::string& name,
   }
 }
 
-bool FlagRegistry::HasFlag(const std::string& name) const {
+bool FlagRegistry::HasFlag(const std::string &name) const {
   return flags_.find(name) != flags_.end();
 }
 
-void FlagRegistry::PrintAllFlagHelp(std::ostream& os) const {
-  for (const auto& iter : flags_by_file_) {
+void FlagRegistry::PrintAllFlagHelp(std::ostream &os) const {
+  for (const auto &iter : flags_by_file_) {
     os << std::endl << "Flags defined in " << iter.first << ":" << std::endl;
-    for (const auto& flag : iter.second) {
+    for (const auto &flag : iter.second) {
       os << "  " << flag->Summary() << std::endl;
     }
   }
   os << std::endl;
 }
 
-void PrintAllFlagHelp(bool to_file, const std::string& file_path) {
+void PrintAllFlagHelp(bool to_file, const std::string &file_path) {
   if (to_file) {
     std::ofstream fout(file_path);
     FlagRegistry::Instance()->PrintAllFlagHelp(fout);
@@ -343,16 +330,16 @@ void PrintAllFlagHelp(bool to_file, const std::string& file_path) {
   }
 }
 
-bool SetFlagValue(const std::string& name, const std::string& value) {
+bool SetFlagValue(const std::string &name, const std::string &value) {
   return FlagRegistry::Instance()->SetFlagValue(name, value);
 }
 
-bool FindFlag(const std::string& name) {
+bool FindFlag(const std::string &name) {
   return FlagRegistry::Instance()->HasFlag(name);
 }
 
-bool GetValueFromEnv(const std::string& name, std::string* value) {
-  const char* env_var = std::getenv(name.c_str());
+bool GetValueFromEnv(const std::string &name, std::string *value) {
+  const char *env_var = std::getenv(name.c_str());
   if (env_var == nullptr) {
     return false;
   }
@@ -372,9 +359,9 @@ bool GetValueFromEnv(const std::string& name, std::string* value) {
  * commandline argument "--tryfromenv=var_name1,var_name2,...".
  */
 
-void SetFlagsFromEnv(const std::vector<std::string>& flags, bool error_fatal) {
+void SetFlagsFromEnv(const std::vector<std::string> &flags, bool error_fatal) {
   bool success = true;
-  for (const std::string& flag_name : flags) {
+  for (const std::string &flag_name : flags) {
     std::string env_var_name = std::string("FLAGS_") + flag_name;
     std::string env_var_value;
     if (GetValueFromEnv(env_var_name, &env_var_value)) {
@@ -395,7 +382,7 @@ static bool allow_undefined_flags = false;
 
 TEST_API void AllowUndefinedFlags() { allow_undefined_flags = true; }
 
-TEST_API void ParseCommandLineFlags(int* pargc, char*** pargv) {
+TEST_API void ParseCommandLineFlags(int *pargc, char ***pargv) {
   assert(*pargc > 0);
   size_t argv_num = *pargc - 1;
   std::vector<std::string> argvs(*pargv + 1, *pargv + *pargc);
@@ -404,7 +391,7 @@ TEST_API void ParseCommandLineFlags(int* pargc, char*** pargv) {
       "please follow the formats: \"--help(h)\", \"--name=value\""
       " or \"--name value\".";
   for (size_t i = 0; i < argv_num; i++) {
-    const std::string& argv = argvs[i];
+    const std::string &argv = argvs[i];
 
     if (argv.empty()) {
       continue;
@@ -508,7 +495,7 @@ TEST_API void ParseCommandLineFlags(int* pargc, char*** pargv) {
 }
 
 template <typename T>
-T GetFromEnv(const std::string& name, const T& default_val) {
+T GetFromEnv(const std::string &name, const T &default_val) {
   std::string value_str;
   if (GetValueFromEnv(name, &value_str)) {
     T value;
@@ -534,9 +521,9 @@ T GetFromEnv(const std::string& name, const T& default_val) {
   }
 }
 
-#define INSTANTIATE_GET_FROM_ENV(type)                       \
-  template TEST_API type GetFromEnv(const std::string& name, \
-                                    const type& default_val)
+#define INSTANTIATE_GET_FROM_ENV(type)                                         \
+  template TEST_API type GetFromEnv(const std::string &name,                   \
+                                    const type &default_val)
 
 INSTANTIATE_GET_FROM_ENV(bool);
 INSTANTIATE_GET_FROM_ENV(int32_t);
@@ -548,5 +535,5 @@ INSTANTIATE_GET_FROM_ENV(std::string);
 
 #undef INSTANTIATE_GET_FROM_ENV
 
-}  // namespace paddle::flags
-}
+} // namespace flags
+} // namespace paddle

@@ -21,11 +21,11 @@ namespace paddle {
 
 namespace detail {
 struct none_helper {};
-}  // namespace detail
+} // namespace detail
 
 typedef int detail::none_helper::*none_t;
 
-}  // namespace paddle
+} // namespace paddle
 
 // NOTE: Borland users have to include this header outside any precompiled
 // headers
@@ -36,4 +36,4 @@ namespace paddle {
 
 none_t const none = ((none_t)0);
 
-}  // namespace paddle
+} // namespace paddle

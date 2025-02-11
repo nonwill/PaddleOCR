@@ -21,9 +21,8 @@
 
 namespace common {
 
-template <typename T, size_t N>
-class Array {
- public:
+template <typename T, size_t N> class Array {
+public:
   static constexpr size_t kSize = N;
 
   HOSTDEVICE inline Array() {}
@@ -55,16 +54,16 @@ class Array {
 
   HOSTDEVICE inline T &at(size_t i) {
 #if !defined(__CUDA_ARCH__) && !defined(__HIPCC__)
-    PADDLE_ENFORCE_LT(
-        i, N, common::errors::OutOfRange("Array index out of bounds."));
+    PADDLE_ENFORCE_LT(i, N,
+                      common::errors::OutOfRange("Array index out of bounds."));
 #endif
     return (*this)[i];
   }
 
   HOSTDEVICE inline const T &at(size_t i) const {
 #if !defined(__CUDA_ARCH__) && !defined(__HIPCC__)
-    PADDLE_ENFORCE_LT(
-        i, N, common::errors::OutOfRange("Array index out of bounds."));
+    PADDLE_ENFORCE_LT(i, N,
+                      common::errors::OutOfRange("Array index out of bounds."));
 #endif
     return (*this)[i];
   }
@@ -79,18 +78,16 @@ class Array {
     return !(*this == other);
   }
 
- private:
-  template <typename U>
-  HOSTDEVICE static inline U *advance(U *ptr, size_t i) {
+private:
+  template <typename U> HOSTDEVICE static inline U *advance(U *ptr, size_t i) {
     return ptr + i;
   }
 
   T data_[N] = {};
 };
 
-template <typename T>
-class Array<T, 0> {
- public:
+template <typename T> class Array<T, 0> {
+public:
   static constexpr size_t kSize = 0;
 
   HOSTDEVICE inline Array() {}
@@ -139,9 +136,8 @@ class Array<T, 0> {
   }
 };
 
-}  // namespace common
+} // namespace common
 
 namespace phi {
-template <typename T, size_t N>
-using Array = common::Array<T, N>;
-}  // namespace phi
+template <typename T, size_t N> using Array = common::Array<T, N>;
+} // namespace phi

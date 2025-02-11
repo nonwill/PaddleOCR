@@ -21,8 +21,8 @@
 #define TEST_API __declspec(dllexport)
 #else
 #define TEST_API __declspec(dllimport)
-#endif  // PADDLE_DLL_EXPORT
-#endif  // _WIN32 && PADDLE_WITH_TESTING &&!STATIC_PADDLE
+#endif // PADDLE_DLL_EXPORT
+#endif // _WIN32 && PADDLE_WITH_TESTING &&!STATIC_PADDLE
 
 #ifndef LOG
 #define LOG(...) std::cout

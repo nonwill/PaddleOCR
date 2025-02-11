@@ -1,18 +1,18 @@
 /*******************************************************************************
-* Copyright 2020-2024 Intel Corporation
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*******************************************************************************/
+ * Copyright 2020-2024 Intel Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *******************************************************************************/
 
 #ifndef ONEAPI_DNNL_DNNL_OCL_H
 #define ONEAPI_DNNL_DNNL_OCL_H
@@ -50,7 +50,8 @@ extern "C" {
 /// case, the buffer will be initialized as if:
 /// - dnnl_memory_set_data_handle() has been called, if @p memory_kind is equal
 ///   to dnnl_ocl_interop_usm, or
-/// - dnnl_ocl_interop_memory_set_mem_object() has been called, if @p memory_kind
+/// - dnnl_ocl_interop_memory_set_mem_object() has been called, if @p
+/// memory_kind
 ///   is equal to dnnl_ocl_interop_buffer.
 ///
 /// @param memory Output memory object.
@@ -62,7 +63,8 @@ extern "C" {
 ///       doesn't own the buffer. Requires @p memory_kind to be equal to
 ///       dnnl_ocl_interop_usm.
 ///     - An OpenCL buffer. In this case the library doesn't own the buffer.
-///       Requires @p memory_kind be equal to be equal to dnnl_ocl_interop_buffer.
+///       Requires @p memory_kind be equal to be equal to
+///       dnnl_ocl_interop_buffer.
 ///     - The DNNL_MEMORY_ALLOCATE special value. Instructs the library to
 ///       allocate the buffer that corresponds to the memory allocation kind
 ///       @p memory_kind for the memory object. In this case the library
@@ -71,9 +73,10 @@ extern "C" {
 ///       create memory object without an underlying buffer.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_ocl_interop_memory_create(dnnl_memory_t *memory,
-        const_dnnl_memory_desc_t memory_desc, dnnl_engine_t engine,
-        dnnl_ocl_interop_memory_kind_t memory_kind, void *handle);
+dnnl_status_t DNNL_API dnnl_ocl_interop_memory_create(
+    dnnl_memory_t *memory, const_dnnl_memory_desc_t memory_desc,
+    dnnl_engine_t engine, dnnl_ocl_interop_memory_kind_t memory_kind,
+    void *handle);
 
 #ifdef DNNL_EXPERIMENTAL_SPARSE
 /// Creates a memory object with multiple handles.
@@ -89,7 +92,8 @@ dnnl_status_t DNNL_API dnnl_ocl_interop_memory_create(dnnl_memory_t *memory,
 ///       doesn't own the buffer. Requires @p memory_kind to be equal to
 ///       dnnl_ocl_interop_usm.
 ///     - An OpenCL buffer. In this case the library doesn't own the buffer.
-///       Requires @p memory_kind be equal to be equal to dnnl_ocl_interop_buffer.
+///       Requires @p memory_kind be equal to be equal to
+///       dnnl_ocl_interop_buffer.
 ///     - The DNNL_MEMORY_ALLOCATE special value. Instructs the library to
 ///       allocate the buffer that corresponds to the memory allocation kind
 ///       @p memory_kind for the memory object. In this case the library
@@ -98,10 +102,10 @@ dnnl_status_t DNNL_API dnnl_ocl_interop_memory_create(dnnl_memory_t *memory,
 ///       create memory object without an underlying buffer.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_ocl_interop_memory_create_v2(dnnl_memory_t *memory,
-        const_dnnl_memory_desc_t memory_desc, dnnl_engine_t engine,
-        dnnl_ocl_interop_memory_kind_t memory_kind, int nhandles,
-        void **handles);
+dnnl_status_t DNNL_API dnnl_ocl_interop_memory_create_v2(
+    dnnl_memory_t *memory, const_dnnl_memory_desc_t memory_desc,
+    dnnl_engine_t engine, dnnl_ocl_interop_memory_kind_t memory_kind,
+    int nhandles, void **handles);
 #endif
 
 /// Returns the memory allocation kind associated with a memory object.
@@ -112,8 +116,7 @@ dnnl_status_t DNNL_API dnnl_ocl_interop_memory_create_v2(dnnl_memory_t *memory,
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_ocl_interop_memory_get_memory_kind(
-        const_dnnl_memory_t memory,
-        dnnl_ocl_interop_memory_kind_t *memory_kind);
+    const_dnnl_memory_t memory, dnnl_ocl_interop_memory_kind_t *memory_kind);
 
 /// Returns an OpenCL memory object associated with a memory object.
 ///
@@ -122,7 +125,7 @@ dnnl_status_t DNNL_API dnnl_ocl_interop_memory_get_memory_kind(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_ocl_interop_memory_get_mem_object(
-        const_dnnl_memory_t memory, cl_mem *mem_object);
+    const_dnnl_memory_t memory, cl_mem *mem_object);
 
 /// Sets OpenCL memory object associated with a memory object.
 ///
@@ -132,8 +135,8 @@ dnnl_status_t DNNL_API dnnl_ocl_interop_memory_get_mem_object(
 /// @param mem_object OpenCL memory object.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_ocl_interop_memory_set_mem_object(
-        dnnl_memory_t memory, cl_mem mem_object);
+dnnl_status_t DNNL_API
+dnnl_ocl_interop_memory_set_mem_object(dnnl_memory_t memory, cl_mem mem_object);
 
 /// Retrieves a cache blob ID for the OpenCL device.
 ///
@@ -157,7 +160,7 @@ dnnl_status_t DNNL_API dnnl_ocl_interop_memory_set_mem_object(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_ocl_interop_engine_get_cache_blob_id(
-        cl_device_id device, size_t *size, uint8_t *cache_blob_id);
+    cl_device_id device, size_t *size, uint8_t *cache_blob_id);
 
 /// Retrieves a cache blob associated with the given engine.
 ///
@@ -174,7 +177,7 @@ dnnl_status_t DNNL_API dnnl_ocl_interop_engine_get_cache_blob_id(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_ocl_interop_engine_get_cache_blob(
-        dnnl_engine_t engine, size_t *size, uint8_t *cache_blob);
+    dnnl_engine_t engine, size_t *size, uint8_t *cache_blob);
 
 /// Creates an engine from the given cache blob.
 ///
@@ -187,8 +190,8 @@ dnnl_status_t DNNL_API dnnl_ocl_interop_engine_get_cache_blob(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_ocl_interop_engine_create_from_cache_blob(
-        dnnl_engine_t *engine, cl_device_id device, cl_context context,
-        size_t size, const uint8_t *cache_blob);
+    dnnl_engine_t *engine, cl_device_id device, cl_context context, size_t size,
+    const uint8_t *cache_blob);
 
 /// Creates an engine associated with an OpenCL device and an OpenCL context.
 ///
@@ -197,8 +200,9 @@ dnnl_status_t DNNL_API dnnl_ocl_interop_engine_create_from_cache_blob(
 /// @param context Underlying OpenCL context to use for the engine.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_ocl_interop_engine_create(
-        dnnl_engine_t *engine, cl_device_id device, cl_context context);
+dnnl_status_t DNNL_API dnnl_ocl_interop_engine_create(dnnl_engine_t *engine,
+                                                      cl_device_id device,
+                                                      cl_context context);
 
 /// Returns the OpenCL context associated with an engine.
 ///
@@ -206,8 +210,8 @@ dnnl_status_t DNNL_API dnnl_ocl_interop_engine_create(
 /// @param context Output underlying OpenCL context of the engine.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_ocl_interop_engine_get_context(
-        dnnl_engine_t engine, cl_context *context);
+dnnl_status_t DNNL_API dnnl_ocl_interop_engine_get_context(dnnl_engine_t engine,
+                                                           cl_context *context);
 
 /// Returns the OpenCL device associated with an engine.
 ///
@@ -215,8 +219,8 @@ dnnl_status_t DNNL_API dnnl_ocl_interop_engine_get_context(
 /// @param device Output underlying OpenCL device of the engine.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_ocl_interop_get_device(
-        dnnl_engine_t engine, cl_device_id *device);
+dnnl_status_t DNNL_API dnnl_ocl_interop_get_device(dnnl_engine_t engine,
+                                                   cl_device_id *device);
 
 /// Creates an execution stream for a given engine associated with
 /// an OpenCL command queue.
@@ -226,8 +230,9 @@ dnnl_status_t DNNL_API dnnl_ocl_interop_get_device(
 /// @param queue OpenCL command queue to use.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_ocl_interop_stream_create(
-        dnnl_stream_t *stream, dnnl_engine_t engine, cl_command_queue queue);
+dnnl_status_t DNNL_API dnnl_ocl_interop_stream_create(dnnl_stream_t *stream,
+                                                      dnnl_engine_t engine,
+                                                      cl_command_queue queue);
 
 /// Returns the OpenCL command queue associated with an execution stream.
 ///
@@ -236,7 +241,7 @@ dnnl_status_t DNNL_API dnnl_ocl_interop_stream_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_ocl_interop_stream_get_command_queue(
-        dnnl_stream_t stream, cl_command_queue *queue);
+    dnnl_stream_t stream, cl_command_queue *queue);
 
 /// Executes computations specified by the primitive in a specified stream and
 /// returns an OpenCL event.
@@ -259,9 +264,9 @@ dnnl_status_t DNNL_API dnnl_ocl_interop_stream_get_command_queue(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_ocl_interop_primitive_execute(
-        const_dnnl_primitive_t primitive, dnnl_stream_t stream, int nargs,
-        const dnnl_exec_arg_t *args, const cl_event *deps, int ndeps,
-        cl_event *return_event);
+    const_dnnl_primitive_t primitive, dnnl_stream_t stream, int nargs,
+    const dnnl_exec_arg_t *args, const cl_event *deps, int ndeps,
+    cl_event *return_event);
 
 /// @} dnnl_api_ocl_interop
 

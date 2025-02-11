@@ -22,31 +22,29 @@
 namespace common {
 
 // breadth-first search visitor
-template <typename NodeType>
-class BfsWalker final {
- public:
-  BfsWalker(const BfsWalker&) = delete;
-  BfsWalker(BfsWalker&&) = delete;
+template <typename NodeType> class BfsWalker final {
+public:
+  BfsWalker(const BfsWalker &) = delete;
+  BfsWalker(BfsWalker &&) = delete;
 
   using NodeHandlerType = std::function<void(NodeType)>;
   using NodesVisitorType =
-      std::function<void(NodeType, const NodeHandlerType&)>;
+      std::function<void(NodeType, const NodeHandlerType &)>;
 
-  BfsWalker(const NodesVisitorType& VisitNextNodes)
+  BfsWalker(const NodesVisitorType &VisitNextNodes)
       : VisitNextNodes_(VisitNextNodes) {}
 
-  void operator()(NodeType node, const NodeHandlerType& NodeHandler) const {
+  void operator()(NodeType node, const NodeHandlerType &NodeHandler) const {
     std::array<NodeType, 1> nodes{node};
     (*this)(nodes.begin(), nodes.end(), NodeHandler);
   }
 
   template <typename NodeIt>
-  void operator()(NodeIt begin,
-                  NodeIt end,
-                  const NodeHandlerType& NodeHandler) const {
+  void operator()(NodeIt begin, NodeIt end,
+                  const NodeHandlerType &NodeHandler) const {
     std::queue<NodeType> node_queue;
     std::unordered_set<NodeType> queued_nodes;
-    const auto& TryEnqueueNode = [&](NodeType node) {
+    const auto &TryEnqueueNode = [&](NodeType node) {
       if (queued_nodes.count(node) == 0) {
         node_queue.push(node);
         queued_nodes.insert(node);
@@ -63,8 +61,8 @@ class BfsWalker final {
     }
   }
 
- private:
+private:
   NodesVisitorType VisitNextNodes_;
 };
 
-}  // namespace common
+} // namespace common

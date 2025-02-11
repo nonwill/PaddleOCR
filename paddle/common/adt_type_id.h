@@ -14,26 +14,24 @@
 
 #pragma once
 
-#include <variant>
 #include "paddle/common/overloaded.h"
+#include <variant>
 
 namespace common {
 
-template <typename T>
-struct AdtTypeId {};
+template <typename T> struct AdtTypeId {};
 
 template <typename... Ts>
 struct AdtBaseTypeId : public std::variant<AdtTypeId<Ts>...> {
   using std::variant<AdtTypeId<Ts>...>::variant;
 
-  const std::variant<AdtTypeId<Ts>...>& variant() const {
-    return static_cast<const std::variant<AdtTypeId<Ts>...>&>(*this);
+  const std::variant<AdtTypeId<Ts>...> &variant() const {
+    return static_cast<const std::variant<AdtTypeId<Ts>...> &>(*this);
   }
 
-  template <typename... Args>
-  decltype(auto) Match(Args&&... args) const {
+  template <typename... Args> decltype(auto) Match(Args &&...args) const {
     return std::visit(Overloaded{std::forward<Args>(args)...}, variant());
   }
 };
 
-}  // namespace common
+} // namespace common

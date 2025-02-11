@@ -23,8 +23,8 @@
 namespace paddle::string {
 
 // remove leading and tailing spaces
-std::string trim_spaces(const std::string& str) {
-  const char* p = str.c_str();
+std::string trim_spaces(const std::string &str) {
+  const char *p = str.c_str();
 
   while (*p != 0 && isspace(*p)) {
     p++;
@@ -39,10 +39,10 @@ std::string trim_spaces(const std::string& str) {
   return std::string(p, len);
 }
 
-std::string erase_spaces(const std::string& str) {
+std::string erase_spaces(const std::string &str) {
   std::string result;
   result.reserve(str.size());
-  const char* p = str.c_str();
+  const char *p = str.c_str();
   while (*p != 0) {
     if (!isspace(*p)) {
       result.append(p, 1);
@@ -52,15 +52,16 @@ std::string erase_spaces(const std::string& str) {
   return result;
 }
 
-bool ends_with(std::string const& input, std::string const& test) {
-  if (test.size() > input.size()) return false;
+bool ends_with(std::string const &input, std::string const &test) {
+  if (test.size() > input.size())
+    return false;
   return std::equal(test.rbegin(), test.rend(), input.rbegin());
 }
 
 // A helper class for reading lines from file.
 // A line buffer is maintained. It
 // doesn't need to know the maximum possible length of a line.
-char* LineFileReader::getdelim(FILE* f, char delim) {
+char *LineFileReader::getdelim(FILE *f, char delim) {
 #ifndef _WIN32
   int32_t ret =
       static_cast<int32_t>(::getdelim(&_buffer, &_buf_size, delim, f));
@@ -84,4 +85,4 @@ char* LineFileReader::getdelim(FILE* f, char delim) {
 #endif
 }
 
-}  // namespace paddle::string
+} // namespace paddle::string

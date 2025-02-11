@@ -35,8 +35,7 @@ Args::Args() noexcept {
 }
 
 void ArgsHelp(std::ostream &out) noexcept {
-#define DEFINE_void(x, v, d)                                                   \
-  out << "  --" << #x << ": " << d << std::endl;
+#define DEFINE_void(x, v, d) out << "  --" << #x << ": " << d << std::endl;
 
 #define DEFINE_bool(x, v, d)                                                   \
   out << "  --" << #x << ": " << d << std::endl                                \
@@ -73,7 +72,7 @@ int Args::parseArgv(int argc, char **argv) noexcept {
 #define DEFINE_void DEFINE_bool
   OptPlus::option const long_options[] = {{"help", OptPlus::no, 0, 'h', 0},
 #include "args_pri.h"
-                                        {0, OptPlus::no, 0, 0, 0}};
+                                          {0, OptPlus::no, 0, 0, 0}};
 #undef DEFINE_void
 #undef DEFINE_bool
 #undef DEFINE_int32
@@ -101,14 +100,15 @@ int Args::parseArgv(int argc, char **argv) noexcept {
       *((bool *)opt.context) = optpp.as_bool();
     } else if (opt.val == OptPlus::v_sint) {
       *((int *)opt.context) = optpp.as_sint();
-    // } else if (opt.val == OptPlus::v_float) {
-    //   *((float *)opt.context) = optpp.arg_as_double();
+      // } else if (opt.val == OptPlus::v_float) {
+      //   *((float *)opt.context) = optpp.arg_as_double();
     } else if (opt.val == OptPlus::v_double) {
       *((double *)opt.context) = optpp.as_double();
     } else if (opt.val == OptPlus::v_string) {
       *((std::string *)opt.context) = optpp.as_str();
     } else {
-      fprintf(stderr, "OptPlus ignored context: %s type=%d\n", opt.name, opt.val);
+      fprintf(stderr, "OptPlus ignored context: %s type=%d\n", opt.name,
+              opt.val);
     }
   }
 

@@ -30,12 +30,10 @@ namespace common {
 #endif
 
 struct PD_Exception : public std::exception {
- public:
+public:
   template <typename... Args>
-  explicit PD_Exception(const std::string& msg,
-                        const char* file,
-                        int line,
-                        const char* default_msg) {
+  explicit PD_Exception(const std::string &msg, const char *file, int line,
+                        const char *default_msg) {
     std::ostringstream sout;
     if (msg.empty()) {
       sout << default_msg << "\n  [" << file << ":" << line << "]";
@@ -45,55 +43,49 @@ struct PD_Exception : public std::exception {
     err_msg_ = sout.str();
   }
 
-  const char* what() const noexcept override { return err_msg_.c_str(); }
+  const char *what() const noexcept override { return err_msg_.c_str(); }
 
- private:
+private:
   std::string err_msg_;
 };
 
 class ErrorMessage {
- public:
-  template <typename... Args>
-  explicit ErrorMessage(const Args&... args) {
+public:
+  template <typename... Args> explicit ErrorMessage(const Args &...args) {
     build_string(args...);
   }
 
   void build_string() { oss << ""; }
 
-  template <typename T>
-  void build_string(const T& t) {
-    oss << t;
-  }
+  template <typename T> void build_string(const T &t) { oss << t; }
 
   template <typename T, typename... Args>
-  void build_string(const T& t, const Args&... args) {
+  void build_string(const T &t, const Args &...args) {
     build_string(t);
     build_string(args...);
   }
 
   std::string to_string() { return oss.str(); }
 
- private:
+private:
   std::ostringstream oss;
 };
 
-#define PD_CHECK(COND, ...)                                               \
-  do {                                                                    \
-    if (PD_UNLIKELY(!(COND))) {                                           \
-      auto __message__ = ::common::ErrorMessage(__VA_ARGS__).to_string(); \
-      throw ::common::PD_Exception(__message__,                           \
-                                   __FILE__,                              \
-                                   __LINE__,                              \
-                                   "Expected " #COND                      \
-                                   ", but it's not satisfied.");          \
-    }                                                                     \
+#define PD_CHECK(COND, ...)                                                    \
+  do {                                                                         \
+    if (PD_UNLIKELY(!(COND))) {                                                \
+      auto __message__ = ::common::ErrorMessage(__VA_ARGS__).to_string();      \
+      throw ::common::PD_Exception(__message__, __FILE__, __LINE__,            \
+                                   "Expected " #COND                           \
+                                   ", but it's not satisfied.");               \
+    }                                                                          \
   } while (0)
 
-#define PD_THROW(...)                                                   \
-  do {                                                                  \
-    auto __message__ = ::common::ErrorMessage(__VA_ARGS__).to_string(); \
-    throw ::common::PD_Exception(                                       \
-        __message__, __FILE__, __LINE__, "An error occurred.");         \
+#define PD_THROW(...)                                                          \
+  do {                                                                         \
+    auto __message__ = ::common::ErrorMessage(__VA_ARGS__).to_string();        \
+    throw ::common::PD_Exception(__message__, __FILE__, __LINE__,              \
+                                 "An error occurred.");                        \
   } while (0)
 
-}  // namespace common
+} // namespace common

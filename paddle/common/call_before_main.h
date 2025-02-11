@@ -18,12 +18,12 @@
 namespace paddle_ctor {
 
 struct StaticGlobalWrapper {
-  explicit StaticGlobalWrapper(const std::function<void()>& f) { f(); }
-  StaticGlobalWrapper(const StaticGlobalWrapper&) = default;
-  StaticGlobalWrapper(StaticGlobalWrapper&&) = default;
+  explicit StaticGlobalWrapper(const std::function<void()> &f) { f(); }
+  StaticGlobalWrapper(const StaticGlobalWrapper &) = default;
+  StaticGlobalWrapper(StaticGlobalWrapper &&) = default;
 };
 
-}  // namespace paddle_ctor
+} // namespace paddle_ctor
 
-#define PD_CALL_BEFORE_MAIN(f) \
+#define PD_CALL_BEFORE_MAIN(f)                                                 \
   ::paddle_ctor::StaticGlobalWrapper static_global_wrapper_##__LINE__(f)

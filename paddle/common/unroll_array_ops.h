@@ -13,17 +13,15 @@
 // limitations under the License.
 
 #pragma once
-#include <cstddef>
-#include <type_traits>
 #include "paddle/common/hostdevice.h"
 #include "paddle/common/macros.h"
+#include <cstddef>
+#include <type_traits>
 
 namespace common {
 namespace detail {
-template <size_t kStart, size_t kEnd, bool kStop>
-struct UnrollFillConstant {
-  template <typename T>
-  HOSTDEVICE inline static void Run(T *data, T val) {
+template <size_t kStart, size_t kEnd, bool kStop> struct UnrollFillConstant {
+  template <typename T> HOSTDEVICE inline static void Run(T *data, T val) {
     data[kStart] = val;
     UnrollFillConstant<kStart + 1, kEnd, kStart + 1 == kEnd>::Run(data, val);
   }
@@ -35,8 +33,7 @@ struct UnrollFillConstant<kStart, kEnd, true> {
   HOSTDEVICE inline static void Run(T *data UNUSED, T val UNUSED) {}
 };
 
-template <size_t kStart, size_t kEnd, bool kStop>
-struct UnrollAssign {
+template <size_t kStart, size_t kEnd, bool kStop> struct UnrollAssign {
   template <typename Tin, typename Tout>
   HOSTDEVICE inline static void Run(const Tin *d1, Tout *d2) {
     d2[kStart] = static_cast<Tout>(d1[kStart]);
@@ -44,8 +41,7 @@ struct UnrollAssign {
   }
 };
 
-template <size_t kStart, size_t kEnd>
-struct UnrollAssign<kStart, kEnd, true> {
+template <size_t kStart, size_t kEnd> struct UnrollAssign<kStart, kEnd, true> {
   template <typename Tin, typename Tout>
   HOSTDEVICE inline static void Run(const Tin *d1 UNUSED, Tout *d2 UNUSED) {}
 };
@@ -66,8 +62,7 @@ struct UnrollVarArgsAssignImpl<T, kStart, kEnd, true> {
   HOSTDEVICE inline static void Run(T *d) {}
 };
 
-template <typename T>
-struct UnrollVarArgsAssign {
+template <typename T> struct UnrollVarArgsAssign {
   template <typename... Args>
   HOSTDEVICE inline static void Run(T *d, Args... args) {
     UnrollVarArgsAssignImpl<T, 0, sizeof...(Args), sizeof...(Args) == 0>::Run(
@@ -75,8 +70,7 @@ struct UnrollVarArgsAssign {
   }
 };
 
-template <size_t kStart, size_t kEnd, bool kStop>
-struct UnrollCompare {
+template <size_t kStart, size_t kEnd, bool kStop> struct UnrollCompare {
   template <typename T>
   HOSTDEVICE inline static bool Run(const T *d1, const T *d2) {
     return d1[kStart] == d2[kStart] &&
@@ -84,8 +78,7 @@ struct UnrollCompare {
   }
 };
 
-template <size_t kStart, size_t kEnd>
-struct UnrollCompare<kStart, kEnd, true> {
+template <size_t kStart, size_t kEnd> struct UnrollCompare<kStart, kEnd, true> {
   template <typename T>
   HOSTDEVICE inline constexpr static bool Run(const T *d1 UNUSED,
                                               const T *d2 UNUSED) {
@@ -93,37 +86,31 @@ struct UnrollCompare<kStart, kEnd, true> {
   }
 };
 
-template <size_t kStart, size_t kEnd, bool kStop>
-struct UnrollProduct {
-  template <typename T>
-  HOSTDEVICE inline static T Run(const T *d) {
+template <size_t kStart, size_t kEnd, bool kStop> struct UnrollProduct {
+  template <typename T> HOSTDEVICE inline static T Run(const T *d) {
     return d[kStart] *
            UnrollProduct<kStart + 1, kEnd, kStart + 1 == kEnd>::Run(d);
   }
 };
 
-template <size_t kStart, size_t kEnd>
-struct UnrollProduct<kStart, kEnd, true> {
+template <size_t kStart, size_t kEnd> struct UnrollProduct<kStart, kEnd, true> {
   template <typename T>
   HOSTDEVICE inline constexpr static T Run(const T *d UNUSED) {
     return 1;
   }
 };
-}  // namespace detail
+} // namespace detail
 
 template <size_t N>
 using UnrollFillConstant = detail::UnrollFillConstant<0, N, N == 0>;
 
-template <size_t N>
-using UnrollAssign = detail::UnrollAssign<0, N, N == 0>;
+template <size_t N> using UnrollAssign = detail::UnrollAssign<0, N, N == 0>;
 
 template <typename T>
 using UnrollVarArgsAssign = detail::UnrollVarArgsAssign<T>;
 
-template <size_t N>
-using UnrollCompare = detail::UnrollCompare<0, N, N == 0>;
+template <size_t N> using UnrollCompare = detail::UnrollCompare<0, N, N == 0>;
 
-template <size_t N>
-using UnrollProduct = detail::UnrollProduct<0, N, N == 0>;
+template <size_t N> using UnrollProduct = detail::UnrollProduct<0, N, N == 0>;
 
-}  // namespace common
+} // namespace common

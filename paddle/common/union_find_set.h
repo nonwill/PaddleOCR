@@ -19,18 +19,18 @@
 
 namespace common {
 
-template <typename T>
-class UnionFindSet {
- public:
-  const T& Find(const T& x) const {
+template <typename T> class UnionFindSet {
+public:
+  const T &Find(const T &x) const {
     if (parent_.find(x) == parent_.end()) {
       return x;
     }
-    if (parent_.at(x) != x) return Find(parent_.at(x));
+    if (parent_.at(x) != x)
+      return Find(parent_.at(x));
     return parent_.at(x);
   }
 
-  const T& Find(const T& x) {
+  const T &Find(const T &x) {
     if (parent_.find(x) == parent_.end()) {
       return x;
     }
@@ -40,7 +40,7 @@ class UnionFindSet {
     return parent_.at(x);
   }
 
-  void Union(const T& p, const T& q) {
+  void Union(const T &p, const T &q) {
     if (parent_.find(p) == parent_.end()) {
       parent_[p] = p;
     }
@@ -50,25 +50,25 @@ class UnionFindSet {
     parent_[Find(q)] = Find(p);
   }
 
-  const std::unordered_map<T, T>& GetMap() const { return parent_; }
+  const std::unordered_map<T, T> &GetMap() const { return parent_; }
 
   template <typename DoEachClusterT>
-  void VisitCluster(const DoEachClusterT& DoEachCluster) const {
+  void VisitCluster(const DoEachClusterT &DoEachCluster) const {
     std::unordered_map<T, std::vector<T>> clusters_map;
     for (auto it = parent_.begin(); it != parent_.end(); it++) {
       clusters_map[Find(it->first)].emplace_back(it->first);
     }
-    for (const auto& [_, clusters] : clusters_map) {
+    for (const auto &[_, clusters] : clusters_map) {
       DoEachCluster(clusters);
     }
   }
 
-  bool HasSameRoot(const T& p, const T& q) const { return Find(p) == Find(q); }
+  bool HasSameRoot(const T &p, const T &q) const { return Find(p) == Find(q); }
 
-  std::unordered_map<T, T>* MutMap() { return &parent_; }
+  std::unordered_map<T, T> *MutMap() { return &parent_; }
 
- private:
+private:
   std::unordered_map<T, T> parent_;
 };
 
-}  // namespace common
+} // namespace common

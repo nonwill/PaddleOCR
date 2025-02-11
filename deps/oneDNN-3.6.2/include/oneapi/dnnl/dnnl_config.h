@@ -1,18 +1,18 @@
 /*******************************************************************************
-* Copyright 2019-2024 Intel Corporation
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*******************************************************************************/
+ * Copyright 2019-2024 Intel Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *******************************************************************************/
 
 #ifndef ONEAPI_DNNL_DNNL_CONFIG_H
 #define ONEAPI_DNNL_DNNL_CONFIG_H
@@ -117,13 +117,13 @@
 #if (DNNL_CPU_RUNTIME == DNNL_RUNTIME_OCL)
 #error "Unexpected DNNL_CPU_RUNTIME"
 #endif
-#if (DNNL_GPU_RUNTIME != DNNL_RUNTIME_NONE) \
-        && (DNNL_GPU_RUNTIME != DNNL_RUNTIME_OCL) \
-        && (DNNL_GPU_RUNTIME != DNNL_RUNTIME_SYCL)
+#if (DNNL_GPU_RUNTIME != DNNL_RUNTIME_NONE) &&                                 \
+    (DNNL_GPU_RUNTIME != DNNL_RUNTIME_OCL) &&                                  \
+    (DNNL_GPU_RUNTIME != DNNL_RUNTIME_SYCL)
 #error "Unexpected DNNL_GPU_RUNTIME"
 #endif
-#if (DNNL_CPU_RUNTIME == DNNL_RUNTIME_NONE \
-        && DNNL_GPU_RUNTIME == DNNL_RUNTIME_NONE)
+#if (DNNL_CPU_RUNTIME == DNNL_RUNTIME_NONE &&                                  \
+     DNNL_GPU_RUNTIME == DNNL_RUNTIME_NONE)
 #error "At least one runtime must be specified"
 #endif
 #else

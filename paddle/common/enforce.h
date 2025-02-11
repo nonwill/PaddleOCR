@@ -15,18 +15,18 @@
 #pragma once
 
 #ifdef __GNUC__
-#include <cxxabi.h>  // for __cxa_demangle
-#endif               // __GNUC__
+#include <cxxabi.h> // for __cxa_demangle
+#endif              // __GNUC__
 #include <exception>
 #include <iostream>
 #if !defined(_WIN32)
-#include <dlfcn.h>   // dladdr
-#include <unistd.h>  // sleep, usleep
-#else                // _WIN32
+#include <dlfcn.h>  // dladdr
+#include <unistd.h> // sleep, usleep
+#else               // _WIN32
 #ifndef NOMINMAX
-#define NOMINMAX  // msvc max/min macro conflict with std::min/max
+#define NOMINMAX // msvc max/min macro conflict with std::min/max
 #endif
-#include <windows.h>  // GetModuleFileName, Sleep
+#include <windows.h> // GetModuleFileName, Sleep
 #endif
 
 #include "paddle/common/errors.h"
@@ -46,8 +46,8 @@
 namespace common {
 #ifdef __GNUC__
 inline std::string demangle(std::string name) {
-  int status = -4;  // some arbitrary value to eliminate the compiler warning
-  std::unique_ptr<char, void (*)(void*)> res{
+  int status = -4; // some arbitrary value to eliminate the compiler warning
+  std::unique_ptr<char, void (*)(void *)> res{
       abi::__cxa_demangle(name.c_str(), NULL, NULL, &status), std::free};
   return (status == 0) ? res.get() : name;
 }
@@ -63,20 +63,21 @@ TEST_API bool IsPaddleFatalSkip();
 namespace details {
 
 class PaddleFatalGuard {
- public:
+public:
   PaddleFatalGuard() : skip_paddle_fatal_(IsPaddleFatalSkip()) {
-    if (!skip_paddle_fatal_) SkipPaddleFatal(true);
+    if (!skip_paddle_fatal_)
+      SkipPaddleFatal(true);
   }
   ~PaddleFatalGuard() {
-    if (!skip_paddle_fatal_) SkipPaddleFatal(false);
+    if (!skip_paddle_fatal_)
+      SkipPaddleFatal(false);
   }
 
- private:
+private:
   bool skip_paddle_fatal_;
 };
-template <typename T>
-struct CanToString {
- private:
+template <typename T> struct CanToString {
+private:
   using YesType = uint8_t;
   using NoType = uint16_t;
 
@@ -85,63 +86,56 @@ struct CanToString {
     return 0;
   }
 
-  template <typename U>
-  static NoType Check(...) {
-    return 0;
-  }
+  template <typename U> static NoType Check(...) { return 0; }
 
- public:
+public:
   static constexpr bool kValue =
       std::is_same<YesType, decltype(Check<T>(std::cout))>::value;
 };
-template <bool kCanToString /* = true */>
-struct BinaryCompareMessageConverter {
+template <bool kCanToString /* = true */> struct BinaryCompareMessageConverter {
   template <typename T>
-  static std::string Convert(const char* expression, const T& value) {
+  static std::string Convert(const char *expression, const T &value) {
     return expression + std::string(":") + paddle::string::to_string(value);
   }
 };
 
-template <>
-struct BinaryCompareMessageConverter<false> {
+template <> struct BinaryCompareMessageConverter<false> {
   template <typename T>
-  static const char* Convert(const char* expression, const T& value UNUSED) {
+  static const char *Convert(const char *expression, const T &value UNUSED) {
     return expression;
   }
 };
 
 // Note: This Macro can only be used within enforce.h
-#define __THROW_ERROR_INTERNAL__(__ERROR_SUMMARY) \
-  do {                                            \
-    HANDLE_THE_ERROR                              \
-    throw ::common::enforce::EnforceNotMet(       \
-        __ERROR_SUMMARY, __FILE__, __LINE__);     \
-    END_HANDLE_THE_ERROR                          \
+#define __THROW_ERROR_INTERNAL__(__ERROR_SUMMARY)                              \
+  do {                                                                         \
+    HANDLE_THE_ERROR                                                           \
+    throw ::common::enforce::EnforceNotMet(__ERROR_SUMMARY, __FILE__,          \
+                                           __LINE__);                          \
+    END_HANDLE_THE_ERROR                                                       \
   } while (0)
 
-}  // namespace details
+} // namespace details
 
 TEST_API int GetCallStackLevel();
-TEST_API std::string SimplifyErrorTypeFormat(const std::string& str);
+TEST_API std::string SimplifyErrorTypeFormat(const std::string &str);
 TEST_API std::string GetCurrentTraceBackString(bool for_signal = false);
 template <typename StrType>
-static std::string GetErrorSummaryString(StrType&& what,
-                                         const char* file,
+static std::string GetErrorSummaryString(StrType &&what, const char *file,
                                          int line) {
   std::ostringstream sout;
   if (GetCallStackLevel() > 1) {
     sout << "\n----------------------\nError Message "
             "Summary:\n----------------------\n";
   }
-  sout << paddle::string::Sprintf(
-              "%s (at %s:%d)", std::forward<StrType>(what), file, line)
+  sout << paddle::string::Sprintf("%s (at %s:%d)", std::forward<StrType>(what),
+                                  file, line)
        << std::endl;
   return sout.str();
 }
 
 template <typename StrType>
-static std::string GetTraceBackString(StrType&& what,
-                                      const char* file,
+static std::string GetTraceBackString(StrType &&what, const char *file,
                                       int line) {
   if (GetCallStackLevel() > 1) {
     // FLAGS_call_stack_level>1 means showing c++ call stack
@@ -153,32 +147,32 @@ static std::string GetTraceBackString(StrType&& what,
 }
 
 struct EnforceNotMet : public std::exception {
- public:
-  EnforceNotMet(std::exception_ptr e, const char* file, int line) {
+public:
+  EnforceNotMet(std::exception_ptr e, const char *file, int line) {
     try {
       std::rethrow_exception(e);
-    } catch (EnforceNotMet& e) {
+    } catch (EnforceNotMet &e) {
       code_ = e.code();
       err_str_ = GetTraceBackString(e.what(), file, line);
       simple_err_str_ = SimplifyErrorTypeFormat(err_str_);
-    } catch (std::exception& e) {
+    } catch (std::exception &e) {
       err_str_ = GetTraceBackString(e.what(), file, line);
       simple_err_str_ = SimplifyErrorTypeFormat(err_str_);
     }
   }
 
-  EnforceNotMet(const std::string& str, const char* file, int line)
+  EnforceNotMet(const std::string &str, const char *file, int line)
       : err_str_(GetTraceBackString(str, file, line)) {
     simple_err_str_ = SimplifyErrorTypeFormat(err_str_);
   }
 
-  EnforceNotMet(const common::ErrorSummary& error, const char* file, int line)
+  EnforceNotMet(const common::ErrorSummary &error, const char *file, int line)
       : code_(error.code()),
         err_str_(GetTraceBackString(error.to_string(), file, line)) {
     simple_err_str_ = SimplifyErrorTypeFormat(err_str_);
   }
 
-  const char* what() const noexcept override {
+  const char *what() const noexcept override {
     if (GetCallStackLevel() > 1) {
       return err_str_.c_str();
     } else {
@@ -188,9 +182,9 @@ struct EnforceNotMet : public std::exception {
 
   common::ErrorCode code() const { return code_; }
 
-  const std::string& error_str() const { return err_str_; }
+  const std::string &error_str() const { return err_str_; }
 
-  const std::string& simple_error_str() const { return simple_err_str_; }
+  const std::string &simple_error_str() const { return simple_err_str_; }
 
   void set_error_str(std::string str) {
     if (GetCallStackLevel() > 1) {
@@ -202,7 +196,7 @@ struct EnforceNotMet : public std::exception {
 
   ~EnforceNotMet() override = default;
 
- private:
+private:
   // Used to determine the final type of exception thrown
   common::ErrorCode code_ = common::ErrorCode::LEGACY;
   // Complete error message
@@ -221,18 +215,17 @@ struct EnforceNotMet : public std::exception {
 
 #if defined _WIN32 && defined PADDLE_ON_INFERENCE && defined PADDLE_NO_PYTHON
 #define HANDLE_THE_ERROR try {
-#define END_HANDLE_THE_ERROR            \
-  }                                     \
-  catch (const std::exception& e) {     \
-    std::cout << e.what() << std::endl; \
-    throw;                              \
+#define END_HANDLE_THE_ERROR                                                   \
+  }                                                                            \
+  catch (const std::exception &e) {                                            \
+    std::cout << e.what() << std::endl;                                        \
+    throw;                                                                     \
   }
 #else
 #define HANDLE_THE_ERROR
 #define END_HANDLE_THE_ERROR
 #endif
-template <typename T>
-inline constexpr bool IsArithmetic() {
+template <typename T> inline constexpr bool IsArithmetic() {
   return std::is_arithmetic<T>::value;
 }
 
@@ -242,14 +235,12 @@ struct TypeConverterImpl {
   using Type2 = Type1;
 };
 
-template <typename T1, typename T2>
-struct TypeConverterImpl<T1, T2, false> {
+template <typename T1, typename T2> struct TypeConverterImpl<T1, T2, false> {
   using Type1 = T1;
   using Type2 = T2;
 };
 
-template <typename T1, typename T2>
-struct TypeConverter {
+template <typename T1, typename T2> struct TypeConverter {
   static constexpr bool kIsArithmetic =
       IsArithmetic<T1>() && IsArithmetic<T2>();
   using Type1 = typename TypeConverterImpl<T1, T2, kIsArithmetic>::Type1;
@@ -264,20 +255,20 @@ template <typename T1, typename T2>
 using CommonType2 = typename std::add_lvalue_reference<
     typename std::add_const<typename TypeConverter<T1, T2>::Type2>::type>::type;
 
-#define PADDLE_THROW(...)                                         \
-  do {                                                            \
-    HANDLE_THE_ERROR                                              \
-    throw ::common::enforce::EnforceNotMet(                       \
-        ::common::ErrorSummary(__VA_ARGS__), __FILE__, __LINE__); \
-    END_HANDLE_THE_ERROR                                          \
+#define PADDLE_THROW(...)                                                      \
+  do {                                                                         \
+    HANDLE_THE_ERROR                                                           \
+    throw ::common::enforce::EnforceNotMet(                                    \
+        ::common::ErrorSummary(__VA_ARGS__), __FILE__, __LINE__);              \
+    END_HANDLE_THE_ERROR                                                       \
   } while (0)
 
-#define PADDLE_FATAL(...)                                          \
-  if (!::common::enforce::IsPaddleFatalSkip()) {                   \
-    auto info = ::common::enforce::EnforceNotMet(                  \
-        paddle::string::Sprintf(__VA_ARGS__), __FILE__, __LINE__); \
-    std::cerr << info.what() << std::endl;                         \
-    std::abort();                                                  \
+#define PADDLE_FATAL(...)                                                      \
+  if (!::common::enforce::IsPaddleFatalSkip()) {                               \
+    auto info = ::common::enforce::EnforceNotMet(                              \
+        paddle::string::Sprintf(__VA_ARGS__), __FILE__, __LINE__);             \
+    std::cerr << info.what() << std::endl;                                     \
+    std::abort();                                                              \
   }
 
 #define __PADDLE_BINARY_COMPARE(__VAL1, __VAL2, __CMP, __INV_CMP, ...)         \
@@ -300,9 +291,7 @@ using CommonType2 = typename std::add_lvalue_reference<
       auto __message__ = ::paddle::string::Sprintf(                            \
           "%s\n  [Hint: Expected %s " #__CMP                                   \
           " %s, but received %s " #__INV_CMP " %s.]",                          \
-          __summary__.error_message(),                                         \
-          #__VAL1,                                                             \
-          #__VAL2,                                                             \
+          __summary__.error_message(), #__VAL1, #__VAL2,                       \
           ::common::details::BinaryCompareMessageConverter<                    \
               __kCanToString__>::Convert(#__VAL1, __val1),                     \
           ::common::details::BinaryCompareMessageConverter<                    \
@@ -324,43 +313,39 @@ using CommonType2 = typename std::add_lvalue_reference<
     }                                                                          \
   } while (0)
 
-#define PADDLE_ENFORCE_EQ(__VAL0, __VAL1, ...) \
+#define PADDLE_ENFORCE_EQ(__VAL0, __VAL1, ...)                                 \
   __PADDLE_BINARY_COMPARE(__VAL0, __VAL1, ==, !=, __VA_ARGS__)
-#define PADDLE_ENFORCE_NE(__VAL0, __VAL1, ...) \
+#define PADDLE_ENFORCE_NE(__VAL0, __VAL1, ...)                                 \
   __PADDLE_BINARY_COMPARE(__VAL0, __VAL1, !=, ==, __VA_ARGS__)
-#define PADDLE_ENFORCE_GT(__VAL0, __VAL1, ...) \
+#define PADDLE_ENFORCE_GT(__VAL0, __VAL1, ...)                                 \
   __PADDLE_BINARY_COMPARE(__VAL0, __VAL1, >, <=, __VA_ARGS__)
-#define PADDLE_ENFORCE_GE(__VAL0, __VAL1, ...) \
+#define PADDLE_ENFORCE_GE(__VAL0, __VAL1, ...)                                 \
   __PADDLE_BINARY_COMPARE(__VAL0, __VAL1, >=, <, __VA_ARGS__)
-#define PADDLE_ENFORCE_LT(__VAL0, __VAL1, ...) \
+#define PADDLE_ENFORCE_LT(__VAL0, __VAL1, ...)                                 \
   __PADDLE_BINARY_COMPARE(__VAL0, __VAL1, <, >=, __VA_ARGS__)
-#define PADDLE_ENFORCE_LE(__VAL0, __VAL1, ...) \
+#define PADDLE_ENFORCE_LE(__VAL0, __VAL1, ...)                                 \
   __PADDLE_BINARY_COMPARE(__VAL0, __VAL1, <=, >, __VA_ARGS__)
 
-TEST_API bool RegisterLogSimplyStr(const std::string& type,
-                                   const std::string& simply);
-template <typename T>
-class LogSimplyStrRegistrar {
- public:
+TEST_API bool RegisterLogSimplyStr(const std::string &type,
+                                   const std::string &simply);
+template <typename T> class LogSimplyStrRegistrar {
+public:
   static bool success;
 };
 
-#define REGISTER_LOG_SIMPLY_STR(Type)                            \
-  template <>                                                    \
-  bool ::common::enforce::LogSimplyStrRegistrar<Type>::success = \
-      ::common::enforce::RegisterLogSimplyStr(                   \
+#define REGISTER_LOG_SIMPLY_STR(Type)                                          \
+  template <>                                                                  \
+  bool ::common::enforce::LogSimplyStrRegistrar<Type>::success =               \
+      ::common::enforce::RegisterLogSimplyStr(                                 \
           ::common::demangle(typeid(Type).name()), #Type);
-}  // namespace enforce
-using namespace enforce;  // NOLINT
-}  // namespace common
+} // namespace enforce
+using namespace enforce; // NOLINT
+} // namespace common
 
 // TODO(zhangbopd): This is a copy from pir, and should be removed after merge
 // this into common enforce namespace above.
-template <typename T>
-inline bool is_error(const T& stat) {
-  return !stat;
-}
+template <typename T> inline bool is_error(const T &stat) { return !stat; }
 
 namespace pir {
 #define IR_THROW(...) PADDLE_THROW(common::errors::Fatal(__VA_ARGS__))
-}  // namespace pir
+} // namespace pir

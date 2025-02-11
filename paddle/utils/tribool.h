@@ -44,7 +44,7 @@ namespace detail {
  */
 struct indeterminate_t {};
 
-}  // namespace detail
+} // namespace detail
 
 class tribool;
 
@@ -68,8 +68,9 @@ typedef bool (*indeterminate_keyword_t)(tribool, detail::indeterminate_t);
  * \returns <tt>x.value == tribool::indeterminate_value</tt>
  * \throws nothrow
  */
-inline bool indeterminate(
-    tribool x, detail::indeterminate_t dummy = detail::indeterminate_t());
+inline bool
+indeterminate(tribool x,
+              detail::indeterminate_t dummy = detail::indeterminate_t());
 
 /**
  * \brief A 3-state boolean type.
@@ -78,7 +79,7 @@ inline bool indeterminate(
  * indeterminate.
  */
 class tribool {
- private:
+private:
   /// INTERNAL ONLY
   struct dummy {
     void nonnull() {}
@@ -86,7 +87,7 @@ class tribool {
 
   typedef void (dummy::*safe_bool)();
 
- public:
+public:
   /**
    * Construct a new 3-state boolean value with the value 'false'.
    *
@@ -100,14 +101,14 @@ class tribool {
    *
    * \throws nothrow
    */
-  tribool(bool value) : value(value ? true_value : false_value) {}  // NOLINT
+  tribool(bool value) : value(value ? true_value : false_value) {} // NOLINT
 
   /**
    * Construct a new 3-state boolean value with an indeterminate value.
    *
    * \throws nothrow
    */
-  tribool(indeterminate_keyword_t) : value(indeterminate_value) {}  // NOLINT
+  tribool(indeterminate_keyword_t) : value(indeterminate_value) {} // NOLINT
 
   /**
    * Use a 3-state boolean in a boolean context. Will evaluate true in a
@@ -428,11 +429,11 @@ inline tribool operator!=(tribool x, indeterminate_keyword_t) {
   return x != tribool(indeterminate);
 }
 
-}  // namespace logic
-}  // namespace paddle
+} // namespace logic
+} // namespace paddle
 
 // Pull tribool and indeterminate into namespace "boost"
 namespace paddle {
 using logic::indeterminate;
 using logic::tribool;
-}  // namespace paddle
+} // namespace paddle

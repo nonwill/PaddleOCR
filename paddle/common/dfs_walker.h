@@ -24,44 +24,41 @@
 namespace common {
 
 // depth-first search visitor
-template <typename NodeType>
-class DfsWalker final {
- public:
-  DfsWalker(const DfsWalker&) = delete;
-  DfsWalker(DfsWalker&&) = delete;
+template <typename NodeType> class DfsWalker final {
+public:
+  DfsWalker(const DfsWalker &) = delete;
+  DfsWalker(DfsWalker &&) = delete;
 
   using NodeHandlerType = std::function<void(NodeType)>;
   using NodesVisitorType =
-      std::function<void(NodeType, const NodeHandlerType&)>;
+      std::function<void(NodeType, const NodeHandlerType &)>;
 
-  DfsWalker(const NodesVisitorType& VisitNextNodes)
+  DfsWalker(const NodesVisitorType &VisitNextNodes)
       : VisitNextNodes_(VisitNextNodes) {}
 
-  void operator()(NodeType node, const NodeHandlerType& NodeHandler) const {
+  void operator()(NodeType node, const NodeHandlerType &NodeHandler) const {
     std::array<NodeType, 1> nodes{node};
     (*this)(nodes.begin(), nodes.end(), NodeHandler, [&](NodeType) {});
   }
 
   template <typename NodeIt>
-  void operator()(NodeIt begin,
-                  NodeIt end,
-                  const NodeHandlerType& NodeHandler) const {
+  void operator()(NodeIt begin, NodeIt end,
+                  const NodeHandlerType &NodeHandler) const {
     (*this)(begin, end, NodeHandler, [&](NodeType) {});
   }
 
   // https://en.wikipedia.org/wiki/Depth-first_search
   template <typename NodeIt>
-  void operator()(NodeIt begin,
-                  NodeIt end,
-                  const NodeHandlerType& NodeHandlerOnPush,
-                  const NodeHandlerType& NodeHandlerOnPop) const {
+  void operator()(NodeIt begin, NodeIt end,
+                  const NodeHandlerType &NodeHandlerOnPush,
+                  const NodeHandlerType &NodeHandlerOnPop) const {
     std::unordered_set<NodeType> discovered;
     struct Neighbours {
       NodeType producer;
       std::queue<NodeType> consumers;
     };
     std::stack<Neighbours> stack;
-    const auto& TryPush = [&](NodeType node) {
+    const auto &TryPush = [&](NodeType node) {
       if (discovered.count(node) == 0) {
         discovered.insert(node);
         NodeHandlerOnPush(node);
@@ -74,7 +71,7 @@ class DfsWalker final {
     for (NodeIt node_iter = begin; node_iter != end; ++node_iter) {
       TryPush(*node_iter);
       while (!stack.empty()) {
-        auto* neighbours = &stack.top();
+        auto *neighbours = &stack.top();
         if (neighbours->consumers.empty()) {
           NodeHandlerOnPop(neighbours->producer);
           stack.pop();
@@ -86,8 +83,8 @@ class DfsWalker final {
     }
   }
 
- private:
+private:
   NodesVisitorType VisitNextNodes_;
 };
 
-}  // namespace common
+} // namespace common

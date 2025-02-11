@@ -14,8 +14,8 @@ limitations under the License. */
 
 #pragma once
 
-#include <cctype>
 #include "paddle/common/exception.h"
+#include <cctype>
 
 namespace common {
 
@@ -64,12 +64,12 @@ enum class DataLayout {
   kAnyLayout = ANY,
   kNHWC = NHWC,
   kNCHW = NCHW,
-  kMKLDNN = ONEDNN,  // all layouts supported by ONEDNN internally
+  kMKLDNN = ONEDNN, // all layouts supported by ONEDNN internally
   kNDHWC = NDHWC,
   kNCDHW = NCDHW,
 };
 
-inline DataLayout StringToDataLayout(const std::string& str) {
+inline DataLayout StringToDataLayout(const std::string &str) {
   std::string s(str);
   for (size_t i = 0; i < s.size(); ++i) {
     s[i] = toupper(s[i]);
@@ -102,39 +102,39 @@ inline DataLayout StringToDataLayout(const std::string& str) {
   }
 }
 
-inline std::string DataLayoutToString(const DataLayout& layout) {
+inline std::string DataLayoutToString(const DataLayout &layout) {
   switch (layout) {
-    case DataLayout::kNHWC:
-      return "NHWC";
-    case DataLayout::kNCHW:
-      return "NCHW";
-    case DataLayout::kAnyLayout:
-      return "Undefined(AnyLayout)";
-    case DataLayout::kMKLDNN:
-      return "ONEDNN";
-    case DataLayout::SPARSE_COO:
-      return "SPARSE_COO";
-    case DataLayout::SPARSE_CSR:
-      return "SPARSE_CSR";
-    case DataLayout::kNDHWC:
-      return "NDHWC";
-    case DataLayout::kNCDHW:
-      return "NCDHW";
-    case DataLayout::PSTRING_UNION:
-      return "PSTRING_UNION";
-    case DataLayout::STRIDED:
-      return "STRIDED";
-    default:
-      PD_THROW("Unknown Data Layout type ", static_cast<int>(layout), ".");
+  case DataLayout::kNHWC:
+    return "NHWC";
+  case DataLayout::kNCHW:
+    return "NCHW";
+  case DataLayout::kAnyLayout:
+    return "Undefined(AnyLayout)";
+  case DataLayout::kMKLDNN:
+    return "ONEDNN";
+  case DataLayout::SPARSE_COO:
+    return "SPARSE_COO";
+  case DataLayout::SPARSE_CSR:
+    return "SPARSE_CSR";
+  case DataLayout::kNDHWC:
+    return "NDHWC";
+  case DataLayout::kNCDHW:
+    return "NCDHW";
+  case DataLayout::PSTRING_UNION:
+    return "PSTRING_UNION";
+  case DataLayout::STRIDED:
+    return "STRIDED";
+  default:
+    PD_THROW("Unknown Data Layout type ", static_cast<int>(layout), ".");
   }
 }
 
-inline std::ostream& operator<<(std::ostream& os, DataLayout layout) {
+inline std::ostream &operator<<(std::ostream &os, DataLayout layout) {
   os << DataLayoutToString(layout);
   return os;
 }
 
-}  // namespace common
+} // namespace common
 
 namespace pir {
 using DataLayout = common::DataLayout;
@@ -148,4 +148,4 @@ namespace paddle {
 // In order to be compatible with the original custom operator Tensor interface
 using DataLayout = common::DataLayout;
 
-}  // namespace paddle
+} // namespace paddle

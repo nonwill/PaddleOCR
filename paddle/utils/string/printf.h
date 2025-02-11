@@ -74,34 +74,32 @@
 #include <string>
 #include <vector>
 
-#include "paddle/utils/string/tinyformat/tinyformat.h"  // https://github.com/c42f/tinyformat
+#include "paddle/utils/string/tinyformat/tinyformat.h" // https://github.com/c42f/tinyformat
 
 namespace paddle {
 namespace string {
 
 template <typename... Args>
-void Fprintf(std::ostream& out, const char* fmt, const Args&... args) {
+void Fprintf(std::ostream &out, const char *fmt, const Args &...args) {
   tinyformat::vformat(out, fmt, tinyformat::makeFormatList(args...));
 }
 
 inline std::string Sprintf() { return ""; }
 
-template <typename... Args>
-std::string Sprintf(const Args&... args) {
+template <typename... Args> std::string Sprintf(const Args &...args) {
   std::ostringstream oss;
   Fprintf(oss, "%s", args...);
   return oss.str();
 }
 
 template <typename... Args>
-std::string Sprintf(const char* fmt, const Args&... args) {
+std::string Sprintf(const char *fmt, const Args &...args) {
   std::ostringstream oss;
   Fprintf(oss, fmt, args...);
   return oss.str();
 }
 
-template <typename... Args>
-void Printf(const char* fmt, const Args&... args) {
+template <typename... Args> void Printf(const char *fmt, const Args &...args) {
   Fprintf(std::cout, fmt, args...);
 }
 
@@ -120,5 +118,5 @@ inline std::string HumanReadableSize(double f_size) {
   return Sprintf("%f%s", f_size, units[i]);
 }
 
-}  // namespace string
-}  // namespace paddle
+} // namespace string
+} // namespace paddle

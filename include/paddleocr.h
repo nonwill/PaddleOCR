@@ -31,8 +31,9 @@ public:
   std::vector<std::vector<OCRPredictResult>>
   ocr(const std::vector<cv::Mat> &img_list) noexcept;
 
-  std::vector<OCRPredictResult> ocr(const cv::Mat &img) noexcept
-  { return ocr(img, true); }
+  std::vector<OCRPredictResult> ocr(const cv::Mat &img) noexcept {
+    return ocr(img, true);
+  }
 
 protected:
   void det(const cv::Mat &img,
@@ -42,8 +43,7 @@ protected:
   void cls(const std::vector<cv::Mat> &img_list,
            std::vector<OCRPredictResult> &ocr_results) noexcept;
 
-  std::vector<OCRPredictResult> ocr(const cv::Mat &img,
-                                    bool and_cls) noexcept;
+  std::vector<OCRPredictResult> ocr(const cv::Mat &img, bool and_cls) noexcept;
 
 private:
   struct PPOCR_PRIVATE;

@@ -26,15 +26,14 @@
 namespace common {
 
 // Statically sized, statically indexed dimension
-template <int D>
-class Dim : public Array<int64_t, D> {
- public:
+template <int D> class Dim : public Array<int64_t, D> {
+public:
   static_assert(D >= 0, "D must be not less than 0");
 
   static constexpr int kRank = D;
   using BaseClass = Array<int64_t, D>;
 
-  inline Dim(int64_t head, const Dim<D - 1>& tail) {
+  inline Dim(int64_t head, const Dim<D - 1> &tail) {
     (*this)[0] = head;
     new (this->GetMutable() + 1) Dim<D - 1>(tail);
   }
@@ -52,8 +51,7 @@ class Dim : public Array<int64_t, D> {
 };
 
 // Product of a Dim
-template <int D>
-HOSTDEVICE inline int64_t product(const Dim<D>& a) {
+template <int D> HOSTDEVICE inline int64_t product(const Dim<D> &a) {
   return UnrollProduct<D>::Run(a.Get());
 }
 
@@ -71,7 +69,7 @@ HOSTDEVICE inline Dim<sizeof...(Args)> make_dim(Args... idxes) {
 
 // Allows us to output a Dim
 template <int D>
-inline std::ostream& operator<<(std::ostream& os, const Dim<D>& d) {
+inline std::ostream &operator<<(std::ostream &os, const Dim<D> &d) {
   if (D > 0) {
     os << d[0];
     for (int i = 1; i < D; ++i) {
@@ -84,33 +82,30 @@ inline std::ostream& operator<<(std::ostream& os, const Dim<D>& d) {
   return os;
 }
 
-inline std::ostream& operator<<(std::ostream& os, const Dim<0>& d UNUSED) {
+inline std::ostream &operator<<(std::ostream &os, const Dim<0> &d UNUSED) {
   return os;
 }
 
-template <int D>
-HOST std::string Dim<D>::to_string() const {
+template <int D> HOST std::string Dim<D>::to_string() const {
   std::stringstream stream;
   stream << *this;
   return stream.str();
 }
 
 template <int D, typename T1, typename T2>
-inline void static_dim_assign(const T1* in, T2* out) {
+inline void static_dim_assign(const T1 *in, T2 *out) {
   UnrollAssign<D>::Run(in, out);
 }
 
-}  // namespace common
+} // namespace common
 
 // Note: `namespace paddle::framework` will case CI error.
 namespace paddle {
 namespace framework {
-template <int D>
-using Dim = common::Dim<D>;
+template <int D> using Dim = common::Dim<D>;
 }
-}  // namespace paddle
+} // namespace paddle
 
 namespace phi {
-template <int D>
-using Dim = common::Dim<D>;
+template <int D> using Dim = common::Dim<D>;
 }

@@ -31,16 +31,13 @@ struct power_of_two_hash_policy;
 struct fibonacci_hash_policy;
 
 namespace detailv3 {
-template <typename Result, typename Functor>
-struct functor_storage : Functor {
+template <typename Result, typename Functor> struct functor_storage : Functor {
   functor_storage() = default;
   functor_storage(const Functor &functor) : Functor(functor) {}
-  template <typename... Args>
-  Result operator()(Args &&...args) {
+  template <typename... Args> Result operator()(Args &&...args) {
     return static_cast<Functor &>(*this)(std::forward<Args>(args)...);
   }
-  template <typename... Args>
-  Result operator()(Args &&...args) const {
+  template <typename... Args> Result operator()(Args &&...args) const {
     return static_cast<const Functor &>(*this)(std::forward<Args>(args)...);
   }
 };
@@ -120,8 +117,7 @@ struct KeyOrValueEquality : functor_storage<bool, key_equal> {
   }
 };
 static constexpr int8_t min_lookups = 4;
-template <typename T>
-struct sherwood_v3_entry {
+template <typename T> struct sherwood_v3_entry {
   sherwood_v3_entry() {}
   sherwood_v3_entry(int8_t distance_from_desired)
       : distance_from_desired(distance_from_desired) {}
@@ -130,8 +126,7 @@ struct sherwood_v3_entry {
   bool has_value() const { return distance_from_desired >= 0; }
   bool is_empty() const { return distance_from_desired < 0; }
   bool is_at_desired_position() const { return distance_from_desired <= 0; }
-  template <typename... Args>
-  void emplace(int8_t distance, Args &&...args) {
+  template <typename... Args> void emplace(int8_t distance, Args &&...args) {
     new (std::addressof(value)) T(std::forward<Args>(args)...);
     distance_from_desired = distance;
   }
@@ -163,13 +158,11 @@ inline int8_t log2(size_t value) {
   return table[((value - (value >> 1)) * 0x07EDD5E59A4E28C2) >> 58];
 }
 
-template <typename T, bool>
-struct AssignIfTrue {
+template <typename T, bool> struct AssignIfTrue {
   void operator()(T &lhs, const T &rhs) { lhs = rhs; }
   void operator()(T &lhs, T &&rhs) { lhs = std::move(rhs); }
 };
-template <typename T>
-struct AssignIfTrue<T, false> {
+template <typename T> struct AssignIfTrue<T, false> {
   void operator()(T &, const T &) {}
   void operator()(T &, T &&) {}
 };
@@ -186,11 +179,9 @@ inline size_t next_power_of_two(size_t i) {
   return i;
 }
 
-template <typename...>
-using void_t = void;
+template <typename...> using void_t = void;
 
-template <typename T, typename = void>
-struct HashPolicySelector {
+template <typename T, typename = void> struct HashPolicySelector {
   typedef fibonacci_hash_policy type;
 };
 template <typename T>
@@ -198,13 +189,8 @@ struct HashPolicySelector<T, void_t<typename T::hash_policy>> {
   typedef typename T::hash_policy type;
 };
 
-template <typename T,
-          typename FindKey,
-          typename ArgumentHash,
-          typename Hasher,
-          typename ArgumentEqual,
-          typename Equal,
-          typename ArgumentAlloc,
+template <typename T, typename FindKey, typename ArgumentHash, typename Hasher,
+          typename ArgumentEqual, typename Equal, typename ArgumentAlloc,
           typename EntryAlloc>
 class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
   using Entry = detailv3::sherwood_v3_entry<T>;
@@ -212,7 +198,7 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
   using EntryPointer = typename AllocatorTraits::pointer;
   struct convertible_to_iterator;
 
- public:
+public:
   using value_type = T;
   using size_type = size_t;
   using difference_type = std::ptrdiff_t;
@@ -233,17 +219,14 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
     rehash(bucket_count);
   }
   sherwood_v3_table(size_type bucket_count, const ArgumentAlloc &alloc)
-      : sherwood_v3_table(
-            bucket_count, ArgumentHash(), ArgumentEqual(), alloc) {}
-  sherwood_v3_table(size_type bucket_count,
-                    const ArgumentHash &hash,
+      : sherwood_v3_table(bucket_count, ArgumentHash(), ArgumentEqual(),
+                          alloc) {}
+  sherwood_v3_table(size_type bucket_count, const ArgumentHash &hash,
                     const ArgumentAlloc &alloc)
       : sherwood_v3_table(bucket_count, hash, ArgumentEqual(), alloc) {}
   explicit sherwood_v3_table(const ArgumentAlloc &alloc) : EntryAlloc(alloc) {}
   template <typename It>
-  sherwood_v3_table(It first,
-                    It last,
-                    size_type bucket_count = 0,
+  sherwood_v3_table(It first, It last, size_type bucket_count = 0,
                     const ArgumentHash &hash = ArgumentHash(),
                     const ArgumentEqual &equal = ArgumentEqual(),
                     const ArgumentAlloc &alloc = ArgumentAlloc())
@@ -251,49 +234,37 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
     insert(first, last);
   }
   template <typename It>
-  sherwood_v3_table(It first,
-                    It last,
-                    size_type bucket_count,
+  sherwood_v3_table(It first, It last, size_type bucket_count,
                     const ArgumentAlloc &alloc)
-      : sherwood_v3_table(
-            first, last, bucket_count, ArgumentHash(), ArgumentEqual(), alloc) {
-  }
+      : sherwood_v3_table(first, last, bucket_count, ArgumentHash(),
+                          ArgumentEqual(), alloc) {}
   template <typename It>
-  sherwood_v3_table(It first,
-                    It last,
-                    size_type bucket_count,
-                    const ArgumentHash &hash,
-                    const ArgumentAlloc &alloc)
-      : sherwood_v3_table(
-            first, last, bucket_count, hash, ArgumentEqual(), alloc) {}
-  sherwood_v3_table(std::initializer_list<T> il,
-                    size_type bucket_count = 0,
+  sherwood_v3_table(It first, It last, size_type bucket_count,
+                    const ArgumentHash &hash, const ArgumentAlloc &alloc)
+      : sherwood_v3_table(first, last, bucket_count, hash, ArgumentEqual(),
+                          alloc) {}
+  sherwood_v3_table(std::initializer_list<T> il, size_type bucket_count = 0,
                     const ArgumentHash &hash = ArgumentHash(),
                     const ArgumentEqual &equal = ArgumentEqual(),
                     const ArgumentAlloc &alloc = ArgumentAlloc())
       : sherwood_v3_table(bucket_count, hash, equal, alloc) {
-    if (bucket_count == 0) rehash(il.size());
+    if (bucket_count == 0)
+      rehash(il.size());
     insert(il.begin(), il.end());
   }
-  sherwood_v3_table(std::initializer_list<T> il,
-                    size_type bucket_count,
+  sherwood_v3_table(std::initializer_list<T> il, size_type bucket_count,
                     const ArgumentAlloc &alloc)
-      : sherwood_v3_table(
-            il, bucket_count, ArgumentHash(), ArgumentEqual(), alloc) {}
-  sherwood_v3_table(std::initializer_list<T> il,
-                    size_type bucket_count,
-                    const ArgumentHash &hash,
-                    const ArgumentAlloc &alloc)
+      : sherwood_v3_table(il, bucket_count, ArgumentHash(), ArgumentEqual(),
+                          alloc) {}
+  sherwood_v3_table(std::initializer_list<T> il, size_type bucket_count,
+                    const ArgumentHash &hash, const ArgumentAlloc &alloc)
       : sherwood_v3_table(il, bucket_count, hash, ArgumentEqual(), alloc) {}
   sherwood_v3_table(const sherwood_v3_table &other)
       : sherwood_v3_table(
-            other,
-            AllocatorTraits::select_on_container_copy_construction(
-                other.get_allocator())) {}
+            other, AllocatorTraits::select_on_container_copy_construction(
+                       other.get_allocator())) {}
   sherwood_v3_table(const sherwood_v3_table &other, const ArgumentAlloc &alloc)
-      : EntryAlloc(alloc),
-        Hasher(other),
-        Equal(other),
+      : EntryAlloc(alloc), Hasher(other), Equal(other),
         _max_load_factor(other._max_load_factor) {
     rehash_for_other_container(other);
     try {
@@ -305,8 +276,7 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
     }
   }
   sherwood_v3_table(sherwood_v3_table &&other) noexcept
-      : EntryAlloc(std::move(other)),
-        Hasher(std::move(other)),
+      : EntryAlloc(std::move(other)), Hasher(std::move(other)),
         Equal(std::move(other)) {
     swap_pointers(other);
   }
@@ -316,7 +286,8 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
     swap_pointers(other);
   }
   sherwood_v3_table &operator=(const sherwood_v3_table &other) {
-    if (this == std::addressof(other)) return *this;
+    if (this == std::addressof(other))
+      return *this;
 
     clear();
     if (AllocatorTraits::propagate_on_container_copy_assignment::value) {
@@ -354,7 +325,8 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
       clear();
       _max_load_factor = other._max_load_factor;
       rehash_for_other_container(other);
-      for (T &elem : other) emplace(std::move(elem));
+      for (T &elem : other)
+        emplace(std::move(elem));
       other.clear();
     }
     static_cast<Hasher &>(*this) = std::move(other);
@@ -376,8 +348,7 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
     return static_cast<const ArgumentHash &>(*this);
   }
 
-  template <typename ValueType>
-  struct templated_iterator {
+  template <typename ValueType> struct templated_iterator {
     templated_iterator() = default;
     templated_iterator(EntryPointer current) : current(current) {}
     EntryPointer current = EntryPointer();
@@ -419,12 +390,14 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
 
   iterator begin() {
     for (EntryPointer it = entries;; ++it) {
-      if (it->has_value()) return {it};
+      if (it->has_value())
+        return {it};
     }
   }
   const_iterator begin() const {
     for (EntryPointer it = entries;; ++it) {
-      if (it->has_value()) return {it};
+      if (it->has_value())
+        return {it};
     }
   }
   const_iterator cbegin() const { return begin(); }
@@ -444,7 +417,8 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
     EntryPointer it = entries + ptrdiff_t(index);
     for (int8_t distance = 0; it->distance_from_desired >= distance;
          ++distance, ++it) {
-      if (compares_equal(key, it->value)) return {it};
+      if (compares_equal(key, it->value))
+        return {it};
     }
     return end();
   }
@@ -459,8 +433,8 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
     else
       return {found, std::next(found)};
   }
-  std::pair<const_iterator, const_iterator> equal_range(
-      const FindKey &key) const {
+  std::pair<const_iterator, const_iterator>
+  equal_range(const FindKey &key) const {
     const_iterator found = find(key);
     if (found == end())
       return {found, found};
@@ -479,10 +453,8 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
       if (compares_equal(key, current_entry->value))
         return {{current_entry}, false};
     }
-    return emplace_new_key(distance_from_desired,
-                           current_entry,
-                           std::forward<Key>(key),
-                           std::forward<Args>(args)...);
+    return emplace_new_key(distance_from_desired, current_entry,
+                           std::forward<Key>(key), std::forward<Args>(args)...);
   }
 
   std::pair<iterator, bool> insert(const value_type &value) {
@@ -502,8 +474,7 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
     return emplace(std::move(value)).first;
   }
 
-  template <typename It>
-  void insert(It begin, It end) {
+  template <typename It> void insert(It begin, It end) {
     for (; begin != end; ++begin) {
       emplace(*begin);
     }
@@ -513,16 +484,17 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
   }
 
   void rehash(size_t num_buckets) {
-    num_buckets = (std::max)(
-        num_buckets,
-        static_cast<size_t>(
-            std::ceil(num_elements / static_cast<double>(_max_load_factor))));
+    num_buckets =
+        (std::max)(num_buckets,
+                   static_cast<size_t>(std::ceil(
+                       num_elements / static_cast<double>(_max_load_factor))));
     if (num_buckets == 0) {
       reset_to_empty_state();
       return;
     }
     auto new_prime_index = hash_policy.next_size_over(num_buckets);
-    if (num_buckets == bucket_count()) return;
+    if (num_buckets == bucket_count())
+      return;
     int8_t new_max_lookups = compute_max_lookups(num_buckets);
     EntryPointer new_buckets(
         AllocatorTraits::allocate(*this, num_buckets + new_max_lookups));
@@ -541,8 +513,7 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
     for (EntryPointer
              it = new_buckets,
              end = it + static_cast<ptrdiff_t>(num_buckets + old_max_lookups);
-         it != end;
-         ++it) {
+         it != end; ++it) {
       if (it->has_value()) {
         emplace(std::move(it->value));
         it->destroy_value();
@@ -553,7 +524,8 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
 
   void reserve(size_t num_elements) {
     size_t required_buckets = num_buckets_for_reserve(num_elements);
-    if (required_buckets > bucket_count()) rehash(required_buckets);
+    if (required_buckets > bucket_count())
+      rehash(required_buckets);
   }
 
   // the return value is a type that can be converted to an iterator
@@ -565,8 +537,7 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
     current->destroy_value();
     --num_elements;
     for (EntryPointer next = current + ptrdiff_t(1);
-         !next->is_at_desired_position();
-         ++current, ++next) {
+         !next->is_at_desired_position(); ++current, ++next) {
       current->emplace(next->distance_from_desired - 1, std::move(next->value));
       next->destroy_value();
     }
@@ -574,7 +545,8 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
   }
 
   iterator erase(const_iterator begin_it, const_iterator end_it) {
-    if (begin_it == end_it) return {begin_it.current};
+    if (begin_it == end_it)
+      return {begin_it.current};
     for (EntryPointer it = begin_it.current, end = end_it.current; it != end;
          ++it) {
       if (it->has_value()) {
@@ -582,7 +554,8 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
         --num_elements;
       }
     }
-    if (end_it == this->end()) return this->end();
+    if (end_it == this->end())
+      return this->end();
     ptrdiff_t num_to_move =
         std::min(static_cast<ptrdiff_t>(end_it.current->distance_from_desired),
                  end_it.current - begin_it.current);
@@ -613,9 +586,9 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
     for (EntryPointer it = entries,
                       end = it + static_cast<ptrdiff_t>(num_slots_minus_one +
                                                         max_lookups);
-         it != end;
-         ++it) {
-      if (it->has_value()) it->destroy_value();
+         it != end; ++it) {
+      if (it->has_value())
+        it->destroy_value();
     }
     num_elements = 0;
   }
@@ -658,7 +631,7 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
 
   bool empty() const { return num_elements == 0; }
 
- private:
+private:
   EntryPointer entries = empty_default_table();
   size_t num_slots_minus_one = 0;
   typename HashPolicySelector<ArgumentHash>::type hash_policy;
@@ -703,10 +676,8 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
 
   template <typename Key, typename... Args>
   SKA_NOINLINE(std::pair<iterator, bool>)
-  emplace_new_key(int8_t distance_from_desired,
-                  EntryPointer current_entry,
-                  Key &&key,
-                  Args &&...args) {
+  emplace_new_key(int8_t distance_from_desired, EntryPointer current_entry,
+                  Key &&key, Args &&...args) {
     using std::swap;
     if (num_slots_minus_one == 0 || distance_from_desired == max_lookups ||
         num_elements + 1 >
@@ -714,8 +685,7 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
       grow();
       return emplace(std::forward<Key>(key), std::forward<Args>(args)...);
     } else if (current_entry->is_empty()) {
-      current_entry->emplace(distance_from_desired,
-                             std::forward<Key>(key),
+      current_entry->emplace(distance_from_desired, std::forward<Key>(key),
                              std::forward<Args>(args)...);
       ++num_elements;
       return {{current_entry}, true};
@@ -746,11 +716,10 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
 
   void grow() { rehash((std::max)(size_t(4), 2 * bucket_count())); }
 
-  void deallocate_data(EntryPointer begin,
-                       size_t num_slots_minus_one,
+  void deallocate_data(EntryPointer begin, size_t num_slots_minus_one,
                        int8_t max_lookups) {
-    AllocatorTraits::deallocate(
-        *this, begin, num_slots_minus_one + max_lookups + 1);
+    AllocatorTraits::deallocate(*this, begin,
+                                num_slots_minus_one + max_lookups + 1);
   }
 
   void reset_to_empty_state() {
@@ -761,12 +730,10 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
     max_lookups = detailv3::min_lookups - 1;
   }
 
-  template <typename U>
-  size_t hash_object(const U &key) {
+  template <typename U> size_t hash_object(const U &key) {
     return static_cast<Hasher &>(*this)(key);
   }
-  template <typename U>
-  size_t hash_object(const U &key) const {
+  template <typename U> size_t hash_object(const U &key) const {
     return static_cast<const Hasher &>(*this)(key);
   }
   template <typename L, typename R>
@@ -791,7 +758,7 @@ class sherwood_v3_table : private EntryAlloc, private Hasher, private Equal {
     }
   };
 };
-}  // namespace detailv3
+} // namespace detailv3
 
 struct prime_number_hash_policy {
   static size_t mod0(size_t) { return 0llu; }
@@ -1515,8 +1482,8 @@ struct prime_number_hash_policy {
         &mod11493228998133068689,
         &mod14480561146010017169,
         &mod18446744073709551557};
-    const size_t *found = std::lower_bound(
-        std::begin(prime_list), std::end(prime_list) - 1, size);
+    const size_t *found = std::lower_bound(std::begin(prime_list),
+                                           std::end(prime_list) - 1, size);
     size = *found;
     return mod_functions[1 + found - prime_list];
   }
@@ -1532,7 +1499,7 @@ struct prime_number_hash_policy {
     return index > num_slots_minus_one ? current_mod_function(index) : index;
   }
 
- private:
+private:
   mod_function current_mod_function = &mod0;
 };
 
@@ -1566,38 +1533,27 @@ struct fibonacci_hash_policy {
   void commit(int8_t shift) { this->shift = shift; }
   void reset() { shift = 63; }
 
- private:
+private:
   int8_t shift = 63;
 };
 
-template <typename K,
-          typename V,
-          typename H = std::hash<K>,
+template <typename K, typename V, typename H = std::hash<K>,
           typename E = std::equal_to<K>,
           typename A = std::allocator<std::pair<K, V>>>
 class flat_hash_map
     : public detailv3::sherwood_v3_table<
-          std::pair<K, V>,
-          K,
-          H,
-          detailv3::KeyOrValueHasher<K, std::pair<K, V>, H>,
-          E,
-          detailv3::KeyOrValueEquality<K, std::pair<K, V>, E>,
-          A,
+          std::pair<K, V>, K, H,
+          detailv3::KeyOrValueHasher<K, std::pair<K, V>, H>, E,
+          detailv3::KeyOrValueEquality<K, std::pair<K, V>, E>, A,
           typename std::allocator_traits<A>::template rebind_alloc<
               detailv3::sherwood_v3_entry<std::pair<K, V>>>> {
   using Table = detailv3::sherwood_v3_table<
-      std::pair<K, V>,
-      K,
-      H,
-      detailv3::KeyOrValueHasher<K, std::pair<K, V>, H>,
-      E,
-      detailv3::KeyOrValueEquality<K, std::pair<K, V>, E>,
-      A,
+      std::pair<K, V>, K, H, detailv3::KeyOrValueHasher<K, std::pair<K, V>, H>,
+      E, detailv3::KeyOrValueEquality<K, std::pair<K, V>, E>, A,
       typename std::allocator_traits<A>::template rebind_alloc<
           detailv3::sherwood_v3_entry<std::pair<K, V>>>>;
 
- public:
+public:
   using key_type = K;
   using mapped_type = V;
 
@@ -1628,8 +1584,8 @@ class flat_hash_map
     return emplace(key_type(), convertible_to_value());
   }
   template <typename M>
-  std::pair<typename Table::iterator, bool> insert_or_assign(
-      const key_type &key, M &&m) {
+  std::pair<typename Table::iterator, bool>
+  insert_or_assign(const key_type &key, M &&m) {
     auto emplace_result = emplace(key, std::forward<M>(m));
     if (!emplace_result.second)
       emplace_result.first->second = std::forward<M>(m);
@@ -1645,19 +1601,18 @@ class flat_hash_map
   }
   template <typename M>
   typename Table::iterator insert_or_assign(typename Table::const_iterator,
-                                            const key_type &key,
-                                            M &&m) {
+                                            const key_type &key, M &&m) {
     return insert_or_assign(key, std::forward<M>(m)).first;
   }
   template <typename M>
   typename Table::iterator insert_or_assign(typename Table::const_iterator,
-                                            key_type &&key,
-                                            M &&m) {
+                                            key_type &&key, M &&m) {
     return insert_or_assign(std::move(key), std::forward<M>(m)).first;
   }
 
   friend bool operator==(const flat_hash_map &lhs, const flat_hash_map &rhs) {
-    if (lhs.size() != rhs.size()) return false;
+    if (lhs.size() != rhs.size())
+      return false;
     for (const typename Table::value_type &value : lhs) {
       auto found = rhs.find(value.first);
       if (found == rhs.end())
@@ -1671,39 +1626,27 @@ class flat_hash_map
     return !(lhs == rhs);
   }
 
- private:
+private:
   struct convertible_to_value {
     operator V() const { return V(); }
   };
 };
 
-template <typename T,
-          typename H = std::hash<T>,
-          typename E = std::equal_to<T>,
+template <typename T, typename H = std::hash<T>, typename E = std::equal_to<T>,
           typename A = std::allocator<T>>
 class flat_hash_set
     : public detailv3::sherwood_v3_table<
-          T,
-          T,
-          H,
-          detailv3::functor_storage<size_t, H>,
-          E,
-          detailv3::functor_storage<bool, E>,
-          A,
+          T, T, H, detailv3::functor_storage<size_t, H>, E,
+          detailv3::functor_storage<bool, E>, A,
           typename std::allocator_traits<A>::template rebind_alloc<
               detailv3::sherwood_v3_entry<T>>> {
   using Table = detailv3::sherwood_v3_table<
-      T,
-      T,
-      H,
-      detailv3::functor_storage<size_t, H>,
-      E,
-      detailv3::functor_storage<bool, E>,
-      A,
+      T, T, H, detailv3::functor_storage<size_t, H>, E,
+      detailv3::functor_storage<bool, E>, A,
       typename std::allocator_traits<A>::template rebind_alloc<
           detailv3::sherwood_v3_entry<T>>>;
 
- public:
+public:
   using key_type = T;
 
   using Table::Table;
@@ -1727,9 +1670,11 @@ class flat_hash_set
   }
 
   friend bool operator==(const flat_hash_set &lhs, const flat_hash_set &rhs) {
-    if (lhs.size() != rhs.size()) return false;
+    if (lhs.size() != rhs.size())
+      return false;
     for (const T &value : lhs) {
-      if (rhs.find(value) == rhs.end()) return false;
+      if (rhs.find(value) == rhs.end())
+        return false;
     }
     return true;
   }
@@ -1738,9 +1683,8 @@ class flat_hash_set
   }
 };
 
-template <typename T>
-struct power_of_two_std_hash : std::hash<T> {
+template <typename T> struct power_of_two_std_hash : std::hash<T> {
   typedef paddle::power_of_two_hash_policy hash_policy;
 };
 
-}  // namespace paddle
+} // namespace paddle

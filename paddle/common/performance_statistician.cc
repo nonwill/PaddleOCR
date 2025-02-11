@@ -14,25 +14,25 @@
 
 #include "paddle/common/performance_statistician.h"
 
+#include "paddle/common/enforce.h"
+#include "paddle/common/errors.h"
 #include <fstream>
 #include <numeric>
 #include <stack>
-#include "paddle/common/enforce.h"
-#include "paddle/common/errors.h"
 
 namespace common {
 
-std::vector<TimeDuration> PerformanceReporter::ExtractDuration(
-    const std::vector<TimePointInfo>& records, bool contain_recursive) {
+std::vector<TimeDuration>
+PerformanceReporter::ExtractDuration(const std::vector<TimePointInfo> &records,
+                                     bool contain_recursive) {
   std::vector<TimeDuration> durations;
   std::stack<TimePointInfo> stk;
-  for (const auto& info : records) {
+  for (const auto &info : records) {
     if (info.is_start) {
       stk.push(info);
     } else {
       PADDLE_ENFORCE_EQ(
-          (!stk.empty() && stk.top().is_start),
-          true,
+          (!stk.empty() && stk.top().is_start), true,
           common::errors::InvalidArgument(
               "There is a problem with the call stack of records"));
       auto start = stk.top();
@@ -45,53 +45,54 @@ std::vector<TimeDuration> PerformanceReporter::ExtractDuration(
   return durations;
 }
 
-TimeDuration PerformanceReporter::Sum(
-    const std::vector<TimeDuration>& records) {
+TimeDuration
+PerformanceReporter::Sum(const std::vector<TimeDuration> &records) {
   return std::accumulate(records.begin(), records.end(), TimeDuration::zero());
 }
 
-TimeDuration PerformanceReporter::Mean(
-    const std::vector<TimeDuration>& records) {
-  if (records.empty()) return TimeDuration::zero();
+TimeDuration
+PerformanceReporter::Mean(const std::vector<TimeDuration> &records) {
+  if (records.empty())
+    return TimeDuration::zero();
   return Sum(records) / records.size();
 }
 
-TimeDuration PerformanceReporter::Max(
-    const std::vector<TimeDuration>& records) {
+TimeDuration
+PerformanceReporter::Max(const std::vector<TimeDuration> &records) {
   return *std::max_element(records.begin(), records.end());
 }
 
-TimeDuration PerformanceReporter::Min(
-    const std::vector<TimeDuration>& records) {
+TimeDuration
+PerformanceReporter::Min(const std::vector<TimeDuration> &records) {
   return *std::min_element(records.begin(), records.end());
 }
 
-std::vector<TimeDuration> PerformanceReporter::TopK(
-    const std::vector<TimeDuration>& records, int top_count) {
+std::vector<TimeDuration>
+PerformanceReporter::TopK(const std::vector<TimeDuration> &records,
+                          int top_count) {
   std::vector<TimeDuration> top_k(top_count);
-  std::partial_sort_copy(records.begin(),
-                         records.end(),
-                         top_k.begin(),
-                         top_k.end(),
-                         std::greater<TimeDuration>());
+  std::partial_sort_copy(records.begin(), records.end(), top_k.begin(),
+                         top_k.end(), std::greater<TimeDuration>());
   return top_k;
 }
 
-TimeDuration PerformanceReporter::TrimMean(
-    const std::vector<TimeDuration>& durations) {
+TimeDuration
+PerformanceReporter::TrimMean(const std::vector<TimeDuration> &durations) {
   int top_count = durations.size();
-  if (top_count == 0) return TimeDuration::zero();
+  if (top_count == 0)
+    return TimeDuration::zero();
   auto top_k = TopK(durations, top_count);
   int remove_num = top_count / 5;
-  auto avg_time = std::accumulate(top_k.begin() + remove_num,
-                                  top_k.end() - remove_num,
-                                  TimeDuration::zero());
+  auto avg_time =
+      std::accumulate(top_k.begin() + remove_num, top_k.end() - remove_num,
+                      TimeDuration::zero());
   return avg_time / (top_count - 2 * remove_num);
 }
 
-std::string PerformanceReporter::Report(
-    const std::vector<TimePointInfo>& records) {
-  if (records.empty()) return "[No Record]";
+std::string
+PerformanceReporter::Report(const std::vector<TimePointInfo> &records) {
+  if (records.empty())
+    return "[No Record]";
   std::stringstream ss;
   std::string unit = "us";
   auto durations = ExtractDuration(records);
@@ -128,13 +129,13 @@ std::string PerformanceReporter::Report(
   return ss.str();
 }
 
-std::string PerformanceReporter::Report(const PerformanceStatistician& stat) {
+std::string PerformanceReporter::Report(const PerformanceStatistician &stat) {
   std::stringstream ss;
   ss << "\n";
   ss << "=============================================================Start "
         "Report=============================================================\n";
   std::vector<std::string> labels = stat.Labels();
-  for (const std::string& label : labels) {
+  for (const std::string &label : labels) {
     // std::cerr << "label: " << label << std::endl;
     ss << "Label = [" << label << "]\n";
     ss << Report(stat.Record(label));
@@ -148,8 +149,8 @@ std::string PerformanceReporter::Report(const PerformanceStatistician& stat) {
   return ss.str();
 }
 
-void PerformanceReporter::WriteToFile(const std::string& file,
-                                      const std::string& report) {
+void PerformanceReporter::WriteToFile(const std::string &file,
+                                      const std::string &report) {
   std::ofstream ofs;
   ofs.open(file, std::ofstream::out | std::ofstream::ate);
   if (ofs.is_open()) {
@@ -157,16 +158,16 @@ void PerformanceReporter::WriteToFile(const std::string& file,
   }
 }
 
-void PerformanceStatisticsStart(const std::string& label) {
-  common::PerformanceStatistician& ps =
+void PerformanceStatisticsStart(const std::string &label) {
+  common::PerformanceStatistician &ps =
       common::PerformanceStatistician::Instance();
   ps.Start(label);
 }
 
-void PerformanceStatisticsEnd(const std::string& label) {
-  common::PerformanceStatistician& ps =
+void PerformanceStatisticsEnd(const std::string &label) {
+  common::PerformanceStatistician &ps =
       common::PerformanceStatistician::Instance();
   ps.End(label);
 }
 
-}  // namespace common
+} // namespace common

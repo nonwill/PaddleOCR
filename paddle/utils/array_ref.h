@@ -42,22 +42,21 @@ namespace paddle {
 ///
 /// This is intended to be trivially copyable, so it should be passed by
 /// value.
-template <typename T>
-class array_ref {
- public:
+template <typename T> class array_ref {
+public:
   using iterator = const T *;
   using const_iterator = const T *;
   using size_type = size_t;
   using reverse_iterator = std::reverse_iterator<iterator>;
 
- private:
+private:
   /// The start of the array, in an external buffer.
   const T *Data = nullptr;
 
   /// The number of elements.
   size_type Length = 0;
 
- public:
+public:
   /// @name Constructors
   /// @{
 
@@ -171,8 +170,7 @@ class array_ref {
   }
 
   // copy - Allocate copy in Allocator and return array_ref<T> to it.
-  template <typename Allocator>
-  array_ref<T> copy(Allocator &A) {
+  template <typename Allocator> array_ref<T> copy(Allocator &A) {
     T *Buff = A.template Allocate<T>(Length);
     std::uninitialized_copy(begin(), end(), Buff);
     return array_ref<T>(Buff, Length);
@@ -180,7 +178,8 @@ class array_ref {
 
   /// equals - Check for element-wise equality.
   bool equals(array_ref RHS) const {
-    if (Length != RHS.Length) return false;
+    if (Length != RHS.Length)
+      return false;
     return std::equal(begin(), end(), RHS.begin());
   }
 
@@ -208,13 +207,15 @@ class array_ref {
 
   /// Return a copy of *this with only the first \p N elements.
   array_ref<T> take_front(size_t N = 1) const {
-    if (N >= size()) return *this;
+    if (N >= size())
+      return *this;
     return drop_back(size() - N);
   }
 
   /// Return a copy of *this with only the last \p N elements.
   array_ref<T> take_back(size_t N = 1) const {
-    if (N >= size()) return *this;
+    if (N >= size())
+      return *this;
     return drop_front(size() - N);
   }
 
@@ -231,16 +232,16 @@ class array_ref {
   /// The declaration here is extra complicated so that "arrayRef = {}"
   /// continues to select the move assignment operator.
   template <typename U>
-  std::enable_if_t<std::is_same<U, T>::value, array_ref<T>> &operator=(
-      U &&Temporary) = delete;
+  std::enable_if_t<std::is_same<U, T>::value, array_ref<T>> &
+  operator=(U &&Temporary) = delete;
 
   /// Disallow accidental assignment from a temporary.
   ///
   /// The declaration here is extra complicated so that "arrayRef = {}"
   /// continues to select the move assignment operator.
   template <typename U>
-  std::enable_if_t<std::is_same<U, T>::value, array_ref<T>> &operator=(
-      std::initializer_list<U>) = delete;
+  std::enable_if_t<std::is_same<U, T>::value, array_ref<T>> &
+  operator=(std::initializer_list<U>) = delete;
 
   /// @}
   /// @name Expensive Operations
@@ -261,8 +262,7 @@ class array_ref {
 /// @{
 
 /// Construct an array_ref from a single element.
-template <typename T>
-array_ref<T> make_array_ref(const T &OneElt) {
+template <typename T> array_ref<T> make_array_ref(const T &OneElt) {
   return OneElt;
 }
 
@@ -291,8 +291,7 @@ array_ref<T> make_array_ref(const small_vector<T, N> &Vec) {
 }
 
 /// Construct an array_ref from a std::vector.
-template <typename T>
-array_ref<T> make_array_ref(const std::vector<T> &Vec) {
+template <typename T> array_ref<T> make_array_ref(const std::vector<T> &Vec) {
   return Vec;
 }
 
@@ -303,20 +302,17 @@ array_ref<T> make_array_ref(const std::array<T, N> &Arr) {
 }
 
 /// Construct an array_ref from an array_ref (no-op) (const)
-template <typename T>
-array_ref<T> make_array_ref(const array_ref<T> &Vec) {
+template <typename T> array_ref<T> make_array_ref(const array_ref<T> &Vec) {
   return Vec;
 }
 
 /// Construct an array_ref from an array_ref (no-op)
-template <typename T>
-array_ref<T> &make_array_ref(array_ref<T> &Vec) {
+template <typename T> array_ref<T> &make_array_ref(array_ref<T> &Vec) {
   return Vec;
 }
 
 /// Construct an array_ref from a C array.
-template <typename T, size_t N>
-array_ref<T> make_array_ref(const T (&Arr)[N]) {
+template <typename T, size_t N> array_ref<T> make_array_ref(const T (&Arr)[N]) {
   return array_ref<T>(Arr);
 }
 
@@ -344,4 +340,4 @@ inline bool operator!=(small_vector_impl<T> &LHS, array_ref<T> RHS) {
   return !(LHS == RHS);
 }
 
-}  // namespace paddle
+} // namespace paddle

@@ -20,7 +20,7 @@ limitations under the License. */
 namespace paddle {
 namespace string {
 
-static inline std::vector<std::string> Split(std::string const& original,
+static inline std::vector<std::string> Split(std::string const &original,
                                              char separator) {
   std::vector<std::string> results;
   std::string token;
@@ -33,5 +33,5 @@ static inline std::vector<std::string> Split(std::string const& original,
   return results;
 }
 
-}  // namespace string
-}  // namespace paddle
+} // namespace string
+} // namespace paddle

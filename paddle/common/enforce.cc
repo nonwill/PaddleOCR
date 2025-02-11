@@ -13,33 +13,33 @@ See the License for the specific language governing permissions and
 limitations under the License. */
 
 #include "paddle/common/enforce.h"
+#include "paddle/common/flags.h"
 #include <array>
 #include <atomic>
 #include <map>
 #include <string>
 #include <vector>
-#include "paddle/common/flags.h"
 
 REGISTER_LOG_SIMPLY_STR(std::string);
 COMMON_DECLARE_int32(call_stack_level);
 namespace {
 class StrSizeCmp {
- public:
-  bool operator()(const std::string& lhs, const std::string& rhs) const {
+public:
+  bool operator()(const std::string &lhs, const std::string &rhs) const {
     return lhs.size() > rhs.size();
   }
 };
 
 using LogSimplyStrMap = std::map<std::string, std::string, StrSizeCmp>;
 
-LogSimplyStrMap& GetLogStrSimplyMap() {
+LogSimplyStrMap &GetLogStrSimplyMap() {
   static LogSimplyStrMap str_simply_map;
   return str_simply_map;
 }
 
 std::string SimplifyDemangleStr(std::string str) {
-  auto& str_map = GetLogStrSimplyMap();
-  for (auto& value : str_map) {
+  auto &str_map = GetLogStrSimplyMap();
+  for (auto &value : str_map) {
     size_t start_pos = 0;
     while ((start_pos = str.find(value.first, start_pos)) !=
            std::string::npos) {
@@ -52,7 +52,7 @@ std::string SimplifyDemangleStr(std::string str) {
 
 std::atomic_bool paddle_fatal_skip{false};
 
-}  // namespace
+} // namespace
 
 namespace common {
 namespace enforce {
@@ -61,7 +61,7 @@ bool IsPaddleFatalSkip() { return paddle_fatal_skip.load(); }
 
 int GetCallStackLevel() { return FLAGS_call_stack_level; }
 
-std::string SimplifyErrorTypeFormat(const std::string& str) {
+std::string SimplifyErrorTypeFormat(const std::string &str) {
   std::ostringstream sout;
   size_t type_end_pos = str.find(':', 0);
   if (type_end_pos != str.npos && type_end_pos >= 5 &&
@@ -77,8 +77,8 @@ std::string SimplifyErrorTypeFormat(const std::string& str) {
   }
   return sout.str();
 }
-bool RegisterLogSimplyStr(const std::string& type_name,
-                          const std::string& simply_name) {
+bool RegisterLogSimplyStr(const std::string &type_name,
+                          const std::string &simply_name) {
   return GetLogStrSimplyMap()
       .emplace(std::make_pair(type_name, simply_name))
       .second;
@@ -95,7 +95,7 @@ std::string GetCurrentTraceBackString(bool for_signal) {
 #if !defined(_WIN32) && !defined(PADDLE_WITH_MUSL)
   static constexpr int TRACE_STACK_LIMIT = 100;
 
-  std::array<void*, TRACE_STACK_LIMIT> call_stack = {};
+  std::array<void *, TRACE_STACK_LIMIT> call_stack = {};
   auto size = backtrace(call_stack.data(), TRACE_STACK_LIMIT);
   auto symbols = backtrace_symbols(call_stack.data(), size);
   Dl_info info;
@@ -111,17 +111,17 @@ std::string GetCurrentTraceBackString(bool for_signal) {
       std::string path(info.dli_fname);
       // C++ traceback info are from core.so
       if (path.substr(path.length() - 3) == ".so") {
-        sout << paddle::string::Sprintf(
-            "%-3d %s\n", idx++, SimplifyDemangleStr(demangled));
+        sout << paddle::string::Sprintf("%-3d %s\n", idx++,
+                                        SimplifyDemangleStr(demangled));
       }
     }
   }
-  free(symbols);  // NOLINT
+  free(symbols); // NOLINT
 #else
   sout << "Not support stack backtrace yet.\n";
 #endif
   return sout.str();
 }
 
-}  // namespace common::enforce
-}
+} // namespace enforce
+} // namespace common

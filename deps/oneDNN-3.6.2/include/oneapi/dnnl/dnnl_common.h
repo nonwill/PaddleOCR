@@ -1,18 +1,18 @@
 /*******************************************************************************
-* Copyright 2022-2023 Intel Corporation
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*******************************************************************************/
+ * Copyright 2022-2023 Intel Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *******************************************************************************/
 
 /// @file
 /// C common API
@@ -51,8 +51,9 @@ size_t DNNL_API dnnl_engine_get_count(dnnl_engine_kind_t kind);
 ///     engines of the requested kind.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_engine_create(
-        dnnl_engine_t *engine, dnnl_engine_kind_t kind, size_t index);
+dnnl_status_t DNNL_API dnnl_engine_create(dnnl_engine_t *engine,
+                                          dnnl_engine_kind_t kind,
+                                          size_t index);
 
 /// Returns the kind of an engine.
 ///
@@ -60,8 +61,8 @@ dnnl_status_t DNNL_API dnnl_engine_create(
 /// @param kind Output engine kind.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_engine_get_kind(
-        dnnl_engine_t engine, dnnl_engine_kind_t *kind);
+dnnl_status_t DNNL_API dnnl_engine_get_kind(dnnl_engine_t engine,
+                                            dnnl_engine_kind_t *kind);
 
 /// Destroys an engine.
 ///
@@ -82,8 +83,8 @@ dnnl_status_t DNNL_API dnnl_engine_destroy(dnnl_engine_t engine);
 /// @param flags Stream behavior flags (@sa dnnl_stream_flags_t).
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_stream_create(
-        dnnl_stream_t *stream, dnnl_engine_t engine, unsigned flags);
+dnnl_status_t DNNL_API dnnl_stream_create(dnnl_stream_t *stream,
+                                          dnnl_engine_t engine, unsigned flags);
 
 /// Returns the engine of a stream object.
 ///
@@ -91,8 +92,8 @@ dnnl_status_t DNNL_API dnnl_stream_create(
 /// @param engine Output engine on which the stream is created.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_stream_get_engine(
-        const_dnnl_stream_t stream, dnnl_engine_t *engine);
+dnnl_status_t DNNL_API dnnl_stream_get_engine(const_dnnl_stream_t stream,
+                                              dnnl_engine_t *engine);
 
 /// Waits for all primitives in the execution stream to finish computations.
 ///

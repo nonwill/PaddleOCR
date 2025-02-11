@@ -19,36 +19,36 @@ limitations under the License. */
 namespace common {
 std::string error_name(ErrorCode code) {
   switch (code) {
-    case ErrorCode::LEGACY:
-      return "Error";
-    case ErrorCode::INVALID_ARGUMENT:
-      return "InvalidArgumentError";
-    case ErrorCode::NOT_FOUND:
-      return "NotFoundError";
-    case ErrorCode::OUT_OF_RANGE:
-      return "OutOfRangeError";
-    case ErrorCode::ALREADY_EXISTS:
-      return "AlreadyExistsError";
-    case ErrorCode::RESOURCE_EXHAUSTED:
-      return "ResourceExhaustedError";
-    case ErrorCode::PRECONDITION_NOT_MET:
-      return "PreconditionNotMetError";
-    case ErrorCode::PERMISSION_DENIED:
-      return "PermissionDeniedError";
-    case ErrorCode::EXECUTION_TIMEOUT:
-      return "ExecutionTimeoutError";
-    case ErrorCode::UNIMPLEMENTED:
-      return "UnimplementedError";
-    case ErrorCode::UNAVAILABLE:
-      return "UnavailableError";
-    case ErrorCode::FATAL:
-      return "FatalError";
-    case ErrorCode::EXTERNAL:
-      return "ExternalError";
-    case ErrorCode::INVALID_TYPE:
-      return "InvalidTypeError";
-    default:
-      return "The error type is undefined.";
+  case ErrorCode::LEGACY:
+    return "Error";
+  case ErrorCode::INVALID_ARGUMENT:
+    return "InvalidArgumentError";
+  case ErrorCode::NOT_FOUND:
+    return "NotFoundError";
+  case ErrorCode::OUT_OF_RANGE:
+    return "OutOfRangeError";
+  case ErrorCode::ALREADY_EXISTS:
+    return "AlreadyExistsError";
+  case ErrorCode::RESOURCE_EXHAUSTED:
+    return "ResourceExhaustedError";
+  case ErrorCode::PRECONDITION_NOT_MET:
+    return "PreconditionNotMetError";
+  case ErrorCode::PERMISSION_DENIED:
+    return "PermissionDeniedError";
+  case ErrorCode::EXECUTION_TIMEOUT:
+    return "ExecutionTimeoutError";
+  case ErrorCode::UNIMPLEMENTED:
+    return "UnimplementedError";
+  case ErrorCode::UNAVAILABLE:
+    return "UnavailableError";
+  case ErrorCode::FATAL:
+    return "FatalError";
+  case ErrorCode::EXTERNAL:
+    return "ExternalError";
+  case ErrorCode::INVALID_TYPE:
+    return "InvalidTypeError";
+  default:
+    return "The error type is undefined.";
   }
 }
 
@@ -58,4 +58,4 @@ std::string ErrorSummary::to_string() const {
   result += error_message();
   return result;
 }
-}  // namespace common
+} // namespace common

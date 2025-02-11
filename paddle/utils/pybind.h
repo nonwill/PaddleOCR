@@ -30,45 +30,44 @@ namespace pybind {
 typedef struct {
   PyObject_HEAD paddle::Tensor tensor;
   // Dynamic attributes
-  PyObject* dict;
+  PyObject *dict;
   // Weak references
-  PyObject* weakrefs;
+  PyObject *weakrefs;
 } TensorObject;
 
-#define RETURN_PY_NONE \
-  Py_INCREF(Py_None);  \
+#define RETURN_PY_NONE                                                         \
+  Py_INCREF(Py_None);                                                          \
   return Py_None;
 
 // Internal use only, to expose the Tensor type to Python.
-bool PyCheckTensor(PyObject* obj);
+bool PyCheckTensor(PyObject *obj);
 
 // Share Tensor for inplace.
-void ShareTensor(PyObject* src, PyObject* dst);
+void ShareTensor(PyObject *src, PyObject *dst);
 
 // Internal use only, to expose the Tensor type to Python.
-paddle::Tensor& CastPyArg2Tensor(PyObject* obj, Py_ssize_t arg_pos);
+paddle::Tensor &CastPyArg2Tensor(PyObject *obj, Py_ssize_t arg_pos);
 
 // Internal use only, to expose the Tensor type to Python.
-PyObject* ToPyObject(const paddle::Tensor& value,
+PyObject *ToPyObject(const paddle::Tensor &value,
                      bool return_py_none_if_not_initialize = false);
 
 // Internal use only, switch tensor_operants_mode to phi
 void EnableTensorOperantsToPhiMode();
 
-}  // namespace pybind
-}  // namespace paddle
+} // namespace pybind
+} // namespace paddle
 
 namespace pybind11 {
 namespace detail {
 
-template <>
-struct type_caster<paddle::Tensor> {
- public:
+template <> struct type_caster<paddle::Tensor> {
+public:
   PYBIND11_TYPE_CASTER(paddle::Tensor, _("paddle::Tensor"));
 
   bool load(handle src, bool) {
     paddle::pybind::EnableTensorOperantsToPhiMode();
-    PyObject* obj = src.ptr();
+    PyObject *obj = src.ptr();
     if (paddle::pybind::PyCheckTensor(obj)) {
       value = paddle::pybind::CastPyArg2Tensor(obj, 0);
       return true;
@@ -76,9 +75,8 @@ struct type_caster<paddle::Tensor> {
     return false;
   }
 
-  static handle cast(const paddle::Tensor& src,
-                     return_value_policy /* policy */,
-                     handle /* parent */) {
+  static handle cast(const paddle::Tensor &src,
+                     return_value_policy /* policy */, handle /* parent */) {
     // TODO(GhostScreaming): pipeline parallel may return a uninitialized
     // DistTensor, it should not return None.
 #ifdef PADDLE_WITH_DISTRIBUTE
@@ -98,5 +96,5 @@ template <typename T>
 struct type_caster<paddle::optional<T>> : optional_caster<paddle::optional<T>> {
 };
 
-}  // namespace detail
-}  // namespace pybind11
+} // namespace detail
+} // namespace pybind11

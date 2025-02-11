@@ -1,31 +1,32 @@
 /* file: mkl_vsl_defines.h */
 /*******************************************************************************
-* Copyright (c) 2006-2019, Intel Corporation
-* All rights reserved.
-*
-* Redistribution and use in source and binary forms, with or without
-* modification, are permitted provided that the following conditions are met:
-*
-*     * Redistributions of source code must retain the above copyright notice,
-*       this list of conditions and the following disclaimer.
-*     * Redistributions in binary form must reproduce the above copyright
-*       notice, this list of conditions and the following disclaimer in the
-*       documentation and/or other materials provided with the distribution.
-*     * Neither the name of Intel Corporation nor the names of its contributors
-*       may be used to endorse or promote products derived from this software
-*       without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*******************************************************************************/
+ * Copyright (c) 2006-2019, Intel Corporation
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *     * Redistributions of source code must retain the above copyright notice,
+ *       this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of Intel Corporation nor the names of its contributors
+ *       may be used to endorse or promote products derived from this software
+ *       without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ *ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ *LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ *SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ *INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ *CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ *ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ *POSSIBILITY OF SUCH DAMAGE.
+ *******************************************************************************/
 
 /*
 //++
@@ -40,100 +41,98 @@
 extern "C" {
 #endif /* __cplusplus */
 
-
 /*
 // "No error" status
 */
-#define VSL_STATUS_OK                      0
-#define VSL_ERROR_OK                       0
+#define VSL_STATUS_OK 0
+#define VSL_ERROR_OK 0
 
 /*
 // Common errors (-1..-999)
 */
-#define VSL_ERROR_FEATURE_NOT_IMPLEMENTED  -1
-#define VSL_ERROR_UNKNOWN                  -2
-#define VSL_ERROR_BADARGS                  -3
-#define VSL_ERROR_MEM_FAILURE              -4
-#define VSL_ERROR_NULL_PTR                 -5
-#define VSL_ERROR_CPU_NOT_SUPPORTED        -6
-
+#define VSL_ERROR_FEATURE_NOT_IMPLEMENTED -1
+#define VSL_ERROR_UNKNOWN -2
+#define VSL_ERROR_BADARGS -3
+#define VSL_ERROR_MEM_FAILURE -4
+#define VSL_ERROR_NULL_PTR -5
+#define VSL_ERROR_CPU_NOT_SUPPORTED -6
 
 /*
 // RNG errors (-1000..-1999)
 */
 /* brng errors */
-#define VSL_RNG_ERROR_INVALID_BRNG_INDEX        -1000
-#define VSL_RNG_ERROR_LEAPFROG_UNSUPPORTED      -1002
-#define VSL_RNG_ERROR_SKIPAHEAD_UNSUPPORTED     -1003
-#define VSL_RNG_ERROR_BRNGS_INCOMPATIBLE        -1005
-#define VSL_RNG_ERROR_BAD_STREAM                -1006
-#define VSL_RNG_ERROR_BRNG_TABLE_FULL           -1007
-#define VSL_RNG_ERROR_BAD_STREAM_STATE_SIZE     -1008
-#define VSL_RNG_ERROR_BAD_WORD_SIZE             -1009
-#define VSL_RNG_ERROR_BAD_NSEEDS                -1010
-#define VSL_RNG_ERROR_BAD_NBITS                 -1011
-#define VSL_RNG_ERROR_QRNG_PERIOD_ELAPSED       -1012
+#define VSL_RNG_ERROR_INVALID_BRNG_INDEX -1000
+#define VSL_RNG_ERROR_LEAPFROG_UNSUPPORTED -1002
+#define VSL_RNG_ERROR_SKIPAHEAD_UNSUPPORTED -1003
+#define VSL_RNG_ERROR_BRNGS_INCOMPATIBLE -1005
+#define VSL_RNG_ERROR_BAD_STREAM -1006
+#define VSL_RNG_ERROR_BRNG_TABLE_FULL -1007
+#define VSL_RNG_ERROR_BAD_STREAM_STATE_SIZE -1008
+#define VSL_RNG_ERROR_BAD_WORD_SIZE -1009
+#define VSL_RNG_ERROR_BAD_NSEEDS -1010
+#define VSL_RNG_ERROR_BAD_NBITS -1011
+#define VSL_RNG_ERROR_QRNG_PERIOD_ELAPSED -1012
 #define VSL_RNG_ERROR_LEAPFROG_NSTREAMS_TOO_BIG -1013
-#define VSL_RNG_ERROR_BRNG_NOT_SUPPORTED        -1014
+#define VSL_RNG_ERROR_BRNG_NOT_SUPPORTED -1014
 
 /* abstract stream related errors */
-#define VSL_RNG_ERROR_BAD_UPDATE                -1120
-#define VSL_RNG_ERROR_NO_NUMBERS                -1121
-#define VSL_RNG_ERROR_INVALID_ABSTRACT_STREAM   -1122
+#define VSL_RNG_ERROR_BAD_UPDATE -1120
+#define VSL_RNG_ERROR_NO_NUMBERS -1121
+#define VSL_RNG_ERROR_INVALID_ABSTRACT_STREAM -1122
 
 /* non determenistic stream related errors */
-#define VSL_RNG_ERROR_NONDETERM_NOT_SUPPORTED     -1130
+#define VSL_RNG_ERROR_NONDETERM_NOT_SUPPORTED -1130
 #define VSL_RNG_ERROR_NONDETERM_NRETRIES_EXCEEDED -1131
 
 /* ARS5 stream related errors */
-#define VSL_RNG_ERROR_ARS5_NOT_SUPPORTED        -1140
+#define VSL_RNG_ERROR_ARS5_NOT_SUPPORTED -1140
 
 /* Multinomial distribution probability array related errors */
-#define VSL_DISTR_MULTINOMIAL_BAD_PROBABILITY_ARRAY    -1150
+#define VSL_DISTR_MULTINOMIAL_BAD_PROBABILITY_ARRAY -1150
 
 /* read/write stream to file errors */
-#define VSL_RNG_ERROR_FILE_CLOSE                -1100
-#define VSL_RNG_ERROR_FILE_OPEN                 -1101
-#define VSL_RNG_ERROR_FILE_WRITE                -1102
-#define VSL_RNG_ERROR_FILE_READ                 -1103
+#define VSL_RNG_ERROR_FILE_CLOSE -1100
+#define VSL_RNG_ERROR_FILE_OPEN -1101
+#define VSL_RNG_ERROR_FILE_WRITE -1102
+#define VSL_RNG_ERROR_FILE_READ -1103
 
-#define VSL_RNG_ERROR_BAD_FILE_FORMAT           -1110
-#define VSL_RNG_ERROR_UNSUPPORTED_FILE_VER      -1111
+#define VSL_RNG_ERROR_BAD_FILE_FORMAT -1110
+#define VSL_RNG_ERROR_UNSUPPORTED_FILE_VER -1111
 
-#define VSL_RNG_ERROR_BAD_MEM_FORMAT            -1200
+#define VSL_RNG_ERROR_BAD_MEM_FORMAT -1200
 
 /* Convolution/correlation errors */
-#define VSL_CC_ERROR_NOT_IMPLEMENTED        (-2000)
-#define VSL_CC_ERROR_ALLOCATION_FAILURE     (-2001)
-#define VSL_CC_ERROR_BAD_DESCRIPTOR         (-2200)
-#define VSL_CC_ERROR_SERVICE_FAILURE        (-2210)
-#define VSL_CC_ERROR_EDIT_FAILURE           (-2211)
-#define VSL_CC_ERROR_EDIT_PROHIBITED        (-2212)
-#define VSL_CC_ERROR_COMMIT_FAILURE         (-2220)
-#define VSL_CC_ERROR_COPY_FAILURE           (-2230)
-#define VSL_CC_ERROR_DELETE_FAILURE         (-2240)
-#define VSL_CC_ERROR_BAD_ARGUMENT           (-2300)
-#define VSL_CC_ERROR_DIMS                   (-2301)
-#define VSL_CC_ERROR_START                  (-2302)
-#define VSL_CC_ERROR_DECIMATION             (-2303)
-#define VSL_CC_ERROR_XSHAPE                 (-2311)
-#define VSL_CC_ERROR_YSHAPE                 (-2312)
-#define VSL_CC_ERROR_ZSHAPE                 (-2313)
-#define VSL_CC_ERROR_XSTRIDE                (-2321)
-#define VSL_CC_ERROR_YSTRIDE                (-2322)
-#define VSL_CC_ERROR_ZSTRIDE                (-2323)
-#define VSL_CC_ERROR_X                      (-2331)
-#define VSL_CC_ERROR_Y                      (-2332)
-#define VSL_CC_ERROR_Z                      (-2333)
-#define VSL_CC_ERROR_JOB                    (-2100)
-#define VSL_CC_ERROR_KIND                   (-2110)
-#define VSL_CC_ERROR_MODE                   (-2120)
-#define VSL_CC_ERROR_TYPE                   (-2130)
-#define VSL_CC_ERROR_PRECISION              (-2400)
-#define VSL_CC_ERROR_EXTERNAL_PRECISION     (-2141)
-#define VSL_CC_ERROR_INTERNAL_PRECISION     (-2142)
-#define VSL_CC_ERROR_METHOD                 (-2400)
-#define VSL_CC_ERROR_OTHER                  (-2800)
+#define VSL_CC_ERROR_NOT_IMPLEMENTED (-2000)
+#define VSL_CC_ERROR_ALLOCATION_FAILURE (-2001)
+#define VSL_CC_ERROR_BAD_DESCRIPTOR (-2200)
+#define VSL_CC_ERROR_SERVICE_FAILURE (-2210)
+#define VSL_CC_ERROR_EDIT_FAILURE (-2211)
+#define VSL_CC_ERROR_EDIT_PROHIBITED (-2212)
+#define VSL_CC_ERROR_COMMIT_FAILURE (-2220)
+#define VSL_CC_ERROR_COPY_FAILURE (-2230)
+#define VSL_CC_ERROR_DELETE_FAILURE (-2240)
+#define VSL_CC_ERROR_BAD_ARGUMENT (-2300)
+#define VSL_CC_ERROR_DIMS (-2301)
+#define VSL_CC_ERROR_START (-2302)
+#define VSL_CC_ERROR_DECIMATION (-2303)
+#define VSL_CC_ERROR_XSHAPE (-2311)
+#define VSL_CC_ERROR_YSHAPE (-2312)
+#define VSL_CC_ERROR_ZSHAPE (-2313)
+#define VSL_CC_ERROR_XSTRIDE (-2321)
+#define VSL_CC_ERROR_YSTRIDE (-2322)
+#define VSL_CC_ERROR_ZSTRIDE (-2323)
+#define VSL_CC_ERROR_X (-2331)
+#define VSL_CC_ERROR_Y (-2332)
+#define VSL_CC_ERROR_Z (-2333)
+#define VSL_CC_ERROR_JOB (-2100)
+#define VSL_CC_ERROR_KIND (-2110)
+#define VSL_CC_ERROR_MODE (-2120)
+#define VSL_CC_ERROR_TYPE (-2130)
+#define VSL_CC_ERROR_PRECISION (-2400)
+#define VSL_CC_ERROR_EXTERNAL_PRECISION (-2141)
+#define VSL_CC_ERROR_INTERNAL_PRECISION (-2142)
+#define VSL_CC_ERROR_METHOD (-2400)
+#define VSL_CC_ERROR_OTHER (-2800)
 
 /*
 //++
@@ -144,125 +143,123 @@ extern "C" {
 /*
 // Warnings
 */
-#define VSL_SS_NOT_FULL_RANK_MATRIX                   4028
-#define VSL_SS_SEMIDEFINITE_COR                       4029
+#define VSL_SS_NOT_FULL_RANK_MATRIX 4028
+#define VSL_SS_SEMIDEFINITE_COR 4029
 /*
 // Errors (-4000..-4999)
 */
-#define VSL_SS_ERROR_ALLOCATION_FAILURE              -4000
-#define VSL_SS_ERROR_BAD_DIMEN                       -4001
-#define VSL_SS_ERROR_BAD_OBSERV_N                    -4002
-#define VSL_SS_ERROR_STORAGE_NOT_SUPPORTED           -4003
-#define VSL_SS_ERROR_BAD_INDC_ADDR                   -4004
-#define VSL_SS_ERROR_BAD_WEIGHTS                     -4005
-#define VSL_SS_ERROR_BAD_MEAN_ADDR                   -4006
-#define VSL_SS_ERROR_BAD_2R_MOM_ADDR                 -4007
-#define VSL_SS_ERROR_BAD_3R_MOM_ADDR                 -4008
-#define VSL_SS_ERROR_BAD_4R_MOM_ADDR                 -4009
-#define VSL_SS_ERROR_BAD_2C_MOM_ADDR                 -4010
-#define VSL_SS_ERROR_BAD_3C_MOM_ADDR                 -4011
-#define VSL_SS_ERROR_BAD_4C_MOM_ADDR                 -4012
-#define VSL_SS_ERROR_BAD_KURTOSIS_ADDR               -4013
-#define VSL_SS_ERROR_BAD_SKEWNESS_ADDR               -4014
-#define VSL_SS_ERROR_BAD_MIN_ADDR                    -4015
-#define VSL_SS_ERROR_BAD_MAX_ADDR                    -4016
-#define VSL_SS_ERROR_BAD_VARIATION_ADDR              -4017
-#define VSL_SS_ERROR_BAD_COV_ADDR                    -4018
-#define VSL_SS_ERROR_BAD_COR_ADDR                    -4019
-#define VSL_SS_ERROR_BAD_ACCUM_WEIGHT_ADDR           -4020
-#define VSL_SS_ERROR_BAD_QUANT_ORDER_ADDR            -4021
-#define VSL_SS_ERROR_BAD_QUANT_ORDER                 -4022
-#define VSL_SS_ERROR_BAD_QUANT_ADDR                  -4023
-#define VSL_SS_ERROR_BAD_ORDER_STATS_ADDR            -4024
-#define VSL_SS_ERROR_MOMORDER_NOT_SUPPORTED          -4025
-#define VSL_SS_ERROR_ALL_OBSERVS_OUTLIERS            -4026
-#define VSL_SS_ERROR_BAD_ROBUST_COV_ADDR             -4027
-#define VSL_SS_ERROR_BAD_ROBUST_MEAN_ADDR            -4028
-#define VSL_SS_ERROR_METHOD_NOT_SUPPORTED            -4029
-#define VSL_SS_ERROR_BAD_GROUP_INDC_ADDR             -4030
-#define VSL_SS_ERROR_NULL_TASK_DESCRIPTOR            -4031
-#define VSL_SS_ERROR_BAD_OBSERV_ADDR                 -4032
-#define VSL_SS_ERROR_SINGULAR_COV                    -4033
-#define VSL_SS_ERROR_BAD_POOLED_COV_ADDR             -4034
-#define VSL_SS_ERROR_BAD_POOLED_MEAN_ADDR            -4035
-#define VSL_SS_ERROR_BAD_GROUP_COV_ADDR              -4036
-#define VSL_SS_ERROR_BAD_GROUP_MEAN_ADDR             -4037
-#define VSL_SS_ERROR_BAD_GROUP_INDC                  -4038
-#define VSL_SS_ERROR_BAD_OUTLIERS_PARAMS_ADDR        -4039
-#define VSL_SS_ERROR_BAD_OUTLIERS_PARAMS_N_ADDR      -4040
-#define VSL_SS_ERROR_BAD_OUTLIERS_WEIGHTS_ADDR       -4041
-#define VSL_SS_ERROR_BAD_ROBUST_COV_PARAMS_ADDR      -4042
-#define VSL_SS_ERROR_BAD_ROBUST_COV_PARAMS_N_ADDR    -4043
-#define VSL_SS_ERROR_BAD_STORAGE_ADDR                -4044
-#define VSL_SS_ERROR_BAD_PARTIAL_COV_IDX_ADDR        -4045
-#define VSL_SS_ERROR_BAD_PARTIAL_COV_ADDR            -4046
-#define VSL_SS_ERROR_BAD_PARTIAL_COR_ADDR            -4047
-#define VSL_SS_ERROR_BAD_MI_PARAMS_ADDR              -4048
-#define VSL_SS_ERROR_BAD_MI_PARAMS_N_ADDR            -4049
-#define VSL_SS_ERROR_BAD_MI_BAD_PARAMS_N             -4050
-#define VSL_SS_ERROR_BAD_MI_PARAMS                   -4051
-#define VSL_SS_ERROR_BAD_MI_INIT_ESTIMATES_N_ADDR    -4052
-#define VSL_SS_ERROR_BAD_MI_INIT_ESTIMATES_ADDR      -4053
-#define VSL_SS_ERROR_BAD_MI_SIMUL_VALS_ADDR          -4054
-#define VSL_SS_ERROR_BAD_MI_SIMUL_VALS_N_ADDR        -4055
-#define VSL_SS_ERROR_BAD_MI_ESTIMATES_N_ADDR         -4056
-#define VSL_SS_ERROR_BAD_MI_ESTIMATES_ADDR           -4057
-#define VSL_SS_ERROR_BAD_MI_SIMUL_VALS_N             -4058
-#define VSL_SS_ERROR_BAD_MI_ESTIMATES_N              -4059
-#define VSL_SS_ERROR_BAD_MI_OUTPUT_PARAMS            -4060
-#define VSL_SS_ERROR_BAD_MI_PRIOR_N_ADDR             -4061
-#define VSL_SS_ERROR_BAD_MI_PRIOR_ADDR               -4062
-#define VSL_SS_ERROR_BAD_MI_MISSING_VALS_N           -4063
-#define VSL_SS_ERROR_BAD_STREAM_QUANT_PARAMS_N_ADDR  -4064
-#define VSL_SS_ERROR_BAD_STREAM_QUANT_PARAMS_ADDR    -4065
-#define VSL_SS_ERROR_BAD_STREAM_QUANT_PARAMS_N       -4066
-#define VSL_SS_ERROR_BAD_STREAM_QUANT_PARAMS         -4067
-#define VSL_SS_ERROR_BAD_STREAM_QUANT_ORDER_ADDR     -4068
-#define VSL_SS_ERROR_BAD_STREAM_QUANT_ORDER          -4069
-#define VSL_SS_ERROR_BAD_STREAM_QUANT_ADDR           -4070
-#define VSL_SS_ERROR_BAD_PARAMTR_COR_ADDR            -4071
-#define VSL_SS_ERROR_BAD_COR                         -4072
-#define VSL_SS_ERROR_BAD_PARTIAL_COV_IDX             -4073
-#define VSL_SS_ERROR_BAD_SUM_ADDR                    -4074
-#define VSL_SS_ERROR_BAD_2R_SUM_ADDR                 -4075
-#define VSL_SS_ERROR_BAD_3R_SUM_ADDR                 -4076
-#define VSL_SS_ERROR_BAD_4R_SUM_ADDR                 -4077
-#define VSL_SS_ERROR_BAD_2C_SUM_ADDR                 -4078
-#define VSL_SS_ERROR_BAD_3C_SUM_ADDR                 -4079
-#define VSL_SS_ERROR_BAD_4C_SUM_ADDR                 -4080
-#define VSL_SS_ERROR_BAD_CP_ADDR                     -4081
-#define VSL_SS_ERROR_BAD_MDAD_ADDR                   -4082
-#define VSL_SS_ERROR_BAD_MNAD_ADDR                   -4083
-#define VSL_SS_ERROR_BAD_SORTED_OBSERV_ADDR          -4084
-#define VSL_SS_ERROR_INDICES_NOT_SUPPORTED           -4085
-
+#define VSL_SS_ERROR_ALLOCATION_FAILURE -4000
+#define VSL_SS_ERROR_BAD_DIMEN -4001
+#define VSL_SS_ERROR_BAD_OBSERV_N -4002
+#define VSL_SS_ERROR_STORAGE_NOT_SUPPORTED -4003
+#define VSL_SS_ERROR_BAD_INDC_ADDR -4004
+#define VSL_SS_ERROR_BAD_WEIGHTS -4005
+#define VSL_SS_ERROR_BAD_MEAN_ADDR -4006
+#define VSL_SS_ERROR_BAD_2R_MOM_ADDR -4007
+#define VSL_SS_ERROR_BAD_3R_MOM_ADDR -4008
+#define VSL_SS_ERROR_BAD_4R_MOM_ADDR -4009
+#define VSL_SS_ERROR_BAD_2C_MOM_ADDR -4010
+#define VSL_SS_ERROR_BAD_3C_MOM_ADDR -4011
+#define VSL_SS_ERROR_BAD_4C_MOM_ADDR -4012
+#define VSL_SS_ERROR_BAD_KURTOSIS_ADDR -4013
+#define VSL_SS_ERROR_BAD_SKEWNESS_ADDR -4014
+#define VSL_SS_ERROR_BAD_MIN_ADDR -4015
+#define VSL_SS_ERROR_BAD_MAX_ADDR -4016
+#define VSL_SS_ERROR_BAD_VARIATION_ADDR -4017
+#define VSL_SS_ERROR_BAD_COV_ADDR -4018
+#define VSL_SS_ERROR_BAD_COR_ADDR -4019
+#define VSL_SS_ERROR_BAD_ACCUM_WEIGHT_ADDR -4020
+#define VSL_SS_ERROR_BAD_QUANT_ORDER_ADDR -4021
+#define VSL_SS_ERROR_BAD_QUANT_ORDER -4022
+#define VSL_SS_ERROR_BAD_QUANT_ADDR -4023
+#define VSL_SS_ERROR_BAD_ORDER_STATS_ADDR -4024
+#define VSL_SS_ERROR_MOMORDER_NOT_SUPPORTED -4025
+#define VSL_SS_ERROR_ALL_OBSERVS_OUTLIERS -4026
+#define VSL_SS_ERROR_BAD_ROBUST_COV_ADDR -4027
+#define VSL_SS_ERROR_BAD_ROBUST_MEAN_ADDR -4028
+#define VSL_SS_ERROR_METHOD_NOT_SUPPORTED -4029
+#define VSL_SS_ERROR_BAD_GROUP_INDC_ADDR -4030
+#define VSL_SS_ERROR_NULL_TASK_DESCRIPTOR -4031
+#define VSL_SS_ERROR_BAD_OBSERV_ADDR -4032
+#define VSL_SS_ERROR_SINGULAR_COV -4033
+#define VSL_SS_ERROR_BAD_POOLED_COV_ADDR -4034
+#define VSL_SS_ERROR_BAD_POOLED_MEAN_ADDR -4035
+#define VSL_SS_ERROR_BAD_GROUP_COV_ADDR -4036
+#define VSL_SS_ERROR_BAD_GROUP_MEAN_ADDR -4037
+#define VSL_SS_ERROR_BAD_GROUP_INDC -4038
+#define VSL_SS_ERROR_BAD_OUTLIERS_PARAMS_ADDR -4039
+#define VSL_SS_ERROR_BAD_OUTLIERS_PARAMS_N_ADDR -4040
+#define VSL_SS_ERROR_BAD_OUTLIERS_WEIGHTS_ADDR -4041
+#define VSL_SS_ERROR_BAD_ROBUST_COV_PARAMS_ADDR -4042
+#define VSL_SS_ERROR_BAD_ROBUST_COV_PARAMS_N_ADDR -4043
+#define VSL_SS_ERROR_BAD_STORAGE_ADDR -4044
+#define VSL_SS_ERROR_BAD_PARTIAL_COV_IDX_ADDR -4045
+#define VSL_SS_ERROR_BAD_PARTIAL_COV_ADDR -4046
+#define VSL_SS_ERROR_BAD_PARTIAL_COR_ADDR -4047
+#define VSL_SS_ERROR_BAD_MI_PARAMS_ADDR -4048
+#define VSL_SS_ERROR_BAD_MI_PARAMS_N_ADDR -4049
+#define VSL_SS_ERROR_BAD_MI_BAD_PARAMS_N -4050
+#define VSL_SS_ERROR_BAD_MI_PARAMS -4051
+#define VSL_SS_ERROR_BAD_MI_INIT_ESTIMATES_N_ADDR -4052
+#define VSL_SS_ERROR_BAD_MI_INIT_ESTIMATES_ADDR -4053
+#define VSL_SS_ERROR_BAD_MI_SIMUL_VALS_ADDR -4054
+#define VSL_SS_ERROR_BAD_MI_SIMUL_VALS_N_ADDR -4055
+#define VSL_SS_ERROR_BAD_MI_ESTIMATES_N_ADDR -4056
+#define VSL_SS_ERROR_BAD_MI_ESTIMATES_ADDR -4057
+#define VSL_SS_ERROR_BAD_MI_SIMUL_VALS_N -4058
+#define VSL_SS_ERROR_BAD_MI_ESTIMATES_N -4059
+#define VSL_SS_ERROR_BAD_MI_OUTPUT_PARAMS -4060
+#define VSL_SS_ERROR_BAD_MI_PRIOR_N_ADDR -4061
+#define VSL_SS_ERROR_BAD_MI_PRIOR_ADDR -4062
+#define VSL_SS_ERROR_BAD_MI_MISSING_VALS_N -4063
+#define VSL_SS_ERROR_BAD_STREAM_QUANT_PARAMS_N_ADDR -4064
+#define VSL_SS_ERROR_BAD_STREAM_QUANT_PARAMS_ADDR -4065
+#define VSL_SS_ERROR_BAD_STREAM_QUANT_PARAMS_N -4066
+#define VSL_SS_ERROR_BAD_STREAM_QUANT_PARAMS -4067
+#define VSL_SS_ERROR_BAD_STREAM_QUANT_ORDER_ADDR -4068
+#define VSL_SS_ERROR_BAD_STREAM_QUANT_ORDER -4069
+#define VSL_SS_ERROR_BAD_STREAM_QUANT_ADDR -4070
+#define VSL_SS_ERROR_BAD_PARAMTR_COR_ADDR -4071
+#define VSL_SS_ERROR_BAD_COR -4072
+#define VSL_SS_ERROR_BAD_PARTIAL_COV_IDX -4073
+#define VSL_SS_ERROR_BAD_SUM_ADDR -4074
+#define VSL_SS_ERROR_BAD_2R_SUM_ADDR -4075
+#define VSL_SS_ERROR_BAD_3R_SUM_ADDR -4076
+#define VSL_SS_ERROR_BAD_4R_SUM_ADDR -4077
+#define VSL_SS_ERROR_BAD_2C_SUM_ADDR -4078
+#define VSL_SS_ERROR_BAD_3C_SUM_ADDR -4079
+#define VSL_SS_ERROR_BAD_4C_SUM_ADDR -4080
+#define VSL_SS_ERROR_BAD_CP_ADDR -4081
+#define VSL_SS_ERROR_BAD_MDAD_ADDR -4082
+#define VSL_SS_ERROR_BAD_MNAD_ADDR -4083
+#define VSL_SS_ERROR_BAD_SORTED_OBSERV_ADDR -4084
+#define VSL_SS_ERROR_INDICES_NOT_SUPPORTED -4085
 
 /*
 // Internal errors caused by internal routines of the functions
 */
-#define VSL_SS_ERROR_ROBCOV_INTERN_C1                -5000
-#define VSL_SS_ERROR_PARTIALCOV_INTERN_C1            -5010
-#define VSL_SS_ERROR_PARTIALCOV_INTERN_C2            -5011
-#define VSL_SS_ERROR_MISSINGVALS_INTERN_C1           -5021
-#define VSL_SS_ERROR_MISSINGVALS_INTERN_C2           -5022
-#define VSL_SS_ERROR_MISSINGVALS_INTERN_C3           -5023
-#define VSL_SS_ERROR_MISSINGVALS_INTERN_C4           -5024
-#define VSL_SS_ERROR_MISSINGVALS_INTERN_C5           -5025
-#define VSL_SS_ERROR_PARAMTRCOR_INTERN_C1            -5030
-#define VSL_SS_ERROR_COVRANK_INTERNAL_ERROR_C1       -5040
-#define VSL_SS_ERROR_INVCOV_INTERNAL_ERROR_C1        -5041
-#define VSL_SS_ERROR_INVCOV_INTERNAL_ERROR_C2        -5042
-
+#define VSL_SS_ERROR_ROBCOV_INTERN_C1 -5000
+#define VSL_SS_ERROR_PARTIALCOV_INTERN_C1 -5010
+#define VSL_SS_ERROR_PARTIALCOV_INTERN_C2 -5011
+#define VSL_SS_ERROR_MISSINGVALS_INTERN_C1 -5021
+#define VSL_SS_ERROR_MISSINGVALS_INTERN_C2 -5022
+#define VSL_SS_ERROR_MISSINGVALS_INTERN_C3 -5023
+#define VSL_SS_ERROR_MISSINGVALS_INTERN_C4 -5024
+#define VSL_SS_ERROR_MISSINGVALS_INTERN_C5 -5025
+#define VSL_SS_ERROR_PARAMTRCOR_INTERN_C1 -5030
+#define VSL_SS_ERROR_COVRANK_INTERNAL_ERROR_C1 -5040
+#define VSL_SS_ERROR_INVCOV_INTERNAL_ERROR_C1 -5041
+#define VSL_SS_ERROR_INVCOV_INTERNAL_ERROR_C2 -5042
 
 /*
 // CONV/CORR RELATED MACRO DEFINITIONS
 */
-#define VSL_CONV_MODE_AUTO        0
-#define VSL_CORR_MODE_AUTO        0
-#define VSL_CONV_MODE_DIRECT      1
-#define VSL_CORR_MODE_DIRECT      1
-#define VSL_CONV_MODE_FFT         2
-#define VSL_CORR_MODE_FFT         2
+#define VSL_CONV_MODE_AUTO 0
+#define VSL_CORR_MODE_AUTO 0
+#define VSL_CONV_MODE_DIRECT 1
+#define VSL_CORR_MODE_DIRECT 1
+#define VSL_CONV_MODE_FFT 2
+#define VSL_CORR_MODE_FFT 2
 #define VSL_CONV_PRECISION_SINGLE 1
 #define VSL_CORR_PRECISION_SINGLE 1
 #define VSL_CONV_PRECISION_DOUBLE 2
@@ -281,31 +278,30 @@ extern "C" {
 //
 //  Change this number to increase/decrease number of BRNGs can be registered.
 */
-#define VSL_MAX_REG_BRNGS           512
+#define VSL_MAX_REG_BRNGS 512
 
 /*
 //  PREDEFINED BRNG NAMES
 */
-#define VSL_BRNG_SHIFT      20
-#define VSL_BRNG_INC        (1<<VSL_BRNG_SHIFT)
+#define VSL_BRNG_SHIFT 20
+#define VSL_BRNG_INC (1 << VSL_BRNG_SHIFT)
 
-#define VSL_BRNG_MCG31          (VSL_BRNG_INC)
-#define VSL_BRNG_R250           (VSL_BRNG_MCG31    +VSL_BRNG_INC)
-#define VSL_BRNG_MRG32K3A       (VSL_BRNG_R250     +VSL_BRNG_INC)
-#define VSL_BRNG_MCG59          (VSL_BRNG_MRG32K3A +VSL_BRNG_INC)
-#define VSL_BRNG_WH             (VSL_BRNG_MCG59    +VSL_BRNG_INC)
-#define VSL_BRNG_SOBOL          (VSL_BRNG_WH       +VSL_BRNG_INC)
-#define VSL_BRNG_NIEDERR        (VSL_BRNG_SOBOL    +VSL_BRNG_INC)
-#define VSL_BRNG_MT19937        (VSL_BRNG_NIEDERR  +VSL_BRNG_INC)
-#define VSL_BRNG_MT2203         (VSL_BRNG_MT19937  +VSL_BRNG_INC)
-#define VSL_BRNG_IABSTRACT      (VSL_BRNG_MT2203   +VSL_BRNG_INC)
-#define VSL_BRNG_DABSTRACT      (VSL_BRNG_IABSTRACT+VSL_BRNG_INC)
-#define VSL_BRNG_SABSTRACT      (VSL_BRNG_DABSTRACT+VSL_BRNG_INC)
-#define VSL_BRNG_SFMT19937      (VSL_BRNG_SABSTRACT+VSL_BRNG_INC)
-#define VSL_BRNG_NONDETERM      (VSL_BRNG_SFMT19937+VSL_BRNG_INC)
-#define VSL_BRNG_ARS5           (VSL_BRNG_NONDETERM+VSL_BRNG_INC)
-#define VSL_BRNG_PHILOX4X32X10  (VSL_BRNG_ARS5     +VSL_BRNG_INC)
-
+#define VSL_BRNG_MCG31 (VSL_BRNG_INC)
+#define VSL_BRNG_R250 (VSL_BRNG_MCG31 + VSL_BRNG_INC)
+#define VSL_BRNG_MRG32K3A (VSL_BRNG_R250 + VSL_BRNG_INC)
+#define VSL_BRNG_MCG59 (VSL_BRNG_MRG32K3A + VSL_BRNG_INC)
+#define VSL_BRNG_WH (VSL_BRNG_MCG59 + VSL_BRNG_INC)
+#define VSL_BRNG_SOBOL (VSL_BRNG_WH + VSL_BRNG_INC)
+#define VSL_BRNG_NIEDERR (VSL_BRNG_SOBOL + VSL_BRNG_INC)
+#define VSL_BRNG_MT19937 (VSL_BRNG_NIEDERR + VSL_BRNG_INC)
+#define VSL_BRNG_MT2203 (VSL_BRNG_MT19937 + VSL_BRNG_INC)
+#define VSL_BRNG_IABSTRACT (VSL_BRNG_MT2203 + VSL_BRNG_INC)
+#define VSL_BRNG_DABSTRACT (VSL_BRNG_IABSTRACT + VSL_BRNG_INC)
+#define VSL_BRNG_SABSTRACT (VSL_BRNG_DABSTRACT + VSL_BRNG_INC)
+#define VSL_BRNG_SFMT19937 (VSL_BRNG_SABSTRACT + VSL_BRNG_INC)
+#define VSL_BRNG_NONDETERM (VSL_BRNG_SFMT19937 + VSL_BRNG_INC)
+#define VSL_BRNG_ARS5 (VSL_BRNG_NONDETERM + VSL_BRNG_INC)
+#define VSL_BRNG_PHILOX4X32X10 (VSL_BRNG_ARS5 + VSL_BRNG_INC)
 
 /*
 // PREDEFINED PARAMETERS FOR NON-DETERMNINISTIC RANDOM NUMBER
@@ -314,7 +310,7 @@ extern "C" {
 // random numbers supported in HW. Current version of the library provides
 // interface to RDRAND-based only, available in latest Intel CPU.
 */
-#define VSL_BRNG_RDRAND  0x0
+#define VSL_BRNG_RDRAND 0x0
 #define VSL_BRNG_NONDETERM_NRETRIES 10
 
 /*
@@ -344,7 +340,7 @@ extern "C" {
 //  vslLeapfrogStream function with parameter k equal to element to be fixed
 //  (0<=k<S) and parameter nstreams equal to VSL_QRNG_LEAPFROG_COMPONENTS.
 */
-#define VSL_QRNG_LEAPFROG_COMPONENTS    0x7fffffff
+#define VSL_QRNG_LEAPFROG_COMPONENTS 0x7fffffff
 
 /*
 //  USER-DEFINED PARAMETERS FOR QUASI-RANDOM NUMBER BASIC GENERATORS
@@ -374,13 +370,12 @@ extern "C" {
 //  registration of user-defined QRNG initial parameters can be found
 //  in VslNotes.pdf.
 */
-#define VSL_USER_QRNG_INITIAL_VALUES     0x1
-#define VSL_USER_PRIMITIVE_POLYMS        0x1
-#define VSL_USER_INIT_DIRECTION_NUMBERS  0x2
-#define VSL_USER_IRRED_POLYMS            0x1
-#define VSL_USER_DIRECTION_NUMBERS       0x4
-#define VSL_QRNG_OVERRIDE_1ST_DIM_INIT   0x8
-
+#define VSL_USER_QRNG_INITIAL_VALUES 0x1
+#define VSL_USER_PRIMITIVE_POLYMS 0x1
+#define VSL_USER_INIT_DIRECTION_NUMBERS 0x2
+#define VSL_USER_IRRED_POLYMS 0x1
+#define VSL_USER_DIRECTION_NUMBERS 0x4
+#define VSL_QRNG_OVERRIDE_1ST_DIM_INIT 0x8
 
 /*
 //  INITIALIZATION METHODS FOR USER-DESIGNED BASIC RANDOM NUMBER GENERATORS.
@@ -397,10 +392,9 @@ extern "C" {
 //  If there is no error during initialization, the initialization routine must
 //  return VSL_ERROR_OK code.
 */
-#define VSL_INIT_METHOD_STANDARD  0
-#define VSL_INIT_METHOD_LEAPFROG  1
+#define VSL_INIT_METHOD_STANDARD 0
+#define VSL_INIT_METHOD_LEAPFROG 1
 #define VSL_INIT_METHOD_SKIPAHEAD 2
-
 
 /*
 //++
@@ -416,7 +410,7 @@ extern "C" {
 //  distribution number generators
 //--
 */
-#define VSL_RNG_METHOD_ACCURACY_FLAG (1<<30)
+#define VSL_RNG_METHOD_ACCURACY_FLAG (1 << 30)
 
 /*
 //++
@@ -451,9 +445,9 @@ extern "C" {
 */
 #define VSL_RNG_METHOD_UNIFORM_STD 0 /* vsl{s,d,i}RngUniform */
 
-#define VSL_RNG_METHOD_UNIFORM_STD_ACCURATE \
+#define VSL_RNG_METHOD_UNIFORM_STD_ACCURATE                                    \
   VSL_RNG_METHOD_UNIFORM_STD | VSL_RNG_METHOD_ACCURACY_FLAG
-    /* accurate mode of vsl{d,s}RngUniform */
+/* accurate mode of vsl{d,s}RngUniform */
 
 /*
 // Uniform Bits
@@ -502,9 +496,9 @@ extern "C" {
 //
 // ICDF       inverse cumulative distribution function method
 */
-#define VSL_RNG_METHOD_GAUSSIAN_BOXMULLER   0 /* vsl{d,s}RngGaussian */
-#define VSL_RNG_METHOD_GAUSSIAN_BOXMULLER2  1 /* vsl{d,s}RngGaussian */
-#define VSL_RNG_METHOD_GAUSSIAN_ICDF        2 /* vsl{d,s}RngGaussian */
+#define VSL_RNG_METHOD_GAUSSIAN_BOXMULLER 0  /* vsl{d,s}RngGaussian */
+#define VSL_RNG_METHOD_GAUSSIAN_BOXMULLER2 1 /* vsl{d,s}RngGaussian */
+#define VSL_RNG_METHOD_GAUSSIAN_ICDF 2       /* vsl{d,s}RngGaussian */
 
 /*
 // GaussianMV - multivariate (correlated) normal
@@ -529,9 +523,9 @@ extern "C" {
 //
 // ICDF       inverse cumulative distribution function method
 */
-#define VSL_RNG_METHOD_GAUSSIANMV_BOXMULLER   0 /* vsl{d,s}RngGaussianMV */
-#define VSL_RNG_METHOD_GAUSSIANMV_BOXMULLER2  1 /* vsl{d,s}RngGaussianMV */
-#define VSL_RNG_METHOD_GAUSSIANMV_ICDF        2 /* vsl{d,s}RngGaussianMV */
+#define VSL_RNG_METHOD_GAUSSIANMV_BOXMULLER 0  /* vsl{d,s}RngGaussianMV */
+#define VSL_RNG_METHOD_GAUSSIANMV_BOXMULLER2 1 /* vsl{d,s}RngGaussianMV */
+#define VSL_RNG_METHOD_GAUSSIANMV_ICDF 2       /* vsl{d,s}RngGaussianMV */
 
 /*
 // Exponential
@@ -541,9 +535,9 @@ extern "C" {
 */
 #define VSL_RNG_METHOD_EXPONENTIAL_ICDF 0 /* vsl{d,s}RngExponential */
 
-#define VSL_RNG_METHOD_EXPONENTIAL_ICDF_ACCURATE \
-   VSL_RNG_METHOD_EXPONENTIAL_ICDF | VSL_RNG_METHOD_ACCURACY_FLAG
-    /* accurate mode of vsl{d,s}RngExponential */
+#define VSL_RNG_METHOD_EXPONENTIAL_ICDF_ACCURATE                               \
+  VSL_RNG_METHOD_EXPONENTIAL_ICDF | VSL_RNG_METHOD_ACCURACY_FLAG
+/* accurate mode of vsl{d,s}RngExponential */
 
 /*
 // Laplace
@@ -570,10 +564,9 @@ extern "C" {
 */
 #define VSL_RNG_METHOD_WEIBULL_ICDF 0 /* vsl{d,s}RngWeibull */
 
-#define VSL_RNG_METHOD_WEIBULL_ICDF_ACCURATE \
-   VSL_RNG_METHOD_WEIBULL_ICDF | VSL_RNG_METHOD_ACCURACY_FLAG
-    /* accurate mode of vsl{d,s}RngWeibull */
-
+#define VSL_RNG_METHOD_WEIBULL_ICDF_ACCURATE                                   \
+  VSL_RNG_METHOD_WEIBULL_ICDF | VSL_RNG_METHOD_ACCURACY_FLAG
+/* accurate mode of vsl{d,s}RngWeibull */
 
 /*
 // Cauchy
@@ -591,9 +584,9 @@ extern "C" {
 */
 #define VSL_RNG_METHOD_RAYLEIGH_ICDF 0 /* vsl{d,s}RngRayleigh */
 
-#define VSL_RNG_METHOD_RAYLEIGH_ICDF_ACCURATE \
-   VSL_RNG_METHOD_RAYLEIGH_ICDF | VSL_RNG_METHOD_ACCURACY_FLAG
-    /* accurate mode of vsl{d,s}RngRayleigh */
+#define VSL_RNG_METHOD_RAYLEIGH_ICDF_ACCURATE                                  \
+  VSL_RNG_METHOD_RAYLEIGH_ICDF | VSL_RNG_METHOD_ACCURACY_FLAG
+/* accurate mode of vsl{d,s}RngRayleigh */
 
 /*
 // Lognormal
@@ -604,14 +597,13 @@ extern "C" {
 #define VSL_RNG_METHOD_LOGNORMAL_BOXMULLER2 0 /* vsl{d,s}RngLognormal */
 #define VSL_RNG_METHOD_LOGNORMAL_ICDF 1       /* vsl{d,s}RngLognormal */
 
-#define VSL_RNG_METHOD_LOGNORMAL_BOXMULLER2_ACCURATE \
-   VSL_RNG_METHOD_LOGNORMAL_BOXMULLER2 | VSL_RNG_METHOD_ACCURACY_FLAG
-    /* accurate mode of vsl{d,s}RngLognormal */
+#define VSL_RNG_METHOD_LOGNORMAL_BOXMULLER2_ACCURATE                           \
+  VSL_RNG_METHOD_LOGNORMAL_BOXMULLER2 | VSL_RNG_METHOD_ACCURACY_FLAG
+/* accurate mode of vsl{d,s}RngLognormal */
 
-#define VSL_RNG_METHOD_LOGNORMAL_ICDF_ACCURATE \
-   VSL_RNG_METHOD_LOGNORMAL_ICDF | VSL_RNG_METHOD_ACCURACY_FLAG
-    /* accurate mode of vsl{d,s}RngLognormal */
-
+#define VSL_RNG_METHOD_LOGNORMAL_ICDF_ACCURATE                                 \
+  VSL_RNG_METHOD_LOGNORMAL_ICDF | VSL_RNG_METHOD_ACCURACY_FLAG
+/* accurate mode of vsl{d,s}RngLognormal */
 
 /*
 // Gumbel
@@ -637,10 +629,9 @@ extern "C" {
 */
 #define VSL_RNG_METHOD_GAMMA_GNORM 0 /* vsl{d,s}RngGamma */
 
-#define VSL_RNG_METHOD_GAMMA_GNORM_ACCURATE \
-   VSL_RNG_METHOD_GAMMA_GNORM | VSL_RNG_METHOD_ACCURACY_FLAG
-    /* accurate mode of vsl{d,s}RngGamma */
-
+#define VSL_RNG_METHOD_GAMMA_GNORM_ACCURATE                                    \
+  VSL_RNG_METHOD_GAMMA_GNORM | VSL_RNG_METHOD_ACCURACY_FLAG
+/* accurate mode of vsl{d,s}RngGamma */
 
 /*
 // Beta
@@ -671,10 +662,9 @@ extern "C" {
 */
 #define VSL_RNG_METHOD_BETA_CJA 0 /* vsl{d,s}RngBeta */
 
-#define VSL_RNG_METHOD_BETA_CJA_ACCURATE \
-   VSL_RNG_METHOD_BETA_CJA | VSL_RNG_METHOD_ACCURACY_FLAG
-    /* accurate mode of vsl{d,s}RngBeta */
-
+#define VSL_RNG_METHOD_BETA_CJA_ACCURATE                                       \
+  VSL_RNG_METHOD_BETA_CJA | VSL_RNG_METHOD_ACCURACY_FLAG
+/* accurate mode of vsl{d,s}RngBeta */
 
 /*
 // ChiSquare
@@ -692,7 +682,6 @@ extern "C" {
 //                              distribution;
 */
 #define VSL_RNG_METHOD_CHISQUARE_CHI2GAMMA 0 /* vsl{d,s}RngChiSquare */
-
 
 /*
 // Bernoulli
@@ -767,7 +756,7 @@ extern "C" {
 //            approximation by Gaussian inverse CDF; for lambda<1
 //            table lookup method is used.
 */
-#define VSL_RNG_METHOD_POISSON_PTPE     0 /* vsliRngPoisson */
+#define VSL_RNG_METHOD_POISSON_PTPE 0     /* vsliRngPoisson */
 #define VSL_RNG_METHOD_POISSON_POISNORM 1 /* vsliRngPoisson */
 
 /*
@@ -811,10 +800,9 @@ extern "C" {
 // PACKED   - lower/higher triangular matrix is packed in 1-dimensional array
 // DIAGONAL - diagonal elements are packed in 1-dimensional array
 */
-#define VSL_MATRIX_STORAGE_FULL     0
-#define VSL_MATRIX_STORAGE_PACKED   1
+#define VSL_MATRIX_STORAGE_FULL 0
+#define VSL_MATRIX_STORAGE_PACKED 1
 #define VSL_MATRIX_STORAGE_DIAGONAL 2
-
 
 /*
 // SUMMARY STATISTICS (SS) RELATED MACRO DEFINITIONS
@@ -839,8 +827,8 @@ extern "C" {
 //           is, i-th column of the matrix of observations contains values
 //           of i-th component of the random vector
 */
-#define VSL_SS_MATRIX_STORAGE_ROWS     0x00010000
-#define VSL_SS_MATRIX_STORAGE_COLS     0x00020000
+#define VSL_SS_MATRIX_STORAGE_ROWS 0x00010000
+#define VSL_SS_MATRIX_STORAGE_COLS 0x00020000
 
 /*
 // Variance-covariance/correlation matrix:
@@ -848,10 +836,9 @@ extern "C" {
 // L_PACKED - lower triangular matrix is stored as 1-dimensional array
 // U_PACKED - upper triangular matrix is stored as 1-dimensional array
 */
-#define VSL_SS_MATRIX_STORAGE_FULL            0x00000000
-#define VSL_SS_MATRIX_STORAGE_L_PACKED        0x00000001
-#define VSL_SS_MATRIX_STORAGE_U_PACKED        0x00000002
-
+#define VSL_SS_MATRIX_STORAGE_FULL 0x00000000
+#define VSL_SS_MATRIX_STORAGE_L_PACKED 0x00000001
+#define VSL_SS_MATRIX_STORAGE_U_PACKED 0x00000002
 
 /*
 //++
@@ -873,34 +860,34 @@ extern "C" {
 //  - SUM_TO_MOM - convert raw/central sums to raw/central moments
 //
 */
-#define VSL_SS_METHOD_FAST                    0x00000001
-#define VSL_SS_METHOD_1PASS                   0x00000002
-#define VSL_SS_METHOD_FAST_USER_MEAN          0x00000100
-#define VSL_SS_METHOD_CP_TO_COVCOR            0x00000200
-#define VSL_SS_METHOD_SUM_TO_MOM              0x00000400
+#define VSL_SS_METHOD_FAST 0x00000001
+#define VSL_SS_METHOD_1PASS 0x00000002
+#define VSL_SS_METHOD_FAST_USER_MEAN 0x00000100
+#define VSL_SS_METHOD_CP_TO_COVCOR 0x00000200
+#define VSL_SS_METHOD_SUM_TO_MOM 0x00000400
 
 /*
 // SS provides routine for parametrization of correlation matrix using
 // SPECTRAL DECOMPOSITION (SD) method
 */
-#define VSL_SS_METHOD_SD                      0x00000004
+#define VSL_SS_METHOD_SD 0x00000004
 
 /*
 // SS routine for robust estimation of variance-covariance matrix
 // and mean supports Rocke algorithm, TBS-estimator
 */
-#define VSL_SS_METHOD_TBS                     0x00000008
+#define VSL_SS_METHOD_TBS 0x00000008
 
 /*
 //  SS routine for estimation of missing values
 //  supports Multiple Imputation (MI) method
 */
-#define VSL_SS_METHOD_MI                      0x00000010
+#define VSL_SS_METHOD_MI 0x00000010
 
 /*
 // SS provides routine for detection of outliers, BACON method
 */
-#define VSL_SS_METHOD_BACON                   0x00000020
+#define VSL_SS_METHOD_BACON 0x00000020
 
 /*
 // SS supports routine for estimation of quantiles for streaming data
@@ -910,9 +897,8 @@ extern "C" {
 // - ZW_FAST - intermediate estimates of quantiles during processing
 //             the next block are not computed
 */
-#define VSL_SS_METHOD_SQUANTS_ZW              0x00000040
-#define VSL_SS_METHOD_SQUANTS_ZW_FAST         0x00000080
-
+#define VSL_SS_METHOD_SQUANTS_ZW 0x00000040
+#define VSL_SS_METHOD_SQUANTS_ZW_FAST 0x00000080
 
 /*
 // Input of BACON algorithm is set of 3 parameters:
@@ -923,20 +909,20 @@ extern "C" {
 /*
 // Number of BACON algorithm parameters
 */
-#define VSL_SS_BACON_PARAMS_N         3
+#define VSL_SS_BACON_PARAMS_N 3
 
 /*
 // SS implementation of BACON algorithm supports two initialization methods:
 // - Mahalanobis distance based method
 // - Median based method
 */
-#define VSL_SS_METHOD_BACON_MAHALANOBIS_INIT  0x00000001
-#define VSL_SS_METHOD_BACON_MEDIAN_INIT       0x00000002
+#define VSL_SS_METHOD_BACON_MAHALANOBIS_INIT 0x00000001
+#define VSL_SS_METHOD_BACON_MEDIAN_INIT 0x00000002
 
 /*
 // SS routine for sorting data, RADIX method
 */
-#define VSL_SS_METHOD_RADIX                   0x00100000
+#define VSL_SS_METHOD_RADIX 0x00100000
 
 /*
 // Input of TBS algorithm is set of 4 parameters:
@@ -948,7 +934,7 @@ extern "C" {
 /*
 // Number of TBS algorithm parameters
 */
-#define VSL_SS_TBS_PARAMS_N           4
+#define VSL_SS_TBS_PARAMS_N 4
 
 /*
 // Input of MI algorithm is set of 5 parameters:
@@ -961,14 +947,14 @@ extern "C" {
 /*
 // Number of MI algorithm parameters
 */
-#define VSL_SS_MI_PARAMS_SIZE         5
+#define VSL_SS_MI_PARAMS_SIZE 5
 
 /*
 // SS MI algorithm expects that missing values are
 // marked with NANs
 */
-#define VSL_SS_DNAN                    0xFFF8000000000000
-#define VSL_SS_SNAN                    0xFFC00000
+#define VSL_SS_DNAN 0xFFF8000000000000
+#define VSL_SS_SNAN 0xFFC00000
 
 /*
 // Input of ZW algorithm is 1 parameter:
@@ -977,8 +963,7 @@ extern "C" {
 /*
 // Number of ZW algorithm parameters
 */
-#define VSL_SS_SQUANTS_ZW_PARAMS_N   1
-
+#define VSL_SS_SQUANTS_ZW_PARAMS_N 1
 
 /*
 //++
@@ -992,130 +977,129 @@ extern "C" {
 // arrays of mean estimates or covariance estimates.
 // Macros below define parameters available for modification
 */
-#define VSL_SS_ED_DIMEN                                 1
-#define VSL_SS_ED_OBSERV_N                              2
-#define VSL_SS_ED_OBSERV                                3
-#define VSL_SS_ED_OBSERV_STORAGE                        4
-#define VSL_SS_ED_INDC                                  5
-#define VSL_SS_ED_WEIGHTS                               6
-#define VSL_SS_ED_MEAN                                  7
-#define VSL_SS_ED_2R_MOM                                8
-#define VSL_SS_ED_3R_MOM                                9
-#define VSL_SS_ED_4R_MOM                               10
-#define VSL_SS_ED_2C_MOM                               11
-#define VSL_SS_ED_3C_MOM                               12
-#define VSL_SS_ED_4C_MOM                               13
-#define VSL_SS_ED_SUM                                  67
-#define VSL_SS_ED_2R_SUM                               68
-#define VSL_SS_ED_3R_SUM                               69
-#define VSL_SS_ED_4R_SUM                               70
-#define VSL_SS_ED_2C_SUM                               71
-#define VSL_SS_ED_3C_SUM                               72
-#define VSL_SS_ED_4C_SUM                               73
-#define VSL_SS_ED_KURTOSIS                             14
-#define VSL_SS_ED_SKEWNESS                             15
-#define VSL_SS_ED_MIN                                  16
-#define VSL_SS_ED_MAX                                  17
-#define VSL_SS_ED_VARIATION                            18
-#define VSL_SS_ED_COV                                  19
-#define VSL_SS_ED_COV_STORAGE                          20
-#define VSL_SS_ED_COR                                  21
-#define VSL_SS_ED_COR_STORAGE                          22
-#define VSL_SS_ED_CP                                   74
-#define VSL_SS_ED_CP_STORAGE                           75
-#define VSL_SS_ED_ACCUM_WEIGHT                         23
-#define VSL_SS_ED_QUANT_ORDER_N                        24
-#define VSL_SS_ED_QUANT_ORDER                          25
-#define VSL_SS_ED_QUANT_QUANTILES                      26
-#define VSL_SS_ED_ORDER_STATS                          27
-#define VSL_SS_ED_GROUP_INDC                           28
-#define VSL_SS_ED_POOLED_COV_STORAGE                   29
-#define VSL_SS_ED_POOLED_MEAN                          30
-#define VSL_SS_ED_POOLED_COV                           31
-#define VSL_SS_ED_GROUP_COV_INDC                       32
-#define VSL_SS_ED_REQ_GROUP_INDC                       32
-#define VSL_SS_ED_GROUP_MEAN                           33
-#define VSL_SS_ED_GROUP_COV_STORAGE                    34
-#define VSL_SS_ED_GROUP_COV                            35
-#define VSL_SS_ED_ROBUST_COV_STORAGE                   36
-#define VSL_SS_ED_ROBUST_COV_PARAMS_N                  37
-#define VSL_SS_ED_ROBUST_COV_PARAMS                    38
-#define VSL_SS_ED_ROBUST_MEAN                          39
-#define VSL_SS_ED_ROBUST_COV                           40
-#define VSL_SS_ED_OUTLIERS_PARAMS_N                    41
-#define VSL_SS_ED_OUTLIERS_PARAMS                      42
-#define VSL_SS_ED_OUTLIERS_WEIGHT                      43
-#define VSL_SS_ED_ORDER_STATS_STORAGE                  44
-#define VSL_SS_ED_PARTIAL_COV_IDX                      45
-#define VSL_SS_ED_PARTIAL_COV                          46
-#define VSL_SS_ED_PARTIAL_COV_STORAGE                  47
-#define VSL_SS_ED_PARTIAL_COR                          48
-#define VSL_SS_ED_PARTIAL_COR_STORAGE                  49
-#define VSL_SS_ED_MI_PARAMS_N                          50
-#define VSL_SS_ED_MI_PARAMS                            51
-#define VSL_SS_ED_MI_INIT_ESTIMATES_N                  52
-#define VSL_SS_ED_MI_INIT_ESTIMATES                    53
-#define VSL_SS_ED_MI_SIMUL_VALS_N                      54
-#define VSL_SS_ED_MI_SIMUL_VALS                        55
-#define VSL_SS_ED_MI_ESTIMATES_N                       56
-#define VSL_SS_ED_MI_ESTIMATES                         57
-#define VSL_SS_ED_MI_PRIOR_N                           58
-#define VSL_SS_ED_MI_PRIOR                             59
-#define VSL_SS_ED_PARAMTR_COR                          60
-#define VSL_SS_ED_PARAMTR_COR_STORAGE                  61
-#define VSL_SS_ED_STREAM_QUANT_PARAMS_N                62
-#define VSL_SS_ED_STREAM_QUANT_PARAMS                  63
-#define VSL_SS_ED_STREAM_QUANT_ORDER_N                 64
-#define VSL_SS_ED_STREAM_QUANT_ORDER                   65
-#define VSL_SS_ED_STREAM_QUANT_QUANTILES               66
-#define VSL_SS_ED_MDAD                                 76
-#define VSL_SS_ED_MNAD                                 77
-#define VSL_SS_ED_SORTED_OBSERV                        78
-#define VSL_SS_ED_SORTED_OBSERV_STORAGE                79
-
+#define VSL_SS_ED_DIMEN 1
+#define VSL_SS_ED_OBSERV_N 2
+#define VSL_SS_ED_OBSERV 3
+#define VSL_SS_ED_OBSERV_STORAGE 4
+#define VSL_SS_ED_INDC 5
+#define VSL_SS_ED_WEIGHTS 6
+#define VSL_SS_ED_MEAN 7
+#define VSL_SS_ED_2R_MOM 8
+#define VSL_SS_ED_3R_MOM 9
+#define VSL_SS_ED_4R_MOM 10
+#define VSL_SS_ED_2C_MOM 11
+#define VSL_SS_ED_3C_MOM 12
+#define VSL_SS_ED_4C_MOM 13
+#define VSL_SS_ED_SUM 67
+#define VSL_SS_ED_2R_SUM 68
+#define VSL_SS_ED_3R_SUM 69
+#define VSL_SS_ED_4R_SUM 70
+#define VSL_SS_ED_2C_SUM 71
+#define VSL_SS_ED_3C_SUM 72
+#define VSL_SS_ED_4C_SUM 73
+#define VSL_SS_ED_KURTOSIS 14
+#define VSL_SS_ED_SKEWNESS 15
+#define VSL_SS_ED_MIN 16
+#define VSL_SS_ED_MAX 17
+#define VSL_SS_ED_VARIATION 18
+#define VSL_SS_ED_COV 19
+#define VSL_SS_ED_COV_STORAGE 20
+#define VSL_SS_ED_COR 21
+#define VSL_SS_ED_COR_STORAGE 22
+#define VSL_SS_ED_CP 74
+#define VSL_SS_ED_CP_STORAGE 75
+#define VSL_SS_ED_ACCUM_WEIGHT 23
+#define VSL_SS_ED_QUANT_ORDER_N 24
+#define VSL_SS_ED_QUANT_ORDER 25
+#define VSL_SS_ED_QUANT_QUANTILES 26
+#define VSL_SS_ED_ORDER_STATS 27
+#define VSL_SS_ED_GROUP_INDC 28
+#define VSL_SS_ED_POOLED_COV_STORAGE 29
+#define VSL_SS_ED_POOLED_MEAN 30
+#define VSL_SS_ED_POOLED_COV 31
+#define VSL_SS_ED_GROUP_COV_INDC 32
+#define VSL_SS_ED_REQ_GROUP_INDC 32
+#define VSL_SS_ED_GROUP_MEAN 33
+#define VSL_SS_ED_GROUP_COV_STORAGE 34
+#define VSL_SS_ED_GROUP_COV 35
+#define VSL_SS_ED_ROBUST_COV_STORAGE 36
+#define VSL_SS_ED_ROBUST_COV_PARAMS_N 37
+#define VSL_SS_ED_ROBUST_COV_PARAMS 38
+#define VSL_SS_ED_ROBUST_MEAN 39
+#define VSL_SS_ED_ROBUST_COV 40
+#define VSL_SS_ED_OUTLIERS_PARAMS_N 41
+#define VSL_SS_ED_OUTLIERS_PARAMS 42
+#define VSL_SS_ED_OUTLIERS_WEIGHT 43
+#define VSL_SS_ED_ORDER_STATS_STORAGE 44
+#define VSL_SS_ED_PARTIAL_COV_IDX 45
+#define VSL_SS_ED_PARTIAL_COV 46
+#define VSL_SS_ED_PARTIAL_COV_STORAGE 47
+#define VSL_SS_ED_PARTIAL_COR 48
+#define VSL_SS_ED_PARTIAL_COR_STORAGE 49
+#define VSL_SS_ED_MI_PARAMS_N 50
+#define VSL_SS_ED_MI_PARAMS 51
+#define VSL_SS_ED_MI_INIT_ESTIMATES_N 52
+#define VSL_SS_ED_MI_INIT_ESTIMATES 53
+#define VSL_SS_ED_MI_SIMUL_VALS_N 54
+#define VSL_SS_ED_MI_SIMUL_VALS 55
+#define VSL_SS_ED_MI_ESTIMATES_N 56
+#define VSL_SS_ED_MI_ESTIMATES 57
+#define VSL_SS_ED_MI_PRIOR_N 58
+#define VSL_SS_ED_MI_PRIOR 59
+#define VSL_SS_ED_PARAMTR_COR 60
+#define VSL_SS_ED_PARAMTR_COR_STORAGE 61
+#define VSL_SS_ED_STREAM_QUANT_PARAMS_N 62
+#define VSL_SS_ED_STREAM_QUANT_PARAMS 63
+#define VSL_SS_ED_STREAM_QUANT_ORDER_N 64
+#define VSL_SS_ED_STREAM_QUANT_ORDER 65
+#define VSL_SS_ED_STREAM_QUANT_QUANTILES 66
+#define VSL_SS_ED_MDAD 76
+#define VSL_SS_ED_MNAD 77
+#define VSL_SS_ED_SORTED_OBSERV 78
+#define VSL_SS_ED_SORTED_OBSERV_STORAGE 79
 
 /*
 // SS Compute routine calculates estimates supported by the library
 // Macros below define estimates to compute
 */
-#define VSL_SS_MEAN                       0x0000000000000001
-#define VSL_SS_2R_MOM                     0x0000000000000002
-#define VSL_SS_3R_MOM                     0x0000000000000004
-#define VSL_SS_4R_MOM                     0x0000000000000008
-#define VSL_SS_2C_MOM                     0x0000000000000010
-#define VSL_SS_3C_MOM                     0x0000000000000020
-#define VSL_SS_4C_MOM                     0x0000000000000040
-#define VSL_SS_SUM                        0x0000000002000000
-#define VSL_SS_2R_SUM                     0x0000000004000000
-#define VSL_SS_3R_SUM                     0x0000000008000000
-#define VSL_SS_4R_SUM                     0x0000000010000000
-#define VSL_SS_2C_SUM                     0x0000000020000000
-#define VSL_SS_3C_SUM                     0x0000000040000000
-#define VSL_SS_4C_SUM                     0x0000000080000000
-#define VSL_SS_KURTOSIS                   0x0000000000000080
-#define VSL_SS_SKEWNESS                   0x0000000000000100
-#define VSL_SS_VARIATION                  0x0000000000000200
-#define VSL_SS_MIN                        0x0000000000000400
-#define VSL_SS_MAX                        0x0000000000000800
-#define VSL_SS_COV                        0x0000000000001000
-#define VSL_SS_COR                        0x0000000000002000
-#define VSL_SS_CP                         0x0000000100000000
-#define VSL_SS_POOLED_COV                 0x0000000000004000
-#define VSL_SS_GROUP_COV                  0x0000000000008000
-#define VSL_SS_POOLED_MEAN                0x0000000800000000
-#define VSL_SS_GROUP_MEAN                 0x0000001000000000
-#define VSL_SS_QUANTS                     0x0000000000010000
-#define VSL_SS_ORDER_STATS                0x0000000000020000
-#define VSL_SS_SORTED_OBSERV              0x0000008000000000
-#define VSL_SS_ROBUST_COV                 0x0000000000040000
-#define VSL_SS_OUTLIERS                   0x0000000000080000
-#define VSL_SS_PARTIAL_COV                0x0000000000100000
-#define VSL_SS_PARTIAL_COR                0x0000000000200000
-#define VSL_SS_MISSING_VALS               0x0000000000400000
-#define VSL_SS_PARAMTR_COR                0x0000000000800000
-#define VSL_SS_STREAM_QUANTS              0x0000000001000000
-#define VSL_SS_MDAD                       0x0000000200000000
-#define VSL_SS_MNAD                       0x0000000400000000
+#define VSL_SS_MEAN 0x0000000000000001
+#define VSL_SS_2R_MOM 0x0000000000000002
+#define VSL_SS_3R_MOM 0x0000000000000004
+#define VSL_SS_4R_MOM 0x0000000000000008
+#define VSL_SS_2C_MOM 0x0000000000000010
+#define VSL_SS_3C_MOM 0x0000000000000020
+#define VSL_SS_4C_MOM 0x0000000000000040
+#define VSL_SS_SUM 0x0000000002000000
+#define VSL_SS_2R_SUM 0x0000000004000000
+#define VSL_SS_3R_SUM 0x0000000008000000
+#define VSL_SS_4R_SUM 0x0000000010000000
+#define VSL_SS_2C_SUM 0x0000000020000000
+#define VSL_SS_3C_SUM 0x0000000040000000
+#define VSL_SS_4C_SUM 0x0000000080000000
+#define VSL_SS_KURTOSIS 0x0000000000000080
+#define VSL_SS_SKEWNESS 0x0000000000000100
+#define VSL_SS_VARIATION 0x0000000000000200
+#define VSL_SS_MIN 0x0000000000000400
+#define VSL_SS_MAX 0x0000000000000800
+#define VSL_SS_COV 0x0000000000001000
+#define VSL_SS_COR 0x0000000000002000
+#define VSL_SS_CP 0x0000000100000000
+#define VSL_SS_POOLED_COV 0x0000000000004000
+#define VSL_SS_GROUP_COV 0x0000000000008000
+#define VSL_SS_POOLED_MEAN 0x0000000800000000
+#define VSL_SS_GROUP_MEAN 0x0000001000000000
+#define VSL_SS_QUANTS 0x0000000000010000
+#define VSL_SS_ORDER_STATS 0x0000000000020000
+#define VSL_SS_SORTED_OBSERV 0x0000008000000000
+#define VSL_SS_ROBUST_COV 0x0000000000040000
+#define VSL_SS_OUTLIERS 0x0000000000080000
+#define VSL_SS_PARTIAL_COV 0x0000000000100000
+#define VSL_SS_PARTIAL_COR 0x0000000000200000
+#define VSL_SS_MISSING_VALS 0x0000000000400000
+#define VSL_SS_PARAMTR_COR 0x0000000000800000
+#define VSL_SS_STREAM_QUANTS 0x0000000001000000
+#define VSL_SS_MDAD 0x0000000200000000
+#define VSL_SS_MNAD 0x0000000400000000
 
 #ifdef __cplusplus
 }

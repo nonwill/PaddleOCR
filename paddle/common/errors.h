@@ -92,7 +92,7 @@ enum ErrorCode {
 };
 
 class ErrorSummary {
- public:
+public:
   // Note(chenweihang): Final deprecated constructor
   //   This constructor is used to be compatible with
   //   current existing untyped PADDLE_ENFORCE_*
@@ -101,8 +101,7 @@ class ErrorSummary {
   //   constructor for compiling PADDLE_ENFORCE in *.cu,
   //   this is a bug cause we can't remove this
   //   constructor now.
-  template <typename... Args>
-  explicit ErrorSummary(Args... args) {
+  template <typename... Args> explicit ErrorSummary(Args... args) {
     code_ = common::ErrorCode::LEGACY;
     msg_ = paddle::string::Sprintf(args...);
   }
@@ -114,22 +113,21 @@ class ErrorSummary {
 
   ErrorCode code() const { return code_; }
 
-  const std::string& error_message() const { return msg_; }
+  const std::string &error_message() const { return msg_; }
 
   TEST_API std::string to_string() const;
 
- private:
+private:
   ErrorCode code_;
   std::string msg_;
 };
 
 namespace errors {
 
-#define REGISTER_ERROR(FUNC, CONST, ...)                               \
-  template <typename... Args>                                          \
-  ::common::ErrorSummary FUNC(Args... args) {                          \
-    return ::common::ErrorSummary(::common::CONST,                     \
-                                  ::paddle::string::Sprintf(args...)); \
+#define REGISTER_ERROR(FUNC, CONST, ...)                                       \
+  template <typename... Args>::common::ErrorSummary FUNC(Args... args) {       \
+    return ::common::ErrorSummary(::common::CONST,                             \
+                                  ::paddle::string::Sprintf(args...));         \
   }
 
 REGISTER_ERROR(InvalidArgument, ErrorCode::INVALID_ARGUMENT)
@@ -148,9 +146,9 @@ REGISTER_ERROR(InvalidType, ErrorCode::INVALID_TYPE)
 
 #undef REGISTER_ERROR
 
-}  // namespace errors
-}  // namespace common
+} // namespace errors
+} // namespace common
 
 namespace phi {
 namespace errors = ::common::errors;
-}  // namespace phi
+} // namespace phi

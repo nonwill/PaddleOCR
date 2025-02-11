@@ -56,10 +56,9 @@ void check_params(Args const &args) {
     }
   }
   if (args.rec) {
-    std::cout
-        << "Default rec_img_h is 48 in PP-OCRv3, minimum set 32 when "
-           "using recognition model with PP-OCRv2 or older version"
-        << std::endl;
+    std::cout << "Default rec_img_h is 48 in PP-OCRv3, minimum set 32 when "
+                 "using recognition model with PP-OCRv2 or older version"
+              << std::endl;
     if (args.rec_model_dir.empty() || args.image_dir.empty()) {
       std::cout << "Usage[rec]: ./ppocr "
                    "--rec_model_dir=/PATH/TO/REC_INFERENCE_MODEL/ "

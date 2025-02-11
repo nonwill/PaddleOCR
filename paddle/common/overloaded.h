@@ -16,18 +16,15 @@
 
 namespace common {
 
-template <typename... Ts>
-struct Overloaded : Ts... {
+template <typename... Ts> struct Overloaded : Ts... {
   using Ts::operator()...;
 };
-template <typename... Ts>
-Overloaded(Ts...) -> Overloaded<Ts...>;
+template <typename... Ts> Overloaded(Ts...) -> Overloaded<Ts...>;
 
-#define DEFINE_MATCH_METHOD()                                            \
-  template <typename... Args>                                            \
-  decltype(auto) Match(Args&&... args) const {                           \
-    return std::visit(::common::Overloaded{std::forward<Args>(args)...}, \
-                      variant());                                        \
+#define DEFINE_MATCH_METHOD()                                                  \
+  template <typename... Args> decltype(auto) Match(Args &&...args) const {     \
+    return std::visit(::common::Overloaded{std::forward<Args>(args)...},       \
+                      variant());                                              \
   }
 
-}  // namespace common
+} // namespace common

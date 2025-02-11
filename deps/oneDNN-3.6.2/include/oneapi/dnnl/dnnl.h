@@ -1,18 +1,18 @@
 /*******************************************************************************
-* Copyright 2016-2024 Intel Corporation
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*******************************************************************************/
+ * Copyright 2016-2024 Intel Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *******************************************************************************/
 
 /// @file
 /// C API
@@ -46,8 +46,8 @@ extern "C" {
 ///     otherwise.
 /// @returns #dnnl_last_impl_reached if no more implementations available,
 /// in which case the primitive descriptor itself is kept unchanged.
-dnnl_status_t DNNL_API dnnl_primitive_desc_next_impl(
-        dnnl_primitive_desc_t primitive_desc);
+dnnl_status_t DNNL_API
+dnnl_primitive_desc_next_impl(dnnl_primitive_desc_t primitive_desc);
 
 /// Clones a primitive descriptor. The resulting primitive descriptor must be
 /// destroyed separately.
@@ -56,9 +56,9 @@ dnnl_status_t DNNL_API dnnl_primitive_desc_next_impl(
 /// @param existing_primitive_desc Primitive descriptor to clone.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_primitive_desc_clone(
-        dnnl_primitive_desc_t *primitive_desc,
-        const_dnnl_primitive_desc_t existing_primitive_desc);
+dnnl_status_t DNNL_API
+dnnl_primitive_desc_clone(dnnl_primitive_desc_t *primitive_desc,
+                          const_dnnl_primitive_desc_t existing_primitive_desc);
 
 /// Returns a constant reference to the attributes of a primitive descriptor.
 ///
@@ -74,17 +74,17 @@ dnnl_status_t DNNL_API dnnl_primitive_desc_clone(
 /// @param attr Output primitive attributes.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_primitive_desc_get_attr(
-        const_dnnl_primitive_desc_t primitive_desc,
-        const_dnnl_primitive_attr_t *attr);
+dnnl_status_t DNNL_API
+dnnl_primitive_desc_get_attr(const_dnnl_primitive_desc_t primitive_desc,
+                             const_dnnl_primitive_attr_t *attr);
 
 /// Destroys a primitive descriptor.
 ///
 /// @param primitive_desc Primitive descriptor to destroy.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_primitive_desc_destroy(
-        dnnl_primitive_desc_t primitive_desc);
+dnnl_status_t DNNL_API
+dnnl_primitive_desc_destroy(dnnl_primitive_desc_t primitive_desc);
 
 /// Queries a primitive descriptor for various pieces of information.
 ///
@@ -122,9 +122,9 @@ dnnl_status_t DNNL_API dnnl_primitive_desc_destroy(
 ///     descriptor.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_primitive_desc_query(
-        const_dnnl_primitive_desc_t primitive_desc, dnnl_query_t what,
-        int index, void *result);
+dnnl_status_t DNNL_API
+dnnl_primitive_desc_query(const_dnnl_primitive_desc_t primitive_desc,
+                          dnnl_query_t what, int index, void *result);
 
 /// Queries primitive descriptor for a memory descriptor.
 ///
@@ -141,8 +141,7 @@ dnnl_status_t DNNL_API dnnl_primitive_desc_query(
 /// @returns NULL in case of any error.
 ///
 const_dnnl_memory_desc_t DNNL_API dnnl_primitive_desc_query_md(
-        const_dnnl_primitive_desc_t primitive_desc, dnnl_query_t what,
-        int index);
+    const_dnnl_primitive_desc_t primitive_desc, dnnl_query_t what, int index);
 
 /// Queries primitive descriptor for a signed 32bit int.
 ///
@@ -158,8 +157,7 @@ const_dnnl_memory_desc_t DNNL_API dnnl_primitive_desc_query_md(
 ///     not of type int32_t). Note that 0 may also be the actual returned
 ///     value.
 int DNNL_API dnnl_primitive_desc_query_s32(
-        const_dnnl_primitive_desc_t primitive_desc, dnnl_query_t what,
-        int index);
+    const_dnnl_primitive_desc_t primitive_desc, dnnl_query_t what, int index);
 
 /// Creates a primitive.
 ///
@@ -167,8 +165,8 @@ int DNNL_API dnnl_primitive_desc_query_s32(
 /// @param primitive_desc Primitive descriptor used to create the primitive.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_primitive_create(dnnl_primitive_t *primitive,
-        const_dnnl_primitive_desc_t primitive_desc);
+dnnl_status_t DNNL_API dnnl_primitive_create(
+    dnnl_primitive_t *primitive, const_dnnl_primitive_desc_t primitive_desc);
 
 /// Creates a primitive from a cache blob.
 ///
@@ -179,8 +177,8 @@ dnnl_status_t DNNL_API dnnl_primitive_create(dnnl_primitive_t *primitive,
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_create_from_cache_blob(
-        dnnl_primitive_t *primitive, const_dnnl_primitive_desc_t primitive_desc,
-        size_t size, const uint8_t *cache_blob);
+    dnnl_primitive_t *primitive, const_dnnl_primitive_desc_t primitive_desc,
+    size_t size, const uint8_t *cache_blob);
 
 /// Executes a primitive.
 ///
@@ -200,7 +198,8 @@ dnnl_status_t DNNL_API dnnl_primitive_create_from_cache_blob(
 /// dims), the primitive execution will assume properly zero-padded
 /// input arguments, and produce zero-padded output arguments.
 dnnl_status_t DNNL_API dnnl_primitive_execute(const_dnnl_primitive_t primitive,
-        dnnl_stream_t stream, int nargs, const dnnl_exec_arg_t *args);
+                                              dnnl_stream_t stream, int nargs,
+                                              const dnnl_exec_arg_t *args);
 
 /// Retrieves a constant reference to the primitive descriptor of a given
 /// primitive.
@@ -214,9 +213,9 @@ dnnl_status_t DNNL_API dnnl_primitive_execute(const_dnnl_primitive_t primitive,
 /// @param primitive_desc Output primitive descriptor.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_primitive_get_primitive_desc(
-        const_dnnl_primitive_t primitive,
-        const_dnnl_primitive_desc_t *primitive_desc);
+dnnl_status_t DNNL_API
+dnnl_primitive_get_primitive_desc(const_dnnl_primitive_t primitive,
+                                  const_dnnl_primitive_desc_t *primitive_desc);
 
 /// Retrieves a cache blob associated with the given primitive.
 ///
@@ -231,7 +230,7 @@ dnnl_status_t DNNL_API dnnl_primitive_get_primitive_desc(
 ///     whether it's empty prior to passing it to
 ///     #dnnl_primitive_create_from_cache_blob().
 dnnl_status_t DNNL_API dnnl_primitive_get_cache_blob(
-        const_dnnl_primitive_t primitive, size_t *size, uint8_t *cache_blob);
+    const_dnnl_primitive_t primitive, size_t *size, uint8_t *cache_blob);
 
 /// Destroys a primitive.
 ///
@@ -262,7 +261,7 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_create(dnnl_primitive_attr_t *attr);
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_clone(
-        dnnl_primitive_attr_t *attr, const_dnnl_primitive_attr_t existing_attr);
+    dnnl_primitive_attr_t *attr, const_dnnl_primitive_attr_t existing_attr);
 
 /// Destroys primitive attributes.
 ///
@@ -278,8 +277,7 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_destroy(dnnl_primitive_attr_t attr);
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_get_dropout(
-        const_dnnl_primitive_attr_t attr,
-        const_dnnl_memory_desc_t *dropout_desc);
+    const_dnnl_primitive_attr_t attr, const_dnnl_memory_desc_t *dropout_desc);
 
 /// Sets probability for output dropout primitive attribute.
 ///
@@ -288,7 +286,7 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_get_dropout(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_set_dropout(
-        dnnl_primitive_attr_t attr, const_dnnl_memory_desc_t dropout_desc);
+    dnnl_primitive_attr_t attr, const_dnnl_memory_desc_t dropout_desc);
 
 /// Returns the floating-point math mode primitive attribute.
 ///
@@ -297,7 +295,7 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_set_dropout(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_get_fpmath_mode(
-        const_dnnl_primitive_attr_t attr, dnnl_fpmath_mode_t *mode);
+    const_dnnl_primitive_attr_t attr, dnnl_fpmath_mode_t *mode);
 
 /// Sets the floating-point math mode primitive attributes.
 ///
@@ -311,18 +309,19 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_get_fpmath_mode(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_set_fpmath_mode(
-        dnnl_primitive_attr_t attr, dnnl_fpmath_mode_t mode);
+    dnnl_primitive_attr_t attr, dnnl_fpmath_mode_t mode);
 
 /// Returns the floating-point math mode primitive attribute.
 ///
 /// @param attr Primitive attributes.
 /// @param mode Output FP math mode.
-/// @param apply_to_int Output use floating-point arithmetic for integer primitives.
+/// @param apply_to_int Output use floating-point arithmetic for integer
+/// primitives.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_get_fpmath_mode_v2(
-        const_dnnl_primitive_attr_t attr, dnnl_fpmath_mode_t *mode,
-        int *apply_to_int);
+    const_dnnl_primitive_attr_t attr, dnnl_fpmath_mode_t *mode,
+    int *apply_to_int);
 
 /// Sets the floating-point math mode primitive attributes.
 ///
@@ -333,11 +332,12 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_get_fpmath_mode_v2(
 ///     #dnnl_fpmath_mode_f16,
 ///     #dnnl_fpmath_mode_tf32,
 ///     #dnnl_fpmath_mode_any.
-/// @param apply_to_int Boolean. Use of floating-point arithmetic for integer primitives.
+/// @param apply_to_int Boolean. Use of floating-point arithmetic for integer
+/// primitives.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_set_fpmath_mode_v2(
-        dnnl_primitive_attr_t attr, dnnl_fpmath_mode_t mode, int apply_to_int);
+    dnnl_primitive_attr_t attr, dnnl_fpmath_mode_t mode, int apply_to_int);
 
 /// Returns the deterministic primitive attribute value.
 ///
@@ -346,7 +346,7 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_set_fpmath_mode_v2(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_get_deterministic(
-        const_dnnl_primitive_attr_t attr, int *value);
+    const_dnnl_primitive_attr_t attr, int *value);
 
 /// Sets the deterministic primitive attribute value.
 ///
@@ -354,8 +354,8 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_get_deterministic(
 /// @param value Boolean value to set deterministic attribute.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_primitive_attr_set_deterministic(
-        dnnl_primitive_attr_t attr, int value);
+dnnl_status_t DNNL_API
+dnnl_primitive_attr_set_deterministic(dnnl_primitive_attr_t attr, int value);
 
 /// Returns the accumulation mode primitive attribute.
 ///
@@ -364,22 +364,23 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_set_deterministic(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_get_accumulation_mode(
-        const_dnnl_primitive_attr_t attr, dnnl_accumulation_mode_t *mode);
+    const_dnnl_primitive_attr_t attr, dnnl_accumulation_mode_t *mode);
 
 /// Sets the accumulation mode primitive attribute.
 ///
 /// @param attr Primitive attributes.
 /// @param mode Accumulation mode. The possible values are:
-///     #dnnl_accumulation_mode_strict (default), which is s32 for quantized primitives, f32/f64 otherwise
-///     #dnnl_accumulation_mode_relaxed, which is same as strict but allows intermediate accumulators to be in src/dst datatype
-///     #dnnl_accumulation_mode_any, which allows accumulators to be src/dst datatype or any wider type.
-///     #dnnl_accumulation_mode_f32,
+///     #dnnl_accumulation_mode_strict (default), which is s32 for quantized
+///     primitives, f32/f64 otherwise #dnnl_accumulation_mode_relaxed, which is
+///     same as strict but allows intermediate accumulators to be in src/dst
+///     datatype #dnnl_accumulation_mode_any, which allows accumulators to be
+///     src/dst datatype or any wider type. #dnnl_accumulation_mode_f32,
 ///     #dnnl_accumulation_mode_s32,
 ///     #dnnl_accumulation_mode_f16.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_set_accumulation_mode(
-        dnnl_primitive_attr_t attr, dnnl_accumulation_mode_t mode);
+    dnnl_primitive_attr_t attr, dnnl_accumulation_mode_t mode);
 
 /// Returns the primitive attributes scratchpad mode.
 ///
@@ -388,7 +389,7 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_set_accumulation_mode(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_get_scratchpad_mode(
-        const_dnnl_primitive_attr_t attr, dnnl_scratchpad_mode_t *mode);
+    const_dnnl_primitive_attr_t attr, dnnl_scratchpad_mode_t *mode);
 
 /// Sets primitive attributes scratchpad mode.
 ///
@@ -399,7 +400,7 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_get_scratchpad_mode(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_set_scratchpad_mode(
-        dnnl_primitive_attr_t attr, dnnl_scratchpad_mode_t mode);
+    dnnl_primitive_attr_t attr, dnnl_scratchpad_mode_t mode);
 
 /// Sets primitive attributes scaling factors for primitive operations for a
 /// given memory argument. The scaling factors must be passed at execution time
@@ -419,7 +420,7 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_set_scratchpad_mode(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_set_scales_mask(
-        dnnl_primitive_attr_t attr, int arg, int mask);
+    dnnl_primitive_attr_t attr, int arg, int mask);
 
 /// Sets primitive attributes scaling factors for primitive operations for a
 /// given memory argument. The scaling factors must be passed at execution time
@@ -445,8 +446,8 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_set_scales_mask(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_set_scales(
-        dnnl_primitive_attr_t attr, int arg, int mask, int ndims,
-        const dnnl_dims_t group_dims, dnnl_data_type_t data_type);
+    dnnl_primitive_attr_t attr, int arg, int mask, int ndims,
+    const dnnl_dims_t group_dims, dnnl_data_type_t data_type);
 
 /// Sets primitive attributes zero points for primitive operations for a given
 /// memory argument. The zero points must be passed at execution time
@@ -466,7 +467,7 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_set_scales(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_set_zero_points_mask(
-        dnnl_primitive_attr_t attr, int arg, int mask);
+    dnnl_primitive_attr_t attr, int arg, int mask);
 
 /// Sets primitive attributes zero points for primitive operations for a given
 /// memory argument. The zero points must be passed at execution time
@@ -492,8 +493,8 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_set_zero_points_mask(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_set_zero_points(
-        dnnl_primitive_attr_t attr, int arg, int mask, int ndims,
-        const dnnl_dims_t group_dims, dnnl_data_type_t data_type);
+    dnnl_primitive_attr_t attr, int arg, int mask, int ndims,
+    const dnnl_dims_t group_dims, dnnl_data_type_t data_type);
 
 /// Sets the rounding mode attribute value for a given argument
 ///
@@ -503,7 +504,7 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_set_zero_points(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_set_rounding(
-        dnnl_primitive_attr_t attr, int arg, dnnl_rounding_mode_t mode);
+    dnnl_primitive_attr_t attr, int arg, dnnl_rounding_mode_t mode);
 
 /// Returns the rounding mode attribute value for a given argument
 ///
@@ -513,7 +514,7 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_set_rounding(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_get_rounding(
-        dnnl_primitive_attr_t attr, int arg, dnnl_rounding_mode_t *mode);
+    dnnl_primitive_attr_t attr, int arg, dnnl_rounding_mode_t *mode);
 
 /// Returns primitive attributes post-ops.
 ///
@@ -528,21 +529,22 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_get_rounding(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_get_post_ops(
-        const_dnnl_primitive_attr_t attr, const_dnnl_post_ops_t *post_ops);
+    const_dnnl_primitive_attr_t attr, const_dnnl_post_ops_t *post_ops);
 
 /// Sets primitive attributes post-ops.
 ///
 /// @note
 ///     There is no way to check whether the post-ops would be supported by
 ///     the target primitive. Any error will be reported by the
-///     dnnl_<primitive name>_[propagation kind]_primitive_desc_create() function call.
+///     dnnl_<primitive name>_[propagation kind]_primitive_desc_create()
+///     function call.
 ///
 /// @param attr Primitive attributes.
 /// @param post_ops Post-ops to set.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_set_post_ops(
-        dnnl_primitive_attr_t attr, const_dnnl_post_ops_t post_ops);
+    dnnl_primitive_attr_t attr, const_dnnl_post_ops_t post_ops);
 
 /// Creates empty post-ops sequence.
 ///
@@ -558,7 +560,7 @@ dnnl_status_t DNNL_API dnnl_post_ops_create(dnnl_post_ops_t *post_ops);
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_post_ops_clone(
-        dnnl_post_ops_t *post_ops, const_dnnl_post_ops_t existing_post_ops);
+    dnnl_post_ops_t *post_ops, const_dnnl_post_ops_t existing_post_ops);
 
 /// Destroys post-ops.
 ///
@@ -580,8 +582,8 @@ int DNNL_API dnnl_post_ops_len(const_dnnl_post_ops_t post_ops);
 /// @returns The kind of the post-op with the specified index.
 /// @returns #dnnl_undefined_primitive if there is no post-op at the specified
 ///     index.
-dnnl_primitive_kind_t DNNL_API dnnl_post_ops_get_kind(
-        const_dnnl_post_ops_t post_ops, int index);
+dnnl_primitive_kind_t DNNL_API
+dnnl_post_ops_get_kind(const_dnnl_post_ops_t post_ops, int index);
 
 /// Appends an accumulation v3 (sum) to post-ops. Prior to accumulating the
 /// result, a zero point is subtracted from the previous value and is
@@ -617,7 +619,8 @@ dnnl_primitive_kind_t DNNL_API dnnl_post_ops_get_kind(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_post_ops_append_sum(dnnl_post_ops_t post_ops,
-        float scale, int32_t zero_point, dnnl_data_type_t data_type);
+                                                float scale, int32_t zero_point,
+                                                dnnl_data_type_t data_type);
 
 /// Returns the parameters of an accumulation (sum) post-op with
 /// zero point and data type parameter.
@@ -630,8 +633,8 @@ dnnl_status_t DNNL_API dnnl_post_ops_append_sum(dnnl_post_ops_t post_ops,
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_post_ops_get_params_sum(
-        const_dnnl_post_ops_t post_ops, int index, float *scale,
-        int32_t *zero_point, dnnl_data_type_t *data_type);
+    const_dnnl_post_ops_t post_ops, int index, float *scale,
+    int32_t *zero_point, dnnl_data_type_t *data_type);
 
 /// Appends an elementwise post-op.
 ///
@@ -651,7 +654,8 @@ dnnl_status_t DNNL_API dnnl_post_ops_get_params_sum(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_post_ops_append_eltwise(dnnl_post_ops_t post_ops,
-        dnnl_alg_kind_t alg_kind, float alpha, float beta);
+                                                    dnnl_alg_kind_t alg_kind,
+                                                    float alpha, float beta);
 
 /// Returns the parameters of an elementwise post-op.
 ///
@@ -665,8 +669,8 @@ dnnl_status_t DNNL_API dnnl_post_ops_append_eltwise(dnnl_post_ops_t post_ops,
 /// @returns #dnnl_invalid_arguments if @p index does not refer to an
 ///     elementwise post-op.
 dnnl_status_t DNNL_API dnnl_post_ops_get_params_eltwise(
-        const_dnnl_post_ops_t post_ops, int index, dnnl_alg_kind_t *alg_kind,
-        float *alpha, float *beta);
+    const_dnnl_post_ops_t post_ops, int index, dnnl_alg_kind_t *alg_kind,
+    float *alpha, float *beta);
 
 /// Appends a depthwise post-op convolution.
 ///
@@ -693,10 +697,10 @@ dnnl_status_t DNNL_API dnnl_post_ops_get_params_eltwise(
 /// @param padding_l_size Size of left and top paddings of depthwise post-op
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise
-dnnl_status_t DNNL_API dnnl_post_ops_append_dw(dnnl_post_ops_t post_ops,
-        dnnl_data_type_t weights_data_type, dnnl_data_type_t bias_data_type,
-        dnnl_data_type_t dst_data_type, dnnl_dim_t kernel_size,
-        dnnl_dim_t stride_size, dnnl_dim_t padding_l_size);
+dnnl_status_t DNNL_API dnnl_post_ops_append_dw(
+    dnnl_post_ops_t post_ops, dnnl_data_type_t weights_data_type,
+    dnnl_data_type_t bias_data_type, dnnl_data_type_t dst_data_type,
+    dnnl_dim_t kernel_size, dnnl_dim_t stride_size, dnnl_dim_t padding_l_size);
 
 /// Returns the parameters of an depthwise post-op.
 ///
@@ -711,10 +715,10 @@ dnnl_status_t DNNL_API dnnl_post_ops_append_dw(dnnl_post_ops_t post_ops,
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise
 dnnl_status_t DNNL_API dnnl_post_ops_get_params_dw(
-        const_dnnl_post_ops_t post_ops, int index,
-        dnnl_data_type_t *weights_data_type, dnnl_data_type_t *bias_data_type,
-        dnnl_data_type_t *dst_data_type, dnnl_dim_t *kernel_size,
-        dnnl_dim_t *stride_size, dnnl_dim_t *padding_l_size);
+    const_dnnl_post_ops_t post_ops, int index,
+    dnnl_data_type_t *weights_data_type, dnnl_data_type_t *bias_data_type,
+    dnnl_data_type_t *dst_data_type, dnnl_dim_t *kernel_size,
+    dnnl_dim_t *stride_size, dnnl_dim_t *padding_l_size);
 
 /// Appends a binary post-op.
 ///
@@ -733,8 +737,9 @@ dnnl_status_t DNNL_API dnnl_post_ops_get_params_dw(
 /// @param src1_desc Memory descriptor of a second operand.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_post_ops_append_binary(dnnl_post_ops_t post_ops,
-        dnnl_alg_kind_t alg_kind, const_dnnl_memory_desc_t src1_desc);
+dnnl_status_t DNNL_API
+dnnl_post_ops_append_binary(dnnl_post_ops_t post_ops, dnnl_alg_kind_t alg_kind,
+                            const_dnnl_memory_desc_t src1_desc);
 
 /// Returns the parameters of a binary post-op.
 ///
@@ -747,8 +752,8 @@ dnnl_status_t DNNL_API dnnl_post_ops_append_binary(dnnl_post_ops_t post_ops,
 /// @returns #dnnl_invalid_arguments if @p index does not refer to a binary
 ///     post-op.
 dnnl_status_t DNNL_API dnnl_post_ops_get_params_binary(
-        const_dnnl_post_ops_t post_ops, int index, dnnl_alg_kind_t *alg_kind,
-        const_dnnl_memory_desc_t *src1_desc);
+    const_dnnl_post_ops_t post_ops, int index, dnnl_alg_kind_t *alg_kind,
+    const_dnnl_memory_desc_t *src1_desc);
 
 /// Appends a prelu forward post-op.
 ///
@@ -782,8 +787,8 @@ dnnl_status_t DNNL_API dnnl_post_ops_get_params_binary(
 ///     for the whole output tensor.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_post_ops_append_prelu(
-        dnnl_post_ops_t post_ops, int mask);
+dnnl_status_t DNNL_API dnnl_post_ops_append_prelu(dnnl_post_ops_t post_ops,
+                                                  int mask);
 
 /// Returns the parameters of a prelu post-op.
 ///
@@ -793,7 +798,7 @@ dnnl_status_t DNNL_API dnnl_post_ops_append_prelu(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_post_ops_get_params_prelu(
-        const_dnnl_post_ops_t post_ops, int index, int *mask);
+    const_dnnl_post_ops_t post_ops, int index, int *mask);
 
 /// @} dnnl_api_attributes
 
@@ -816,8 +821,9 @@ dnnl_status_t DNNL_API dnnl_memory_desc_destroy(dnnl_memory_desc_t memory_desc);
 /// @param existing_memory_desc Memory descriptor to clone.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_memory_desc_clone(dnnl_memory_desc_t *memory_desc,
-        const_dnnl_memory_desc_t existing_memory_desc);
+dnnl_status_t DNNL_API
+dnnl_memory_desc_clone(dnnl_memory_desc_t *memory_desc,
+                       const_dnnl_memory_desc_t existing_memory_desc);
 
 /// Retrieves a binary blob associated with the given memory descriptor
 ///
@@ -829,7 +835,7 @@ dnnl_status_t DNNL_API dnnl_memory_desc_clone(dnnl_memory_desc_t *memory_desc,
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_memory_desc_get_blob(
-        uint8_t *blob, size_t *size, const_dnnl_memory_desc_t memory_desc);
+    uint8_t *blob, size_t *size, const_dnnl_memory_desc_t memory_desc);
 
 /// Creates a memory descriptor from a memory descriptor binary blob.
 ///
@@ -838,7 +844,7 @@ dnnl_status_t DNNL_API dnnl_memory_desc_get_blob(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_memory_desc_create_with_blob(
-        dnnl_memory_desc_t *memory_desc, const uint8_t *blob);
+    dnnl_memory_desc_t *memory_desc, const uint8_t *blob);
 
 /// Creates a memory descriptor using dimensions and strides.
 ///
@@ -856,8 +862,8 @@ dnnl_status_t DNNL_API dnnl_memory_desc_create_with_blob(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_memory_desc_create_with_strides(
-        dnnl_memory_desc_t *memory_desc, int ndims, const dnnl_dims_t dims,
-        dnnl_data_type_t data_type, const dnnl_dims_t strides);
+    dnnl_memory_desc_t *memory_desc, int ndims, const dnnl_dims_t dims,
+    dnnl_data_type_t data_type, const dnnl_dims_t strides);
 
 /// Creates a memory descriptor using dimensions and memory format tag.
 ///
@@ -878,8 +884,8 @@ dnnl_status_t DNNL_API dnnl_memory_desc_create_with_strides(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_memory_desc_create_with_tag(
-        dnnl_memory_desc_t *memory_desc, int ndims, const dnnl_dims_t dims,
-        dnnl_data_type_t data_type, dnnl_format_tag_t tag);
+    dnnl_memory_desc_t *memory_desc, int ndims, const dnnl_dims_t dims,
+    dnnl_data_type_t data_type, dnnl_format_tag_t tag);
 
 #ifdef DNNL_EXPERIMENTAL_SPARSE
 /// Creates a memory descriptor for CSR encoding.
@@ -894,9 +900,9 @@ dnnl_status_t DNNL_API dnnl_memory_desc_create_with_tag(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_memory_desc_create_with_csr_encoding(
-        dnnl_memory_desc_t *memory_desc, int ndims, const dnnl_dims_t dims,
-        dnnl_data_type_t data_type, dnnl_dim_t nnz, dnnl_data_type_t indices_dt,
-        dnnl_data_type_t pointers_dt);
+    dnnl_memory_desc_t *memory_desc, int ndims, const dnnl_dims_t dims,
+    dnnl_data_type_t data_type, dnnl_dim_t nnz, dnnl_data_type_t indices_dt,
+    dnnl_data_type_t pointers_dt);
 
 /// Creates a memory descriptor for COO encoding.
 ///
@@ -917,9 +923,8 @@ dnnl_status_t DNNL_API dnnl_memory_desc_create_with_csr_encoding(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_memory_desc_create_with_coo_encoding(
-        dnnl_memory_desc_t *memory_desc, int ndims, const dnnl_dims_t dims,
-        dnnl_data_type_t data_type, dnnl_dim_t nnz,
-        dnnl_data_type_t indices_dt);
+    dnnl_memory_desc_t *memory_desc, int ndims, const dnnl_dims_t dims,
+    dnnl_data_type_t data_type, dnnl_dim_t nnz, dnnl_data_type_t indices_dt);
 
 /// Creates a memory descriptor for packed sparse encoding.
 ///
@@ -941,8 +946,8 @@ dnnl_status_t DNNL_API dnnl_memory_desc_create_with_coo_encoding(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_memory_desc_create_with_packed_encoding(
-        dnnl_memory_desc_t *memory_desc, int ndims, const dnnl_dims_t dims,
-        dnnl_data_type_t data_type, dnnl_dim_t nnz);
+    dnnl_memory_desc_t *memory_desc, int ndims, const dnnl_dims_t dims,
+    dnnl_data_type_t data_type, dnnl_dim_t nnz);
 #endif
 
 /// Creates a memory descriptor for a region inside an area
@@ -960,9 +965,9 @@ dnnl_status_t DNNL_API dnnl_memory_desc_create_with_packed_encoding(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_memory_desc_create_submemory(
-        dnnl_memory_desc_t *memory_desc,
-        const_dnnl_memory_desc_t parent_memory_desc, const dnnl_dims_t dims,
-        const dnnl_dims_t offsets);
+    dnnl_memory_desc_t *memory_desc,
+    const_dnnl_memory_desc_t parent_memory_desc, const dnnl_dims_t dims,
+    const dnnl_dims_t offsets);
 
 /// Creates a memory descriptor by reshaping an existing one. The new
 /// memory descriptor inherits the data type. This operation is valid only for
@@ -1006,9 +1011,8 @@ dnnl_status_t DNNL_API dnnl_memory_desc_create_submemory(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_memory_desc_reshape(
-        dnnl_memory_desc_t *out_memory_desc,
-        const_dnnl_memory_desc_t in_memory_desc, int ndims,
-        const dnnl_dims_t dims);
+    dnnl_memory_desc_t *out_memory_desc,
+    const_dnnl_memory_desc_t in_memory_desc, int ndims, const dnnl_dims_t dims);
 
 /// Creates a memory descriptor by permuting axes in an existing one.
 ///
@@ -1057,8 +1061,8 @@ dnnl_status_t DNNL_API dnnl_memory_desc_reshape(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_memory_desc_permute_axes(
-        dnnl_memory_desc_t *out_memory_desc,
-        const_dnnl_memory_desc_t in_memory_desc, const int *permutation);
+    dnnl_memory_desc_t *out_memory_desc,
+    const_dnnl_memory_desc_t in_memory_desc, const int *permutation);
 
 /// Queries a memory descriptor for various pieces of information.
 ///
@@ -1107,7 +1111,7 @@ dnnl_status_t DNNL_API dnnl_memory_desc_permute_axes(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_memory_desc_query(
-        const_dnnl_memory_desc_t memory_desc, dnnl_query_t what, void *result);
+    const_dnnl_memory_desc_t memory_desc, dnnl_query_t what, void *result);
 
 #ifdef DNNL_EXPERIMENTAL_SPARSE
 /// Queries a memory descriptor for various pieces of information. This version
@@ -1164,9 +1168,9 @@ dnnl_status_t DNNL_API dnnl_memory_desc_query(
 ///     it must be a @c dnnl_dims_t** if querying for a strides.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_memory_desc_query_v2(
-        const_dnnl_memory_desc_t memory_desc, dnnl_query_t what, int index,
-        void *result);
+dnnl_status_t DNNL_API
+dnnl_memory_desc_query_v2(const_dnnl_memory_desc_t memory_desc,
+                          dnnl_query_t what, int index, void *result);
 #endif
 
 /// Compares two memory descriptors.
@@ -1178,8 +1182,8 @@ dnnl_status_t DNNL_API dnnl_memory_desc_query_v2(
 /// @param rhs Right-hand side of the comparison.
 /// @returns 1 if the descriptors are the same.
 /// @returns 0 if the descriptors are different.
-int DNNL_API dnnl_memory_desc_equal(
-        const_dnnl_memory_desc_t lhs, const_dnnl_memory_desc_t rhs);
+int DNNL_API dnnl_memory_desc_equal(const_dnnl_memory_desc_t lhs,
+                                    const_dnnl_memory_desc_t rhs);
 
 /// Returns the size of a memory descriptor.
 ///
@@ -1195,8 +1199,8 @@ size_t DNNL_API dnnl_memory_desc_get_size(const_dnnl_memory_desc_t memory_desc);
 /// @param index Index of the buffer.
 ///
 /// @returns The number of bytes required for the requested data.
-size_t DNNL_API dnnl_memory_desc_get_size_v2(
-        const_dnnl_memory_desc_t memory_desc, int index);
+size_t DNNL_API
+dnnl_memory_desc_get_size_v2(const_dnnl_memory_desc_t memory_desc, int index);
 #endif
 
 /// Returns the size of data type.
@@ -1226,8 +1230,8 @@ size_t DNNL_API dnnl_data_type_size(dnnl_data_type_t data_type);
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_memory_create(dnnl_memory_t *memory,
-        const_dnnl_memory_desc_t memory_desc, dnnl_engine_t engine,
-        void *handle);
+                                          const_dnnl_memory_desc_t memory_desc,
+                                          dnnl_engine_t engine, void *handle);
 
 #ifdef DNNL_EXPERIMENTAL_SPARSE
 /// Creates a memory object with multiple handles.
@@ -1247,9 +1251,9 @@ dnnl_status_t DNNL_API dnnl_memory_create(dnnl_memory_t *memory,
 ///       memory buffer.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_memory_create_v2(dnnl_memory_t *memory,
-        const_dnnl_memory_desc_t memory_desc, dnnl_engine_t engine,
-        int nhandles, void **handles);
+dnnl_status_t DNNL_API dnnl_memory_create_v2(
+    dnnl_memory_t *memory, const_dnnl_memory_desc_t memory_desc,
+    dnnl_engine_t engine, int nhandles, void **handles);
 #endif
 
 /// Returns the memory descriptor for a memory object.
@@ -1259,7 +1263,7 @@ dnnl_status_t DNNL_API dnnl_memory_create_v2(dnnl_memory_t *memory,
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_memory_get_memory_desc(
-        const_dnnl_memory_t memory, const_dnnl_memory_desc_t *memory_desc);
+    const_dnnl_memory_t memory, const_dnnl_memory_desc_t *memory_desc);
 
 /// Returns the engine of a memory object.
 ///
@@ -1267,8 +1271,8 @@ dnnl_status_t DNNL_API dnnl_memory_get_memory_desc(
 /// @param engine Output engine on which the memory is located.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_memory_get_engine(
-        const_dnnl_memory_t memory, dnnl_engine_t *engine);
+dnnl_status_t DNNL_API dnnl_memory_get_engine(const_dnnl_memory_t memory,
+                                              dnnl_engine_t *engine);
 
 /// Maps a memory object and returns a host-side pointer to a memory buffer
 /// with a copy of its contents.
@@ -1293,8 +1297,8 @@ dnnl_status_t DNNL_API dnnl_memory_get_engine(
 /// @param mapped_ptr Output pointer to the mapped buffer.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_memory_map_data(
-        const_dnnl_memory_t memory, void **mapped_ptr);
+dnnl_status_t DNNL_API dnnl_memory_map_data(const_dnnl_memory_t memory,
+                                            void **mapped_ptr);
 
 #ifdef DNNL_EXPERIMENTAL_SPARSE
 /// Maps a memory object and returns a host-side pointer to a memory buffer
@@ -1322,8 +1326,8 @@ dnnl_status_t DNNL_API dnnl_memory_map_data(
 /// @param index Index of the buffer.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_memory_map_data_v2(
-        const_dnnl_memory_t memory, void **mapped_ptr, int index);
+dnnl_status_t DNNL_API dnnl_memory_map_data_v2(const_dnnl_memory_t memory,
+                                               void **mapped_ptr, int index);
 #endif
 
 /// Unmaps a memory object and writes back any changes made to the previously
@@ -1340,8 +1344,8 @@ dnnl_status_t DNNL_API dnnl_memory_map_data_v2(
 ///     obtained using the dnnl_memory_map_data() function.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_memory_unmap_data(
-        const_dnnl_memory_t memory, void *mapped_ptr);
+dnnl_status_t DNNL_API dnnl_memory_unmap_data(const_dnnl_memory_t memory,
+                                              void *mapped_ptr);
 
 #ifdef DNNL_EXPERIMENTAL_SPARSE
 /// Unmaps a memory object and writes back any changes made to the previously
@@ -1360,8 +1364,8 @@ dnnl_status_t DNNL_API dnnl_memory_unmap_data(
 /// @param index Index of the buffer.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_memory_unmap_data_v2(
-        const_dnnl_memory_t memory, void *mapped_ptr, int index);
+dnnl_status_t DNNL_API dnnl_memory_unmap_data_v2(const_dnnl_memory_t memory,
+                                                 void *mapped_ptr, int index);
 #endif
 
 /// Returns memory object's data handle.
@@ -1371,8 +1375,8 @@ dnnl_status_t DNNL_API dnnl_memory_unmap_data_v2(
 ///     pointer to the actual data. For OpenCL it is a cl_mem.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_memory_get_data_handle(
-        const_dnnl_memory_t memory, void **handle);
+dnnl_status_t DNNL_API dnnl_memory_get_data_handle(const_dnnl_memory_t memory,
+                                                   void **handle);
 
 /// Sets the underlying memory buffer.
 ///
@@ -1382,8 +1386,8 @@ dnnl_status_t DNNL_API dnnl_memory_get_data_handle(
 ///     `cl_mem`.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_memory_set_data_handle(
-        dnnl_memory_t memory, void *handle);
+dnnl_status_t DNNL_API dnnl_memory_set_data_handle(dnnl_memory_t memory,
+                                                   void *handle);
 
 #ifdef DNNL_EXPERIMENTAL_SPARSE
 /// Returns an underlying memory buffer that corresponds to the given index.
@@ -1396,7 +1400,7 @@ dnnl_status_t DNNL_API dnnl_memory_set_data_handle(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_memory_get_data_handle_v2(
-        const_dnnl_memory_t memory, void **handle, int index);
+    const_dnnl_memory_t memory, void **handle, int index);
 
 /// Sets an underlying memory buffer that corresponds to the given index.
 ///
@@ -1407,8 +1411,8 @@ dnnl_status_t DNNL_API dnnl_memory_get_data_handle_v2(
 /// @param index Index of the buffer.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_memory_set_data_handle_v2(
-        dnnl_memory_t memory, void *handle, int index);
+dnnl_status_t DNNL_API dnnl_memory_set_data_handle_v2(dnnl_memory_t memory,
+                                                      void *handle, int index);
 #endif
 
 /// Destroys a memory object.
@@ -1439,10 +1443,10 @@ dnnl_status_t DNNL_API dnnl_memory_destroy(dnnl_memory_t memory);
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_reorder_primitive_desc_create(
-        dnnl_primitive_desc_t *reorder_primitive_desc,
-        const_dnnl_memory_desc_t src_desc, dnnl_engine_t src_engine,
-        const_dnnl_memory_desc_t dst_desc, dnnl_engine_t dst_engine,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *reorder_primitive_desc,
+    const_dnnl_memory_desc_t src_desc, dnnl_engine_t src_engine,
+    const_dnnl_memory_desc_t dst_desc, dnnl_engine_t dst_engine,
+    const_dnnl_primitive_attr_t attr);
 
 /// @} dnnl_api_reorder
 
@@ -1464,10 +1468,10 @@ dnnl_status_t DNNL_API dnnl_reorder_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_concat_primitive_desc_create(
-        dnnl_primitive_desc_t *concat_primitive_desc, dnnl_engine_t engine,
-        const_dnnl_memory_desc_t dst_desc, int n, int concat_dimension,
-        const_dnnl_memory_desc_t const *src_descs,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *concat_primitive_desc, dnnl_engine_t engine,
+    const_dnnl_memory_desc_t dst_desc, int n, int concat_dimension,
+    const_dnnl_memory_desc_t const *src_descs,
+    const_dnnl_primitive_attr_t attr);
 
 /// @} dnnl_api_concat
 
@@ -1487,10 +1491,10 @@ dnnl_status_t DNNL_API dnnl_concat_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_sum_primitive_desc_create(
-        dnnl_primitive_desc_t *sum_primitive_desc, dnnl_engine_t engine,
-        const_dnnl_memory_desc_t dst_desc, int n, const float *scales,
-        const_dnnl_memory_desc_t const *src_descs,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *sum_primitive_desc, dnnl_engine_t engine,
+    const_dnnl_memory_desc_t dst_desc, int n, const float *scales,
+    const_dnnl_memory_desc_t const *src_descs,
+    const_dnnl_primitive_attr_t attr);
 
 /// @} dnnl_api_sum
 
@@ -1522,10 +1526,10 @@ dnnl_status_t DNNL_API dnnl_sum_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_binary_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_alg_kind_t alg_kind, const_dnnl_memory_desc_t src0_desc,
-        const_dnnl_memory_desc_t src1_desc, const_dnnl_memory_desc_t dst_desc,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_alg_kind_t alg_kind, const_dnnl_memory_desc_t src0_desc,
+    const_dnnl_memory_desc_t src1_desc, const_dnnl_memory_desc_t dst_desc,
+    const_dnnl_primitive_attr_t attr);
 
 /// @} dnnl_api_binary
 
@@ -1570,14 +1574,13 @@ dnnl_status_t DNNL_API dnnl_binary_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_convolution_forward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, dnnl_alg_kind_t alg_kind,
-        const_dnnl_memory_desc_t src_desc,
-        const_dnnl_memory_desc_t weights_desc,
-        const_dnnl_memory_desc_t bias_desc, const_dnnl_memory_desc_t dst_desc,
-        const dnnl_dims_t strides, const dnnl_dims_t dilates,
-        const dnnl_dims_t padding_l, const dnnl_dims_t padding_r,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, dnnl_alg_kind_t alg_kind,
+    const_dnnl_memory_desc_t src_desc, const_dnnl_memory_desc_t weights_desc,
+    const_dnnl_memory_desc_t bias_desc, const_dnnl_memory_desc_t dst_desc,
+    const dnnl_dims_t strides, const dnnl_dims_t dilates,
+    const dnnl_dims_t padding_l, const dnnl_dims_t padding_r,
+    const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for a convolution backward propagation
 ///     primitive.
@@ -1614,13 +1617,13 @@ dnnl_status_t DNNL_API dnnl_convolution_forward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_convolution_backward_data_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_alg_kind_t alg_kind, const_dnnl_memory_desc_t diff_src_desc,
-        const_dnnl_memory_desc_t weights_desc,
-        const_dnnl_memory_desc_t diff_dst_desc, const dnnl_dims_t strides,
-        const dnnl_dims_t dilates, const dnnl_dims_t padding_l,
-        const dnnl_dims_t padding_r, const_dnnl_primitive_desc_t hint_fwd_pd,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_alg_kind_t alg_kind, const_dnnl_memory_desc_t diff_src_desc,
+    const_dnnl_memory_desc_t weights_desc,
+    const_dnnl_memory_desc_t diff_dst_desc, const dnnl_dims_t strides,
+    const dnnl_dims_t dilates, const dnnl_dims_t padding_l,
+    const dnnl_dims_t padding_r, const_dnnl_primitive_desc_t hint_fwd_pd,
+    const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for a convolution weights gradient primitive.
 ///
@@ -1659,14 +1662,14 @@ dnnl_status_t DNNL_API dnnl_convolution_backward_data_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_convolution_backward_weights_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_alg_kind_t alg_kind, const_dnnl_memory_desc_t src_desc,
-        const_dnnl_memory_desc_t diff_weights_desc,
-        const_dnnl_memory_desc_t diff_bias_desc,
-        const_dnnl_memory_desc_t diff_dst_desc, const dnnl_dims_t strides,
-        const dnnl_dims_t dilates, const dnnl_dims_t padding_l,
-        const dnnl_dims_t padding_r, const_dnnl_primitive_desc_t hint_fwd_pd,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_alg_kind_t alg_kind, const_dnnl_memory_desc_t src_desc,
+    const_dnnl_memory_desc_t diff_weights_desc,
+    const_dnnl_memory_desc_t diff_bias_desc,
+    const_dnnl_memory_desc_t diff_dst_desc, const dnnl_dims_t strides,
+    const dnnl_dims_t dilates, const dnnl_dims_t padding_l,
+    const dnnl_dims_t padding_r, const_dnnl_primitive_desc_t hint_fwd_pd,
+    const_dnnl_primitive_attr_t attr);
 
 /// @} dnnl_api_convolution
 
@@ -1710,14 +1713,13 @@ dnnl_status_t DNNL_API dnnl_convolution_backward_weights_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_deconvolution_forward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, dnnl_alg_kind_t alg_kind,
-        const_dnnl_memory_desc_t src_desc,
-        const_dnnl_memory_desc_t weights_desc,
-        const_dnnl_memory_desc_t bias_desc, const_dnnl_memory_desc_t dst_desc,
-        const dnnl_dims_t strides, const dnnl_dims_t dilates,
-        const dnnl_dims_t padding_l, const dnnl_dims_t padding_r,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, dnnl_alg_kind_t alg_kind,
+    const_dnnl_memory_desc_t src_desc, const_dnnl_memory_desc_t weights_desc,
+    const_dnnl_memory_desc_t bias_desc, const_dnnl_memory_desc_t dst_desc,
+    const dnnl_dims_t strides, const dnnl_dims_t dilates,
+    const dnnl_dims_t padding_l, const dnnl_dims_t padding_r,
+    const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for a deconvolution backward propagation
 ///     primitive.
@@ -1753,13 +1755,13 @@ dnnl_status_t DNNL_API dnnl_deconvolution_forward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_deconvolution_backward_data_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_alg_kind_t alg_kind, const_dnnl_memory_desc_t diff_src_desc,
-        const_dnnl_memory_desc_t weights_desc,
-        const_dnnl_memory_desc_t diff_dst_desc, const dnnl_dims_t strides,
-        const dnnl_dims_t dilates, const dnnl_dims_t padding_l,
-        const dnnl_dims_t padding_r, const_dnnl_primitive_desc_t hint_fwd_pd,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_alg_kind_t alg_kind, const_dnnl_memory_desc_t diff_src_desc,
+    const_dnnl_memory_desc_t weights_desc,
+    const_dnnl_memory_desc_t diff_dst_desc, const dnnl_dims_t strides,
+    const dnnl_dims_t dilates, const dnnl_dims_t padding_l,
+    const dnnl_dims_t padding_r, const_dnnl_primitive_desc_t hint_fwd_pd,
+    const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for a deconvolution weights gradient
 ///     primitive.
@@ -1799,14 +1801,14 @@ dnnl_status_t DNNL_API dnnl_deconvolution_backward_data_primitive_desc_create(
 ///     otherwise.
 dnnl_status_t DNNL_API
 dnnl_deconvolution_backward_weights_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_alg_kind_t alg_kind, const_dnnl_memory_desc_t src_desc,
-        const_dnnl_memory_desc_t diff_weights_desc,
-        const_dnnl_memory_desc_t diff_bias_desc,
-        const_dnnl_memory_desc_t diff_dst_desc, const dnnl_dims_t strides,
-        const dnnl_dims_t dilates, const dnnl_dims_t padding_l,
-        const dnnl_dims_t padding_r, const_dnnl_primitive_desc_t hint_fwd_pd,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_alg_kind_t alg_kind, const_dnnl_memory_desc_t src_desc,
+    const_dnnl_memory_desc_t diff_weights_desc,
+    const_dnnl_memory_desc_t diff_bias_desc,
+    const_dnnl_memory_desc_t diff_dst_desc, const dnnl_dims_t strides,
+    const dnnl_dims_t dilates, const dnnl_dims_t padding_l,
+    const dnnl_dims_t padding_r, const_dnnl_primitive_desc_t hint_fwd_pd,
+    const_dnnl_primitive_attr_t attr);
 
 /// @} dnnl_api_deconvolution
 
@@ -1827,10 +1829,10 @@ dnnl_deconvolution_backward_weights_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_shuffle_forward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, const_dnnl_memory_desc_t src_desc,
-        const_dnnl_memory_desc_t dst_desc, int axis, dnnl_dim_t group_size,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, const_dnnl_memory_desc_t src_desc,
+    const_dnnl_memory_desc_t dst_desc, int axis, dnnl_dim_t group_size,
+    const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for a shuffle backward propagation primitive
 ///
@@ -1846,11 +1848,10 @@ dnnl_status_t DNNL_API dnnl_shuffle_forward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_shuffle_backward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        const_dnnl_memory_desc_t diff_src_desc,
-        const_dnnl_memory_desc_t diff_dst_desc, int axis, dnnl_dim_t group_size,
-        const_dnnl_primitive_desc_t hint_fwd_pd,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    const_dnnl_memory_desc_t diff_src_desc,
+    const_dnnl_memory_desc_t diff_dst_desc, int axis, dnnl_dim_t group_size,
+    const_dnnl_primitive_desc_t hint_fwd_pd, const_dnnl_primitive_attr_t attr);
 
 /// @} dnnl_api_shuffle
 
@@ -1874,10 +1875,10 @@ dnnl_status_t DNNL_API dnnl_shuffle_backward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_eltwise_forward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, dnnl_alg_kind_t alg_kind,
-        const_dnnl_memory_desc_t src_desc, const_dnnl_memory_desc_t dst_desc,
-        float alpha, float beta, const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, dnnl_alg_kind_t alg_kind,
+    const_dnnl_memory_desc_t src_desc, const_dnnl_memory_desc_t dst_desc,
+    float alpha, float beta, const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for an eltwise backward propagation
 ///     primitive.
@@ -1900,12 +1901,11 @@ dnnl_status_t DNNL_API dnnl_eltwise_forward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_eltwise_backward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_alg_kind_t alg_kind, const_dnnl_memory_desc_t diff_src_desc,
-        const_dnnl_memory_desc_t diff_dst_desc,
-        const_dnnl_memory_desc_t data_desc, float alpha, float beta,
-        const_dnnl_primitive_desc_t hint_fwd_pd,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_alg_kind_t alg_kind, const_dnnl_memory_desc_t diff_src_desc,
+    const_dnnl_memory_desc_t diff_dst_desc, const_dnnl_memory_desc_t data_desc,
+    float alpha, float beta, const_dnnl_primitive_desc_t hint_fwd_pd,
+    const_dnnl_primitive_attr_t attr);
 
 /// @} dnnl_api_eltwise
 
@@ -1927,10 +1927,10 @@ dnnl_status_t DNNL_API dnnl_eltwise_backward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_softmax_forward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, dnnl_alg_kind_t alg_kind,
-        const_dnnl_memory_desc_t src_desc, const_dnnl_memory_desc_t dst_desc,
-        int softmax_axis, const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, dnnl_alg_kind_t alg_kind,
+    const_dnnl_memory_desc_t src_desc, const_dnnl_memory_desc_t dst_desc,
+    int softmax_axis, const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for a softmax backward propagation primitive.
 ///
@@ -1948,12 +1948,11 @@ dnnl_status_t DNNL_API dnnl_softmax_forward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_softmax_backward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_alg_kind_t alg_kind, const_dnnl_memory_desc_t diff_src_desc,
-        const_dnnl_memory_desc_t diff_dst_desc,
-        const_dnnl_memory_desc_t dst_desc, int softmax_axis,
-        const_dnnl_primitive_desc_t hint_fwd_pd,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_alg_kind_t alg_kind, const_dnnl_memory_desc_t diff_src_desc,
+    const_dnnl_memory_desc_t diff_dst_desc, const_dnnl_memory_desc_t dst_desc,
+    int softmax_axis, const_dnnl_primitive_desc_t hint_fwd_pd,
+    const_dnnl_primitive_attr_t attr);
 
 /// @} dnnl_api_softmax
 
@@ -1989,12 +1988,12 @@ dnnl_status_t DNNL_API dnnl_softmax_backward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_pooling_forward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, dnnl_alg_kind_t alg_kind,
-        const_dnnl_memory_desc_t src_desc, const_dnnl_memory_desc_t dst_desc,
-        const dnnl_dims_t strides, const dnnl_dims_t kernel,
-        const dnnl_dims_t dilation, const dnnl_dims_t padding_l,
-        const dnnl_dims_t padding_r, const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, dnnl_alg_kind_t alg_kind,
+    const_dnnl_memory_desc_t src_desc, const_dnnl_memory_desc_t dst_desc,
+    const dnnl_dims_t strides, const dnnl_dims_t kernel,
+    const dnnl_dims_t dilation, const dnnl_dims_t padding_l,
+    const dnnl_dims_t padding_r, const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for a pooling backward propagation
 ///     primitive.
@@ -2025,13 +2024,12 @@ dnnl_status_t DNNL_API dnnl_pooling_forward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_pooling_backward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_alg_kind_t alg_kind, const_dnnl_memory_desc_t diff_src_desc,
-        const_dnnl_memory_desc_t diff_dst_desc, const dnnl_dims_t strides,
-        const dnnl_dims_t kernel, const dnnl_dims_t dilation,
-        const dnnl_dims_t padding_l, const dnnl_dims_t padding_r,
-        const_dnnl_primitive_desc_t hint_fwd_pd,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_alg_kind_t alg_kind, const_dnnl_memory_desc_t diff_src_desc,
+    const_dnnl_memory_desc_t diff_dst_desc, const dnnl_dims_t strides,
+    const dnnl_dims_t kernel, const dnnl_dims_t dilation,
+    const dnnl_dims_t padding_l, const dnnl_dims_t padding_r,
+    const_dnnl_primitive_desc_t hint_fwd_pd, const_dnnl_primitive_attr_t attr);
 
 /// @} dnnl_api_pooling
 
@@ -2056,10 +2054,10 @@ dnnl_status_t DNNL_API dnnl_pooling_backward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_prelu_forward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, const_dnnl_memory_desc_t src_desc,
-        const_dnnl_memory_desc_t weights_desc,
-        const_dnnl_memory_desc_t dst_desc, const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, const_dnnl_memory_desc_t src_desc,
+    const_dnnl_memory_desc_t weights_desc, const_dnnl_memory_desc_t dst_desc,
+    const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for a PReLU (leaky ReLU with trainable
 ///     alpha parameter) backward propagation primitive.
@@ -2082,14 +2080,12 @@ dnnl_status_t DNNL_API dnnl_prelu_forward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_prelu_backward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        const_dnnl_memory_desc_t src_desc,
-        const_dnnl_memory_desc_t weights_desc,
-        const_dnnl_memory_desc_t diff_src_desc,
-        const_dnnl_memory_desc_t diff_weights_desc,
-        const_dnnl_memory_desc_t diff_dst_desc,
-        const_dnnl_primitive_desc_t hint_fwd_pd,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    const_dnnl_memory_desc_t src_desc, const_dnnl_memory_desc_t weights_desc,
+    const_dnnl_memory_desc_t diff_src_desc,
+    const_dnnl_memory_desc_t diff_weights_desc,
+    const_dnnl_memory_desc_t diff_dst_desc,
+    const_dnnl_primitive_desc_t hint_fwd_pd, const_dnnl_primitive_attr_t attr);
 
 /// @} dnnl_api_prelu
 
@@ -2114,11 +2110,11 @@ dnnl_status_t DNNL_API dnnl_prelu_backward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_lrn_forward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, dnnl_alg_kind_t alg_kind,
-        const_dnnl_memory_desc_t src_desc, const_dnnl_memory_desc_t dst_desc,
-        dnnl_dim_t local_size, float alpha, float beta, float k,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, dnnl_alg_kind_t alg_kind,
+    const_dnnl_memory_desc_t src_desc, const_dnnl_memory_desc_t dst_desc,
+    dnnl_dim_t local_size, float alpha, float beta, float k,
+    const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for an LRN backward propagation primitive.
 ///
@@ -2139,12 +2135,11 @@ dnnl_status_t DNNL_API dnnl_lrn_forward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_lrn_backward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_alg_kind_t alg_kind, const_dnnl_memory_desc_t diff_src_desc,
-        const_dnnl_memory_desc_t diff_dst_desc,
-        const_dnnl_memory_desc_t src_desc, dnnl_dim_t local_size, float alpha,
-        float beta, float k, const_dnnl_primitive_desc_t hint_fwd_pd,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_alg_kind_t alg_kind, const_dnnl_memory_desc_t diff_src_desc,
+    const_dnnl_memory_desc_t diff_dst_desc, const_dnnl_memory_desc_t src_desc,
+    dnnl_dim_t local_size, float alpha, float beta, float k,
+    const_dnnl_primitive_desc_t hint_fwd_pd, const_dnnl_primitive_attr_t attr);
 
 /// @} dnnl_api_lrn
 
@@ -2170,10 +2165,10 @@ dnnl_status_t DNNL_API dnnl_lrn_backward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_batch_normalization_forward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, const_dnnl_memory_desc_t src_desc,
-        const_dnnl_memory_desc_t dst_desc, float epsilon, unsigned flags,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, const_dnnl_memory_desc_t src_desc,
+    const_dnnl_memory_desc_t dst_desc, float epsilon, unsigned flags,
+    const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for a batch normalization backward
 ///     propagation primitive.
@@ -2198,12 +2193,11 @@ dnnl_status_t DNNL_API dnnl_batch_normalization_forward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_batch_normalization_backward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, const_dnnl_memory_desc_t diff_src_desc,
-        const_dnnl_memory_desc_t diff_dst_desc,
-        const_dnnl_memory_desc_t src_desc, float epsilon, unsigned flags,
-        const_dnnl_primitive_desc_t hint_fwd_pd,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, const_dnnl_memory_desc_t diff_src_desc,
+    const_dnnl_memory_desc_t diff_dst_desc, const_dnnl_memory_desc_t src_desc,
+    float epsilon, unsigned flags, const_dnnl_primitive_desc_t hint_fwd_pd,
+    const_dnnl_primitive_attr_t attr);
 
 /// @} dnnl_api_batch_normalization
 
@@ -2230,10 +2224,10 @@ dnnl_status_t DNNL_API dnnl_batch_normalization_backward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_group_normalization_forward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, const_dnnl_memory_desc_t src_desc,
-        const_dnnl_memory_desc_t dst_desc, dnnl_dim_t groups, float epsilon,
-        unsigned flags, const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, const_dnnl_memory_desc_t src_desc,
+    const_dnnl_memory_desc_t dst_desc, dnnl_dim_t groups, float epsilon,
+    unsigned flags, const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for a group normalization backward
 ///     propagation primitive.
@@ -2259,12 +2253,11 @@ dnnl_status_t DNNL_API dnnl_group_normalization_forward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_group_normalization_backward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, const_dnnl_memory_desc_t diff_src_desc,
-        const_dnnl_memory_desc_t diff_dst_desc,
-        const_dnnl_memory_desc_t src_desc, dnnl_dim_t groups, float epsilon,
-        unsigned flags, const_dnnl_primitive_desc_t hint_fwd_pd,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, const_dnnl_memory_desc_t diff_src_desc,
+    const_dnnl_memory_desc_t diff_dst_desc, const_dnnl_memory_desc_t src_desc,
+    dnnl_dim_t groups, float epsilon, unsigned flags,
+    const_dnnl_primitive_desc_t hint_fwd_pd, const_dnnl_primitive_attr_t attr);
 
 /// @} dnnl_api_group_normalization
 
@@ -2295,10 +2288,10 @@ dnnl_status_t DNNL_API dnnl_group_normalization_backward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_layer_normalization_forward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, const_dnnl_memory_desc_t src_desc,
-        const_dnnl_memory_desc_t dst_desc, const_dnnl_memory_desc_t stat_desc,
-        float epsilon, unsigned flags, const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, const_dnnl_memory_desc_t src_desc,
+    const_dnnl_memory_desc_t dst_desc, const_dnnl_memory_desc_t stat_desc,
+    float epsilon, unsigned flags, const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for a layer normalization backward
 ///     propagation primitive.
@@ -2328,12 +2321,11 @@ dnnl_status_t DNNL_API dnnl_layer_normalization_forward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_layer_normalization_backward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, const_dnnl_memory_desc_t diff_src_desc,
-        const_dnnl_memory_desc_t diff_dst_desc,
-        const_dnnl_memory_desc_t src_desc, const_dnnl_memory_desc_t stat_desc,
-        float epsilon, unsigned flags, const_dnnl_primitive_desc_t hint_fwd_pd,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, const_dnnl_memory_desc_t diff_src_desc,
+    const_dnnl_memory_desc_t diff_dst_desc, const_dnnl_memory_desc_t src_desc,
+    const_dnnl_memory_desc_t stat_desc, float epsilon, unsigned flags,
+    const_dnnl_primitive_desc_t hint_fwd_pd, const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for a layer normalization forward propagation
 ///     primitive with a user-provided data type for the scale and shift
@@ -2354,7 +2346,8 @@ dnnl_status_t DNNL_API dnnl_layer_normalization_backward_primitive_desc_create(
 ///     with format_kind set to #dnnl_format_kind_undef, then the memory
 ///     descriptor for stats is derived from @p src_desc by removing the last
 ///     dimension.
-/// @param scale_shift_data_type Data type of scale and shift memory. If neither scale
+/// @param scale_shift_data_type Data type of scale and shift memory. If neither
+/// scale
 ///     nor shift flag are specified the parameter is ignored.
 /// @param epsilon Layer normalization epsilon parameter.
 /// @param flags Layer normalization flags (@ref dnnl_normalization_flags_t).
@@ -2363,11 +2356,11 @@ dnnl_status_t DNNL_API dnnl_layer_normalization_backward_primitive_desc_create(
 ///     otherwise.
 dnnl_status_t DNNL_API
 dnnl_layer_normalization_forward_primitive_desc_create_v2(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, const_dnnl_memory_desc_t src_desc,
-        const_dnnl_memory_desc_t dst_desc, const_dnnl_memory_desc_t stat_desc,
-        dnnl_data_type_t scale_shift_data_type, float epsilon, unsigned flags,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, const_dnnl_memory_desc_t src_desc,
+    const_dnnl_memory_desc_t dst_desc, const_dnnl_memory_desc_t stat_desc,
+    dnnl_data_type_t scale_shift_data_type, float epsilon, unsigned flags,
+    const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for a layer normalization backward
 ///     propagation primitive with a user-provided data type for the
@@ -2390,9 +2383,11 @@ dnnl_layer_normalization_forward_primitive_desc_create_v2(
 ///     with format_kind set to #dnnl_format_kind_undef, then the memory
 ///     descriptor for stats is derived from @p src_desc by removing the last
 ///     dimension.
-/// @param diff_scale_shift_data_type Data type of diff scale and shift memory. If neither scale
+/// @param diff_scale_shift_data_type Data type of diff scale and shift memory.
+/// If neither scale
 ///     nor shift flag are specified the parameter is ignored.
-/// @param scale_shift_data_type Data type of scale and shift memory. If neither scale
+/// @param scale_shift_data_type Data type of scale and shift memory. If neither
+/// scale
 ///     nor shift flag are specified the parameter is ignored.
 /// @param epsilon Layer normalization epsilon parameter.
 /// @param flags Layer normalization flags (@ref dnnl_normalization_flags_t).
@@ -2403,14 +2398,13 @@ dnnl_layer_normalization_forward_primitive_desc_create_v2(
 ///     otherwise.
 dnnl_status_t DNNL_API
 dnnl_layer_normalization_backward_primitive_desc_create_v2(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, const_dnnl_memory_desc_t diff_src_desc,
-        const_dnnl_memory_desc_t diff_dst_desc,
-        const_dnnl_memory_desc_t src_desc, const_dnnl_memory_desc_t stat_desc,
-        dnnl_data_type_t diff_scale_shift_data_type,
-        dnnl_data_type_t scale_shift_data_type, float epsilon, unsigned flags,
-        const_dnnl_primitive_desc_t hint_fwd_pd,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, const_dnnl_memory_desc_t diff_src_desc,
+    const_dnnl_memory_desc_t diff_dst_desc, const_dnnl_memory_desc_t src_desc,
+    const_dnnl_memory_desc_t stat_desc,
+    dnnl_data_type_t diff_scale_shift_data_type,
+    dnnl_data_type_t scale_shift_data_type, float epsilon, unsigned flags,
+    const_dnnl_primitive_desc_t hint_fwd_pd, const_dnnl_primitive_attr_t attr);
 
 /// @} dnnl_api_layer_normalization
 
@@ -2438,11 +2432,10 @@ dnnl_layer_normalization_backward_primitive_desc_create_v2(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_inner_product_forward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, const_dnnl_memory_desc_t src_desc,
-        const_dnnl_memory_desc_t weights_desc,
-        const_dnnl_memory_desc_t bias_desc, const_dnnl_memory_desc_t dst_desc,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, const_dnnl_memory_desc_t src_desc,
+    const_dnnl_memory_desc_t weights_desc, const_dnnl_memory_desc_t bias_desc,
+    const_dnnl_memory_desc_t dst_desc, const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for an inner product backward propagation
 ///     primitive.
@@ -2462,12 +2455,11 @@ dnnl_status_t DNNL_API dnnl_inner_product_forward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_inner_product_backward_data_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        const_dnnl_memory_desc_t diff_src_desc,
-        const_dnnl_memory_desc_t weights_desc,
-        const_dnnl_memory_desc_t diff_dst_desc,
-        const_dnnl_primitive_desc_t hint_fwd_pd,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    const_dnnl_memory_desc_t diff_src_desc,
+    const_dnnl_memory_desc_t weights_desc,
+    const_dnnl_memory_desc_t diff_dst_desc,
+    const_dnnl_primitive_desc_t hint_fwd_pd, const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for an inner product  weights gradient
 ///     primitive.
@@ -2491,13 +2483,12 @@ dnnl_status_t DNNL_API dnnl_inner_product_backward_data_primitive_desc_create(
 ///     otherwise.
 dnnl_status_t DNNL_API
 dnnl_inner_product_backward_weights_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        const_dnnl_memory_desc_t src_desc,
-        const_dnnl_memory_desc_t diff_weights_desc,
-        const_dnnl_memory_desc_t diff_bias_desc,
-        const_dnnl_memory_desc_t diff_dst_desc,
-        const_dnnl_primitive_desc_t hint_fwd_pd,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    const_dnnl_memory_desc_t src_desc,
+    const_dnnl_memory_desc_t diff_weights_desc,
+    const_dnnl_memory_desc_t diff_bias_desc,
+    const_dnnl_memory_desc_t diff_dst_desc,
+    const_dnnl_primitive_desc_t hint_fwd_pd, const_dnnl_primitive_attr_t attr);
 
 /// @} dnnl_api_inner_product
 
@@ -2544,7 +2535,7 @@ dnnl_inner_product_backward_weights_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_set_rnn_data_qparams(
-        dnnl_primitive_attr_t attr, const float scale, const float shift);
+    dnnl_primitive_attr_t attr, const float scale, const float shift);
 
 /// Returns the quantization scale and shift parameters for RNN data tensors.
 ///
@@ -2558,7 +2549,7 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_set_rnn_data_qparams(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_get_rnn_data_qparams(
-        const_dnnl_primitive_attr_t attr, float *scale, float *shift);
+    const_dnnl_primitive_attr_t attr, float *scale, float *shift);
 
 /// Sets quantization scaling factors for RNN weights tensors. The
 /// low-precision configuration of the RNN primitives expects input weights to
@@ -2590,8 +2581,8 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_get_rnn_data_qparams(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_set_rnn_weights_qparams(
-        dnnl_primitive_attr_t attr, dnnl_dim_t count, int mask,
-        const float *scales);
+    dnnl_primitive_attr_t attr, dnnl_dim_t count, int mask,
+    const float *scales);
 
 /// Returns the quantization scaling factors for RNN weights tensors.
 ///
@@ -2609,8 +2600,8 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_set_rnn_weights_qparams(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_get_rnn_weights_qparams(
-        const_dnnl_primitive_attr_t attr, dnnl_dim_t *count, int *mask,
-        const float **scales);
+    const_dnnl_primitive_attr_t attr, dnnl_dim_t *count, int *mask,
+    const float **scales);
 
 /// Sets quantization scaling factors for RNN projection weights tensors. The
 /// low-precision configuration of the RNN primitives expects input weights to
@@ -2639,8 +2630,8 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_get_rnn_weights_qparams(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_set_rnn_weights_projection_qparams(
-        dnnl_primitive_attr_t attr, dnnl_dim_t count, int mask,
-        const float *scales);
+    dnnl_primitive_attr_t attr, dnnl_dim_t count, int mask,
+    const float *scales);
 
 /// Returns the quantization scaling factors for RNN projection weights tensors.
 ///
@@ -2658,8 +2649,8 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_set_rnn_weights_projection_qparams(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_primitive_attr_get_rnn_weights_projection_qparams(
-        const_dnnl_primitive_attr_t attr, dnnl_dim_t *count, int *mask,
-        const float **scales);
+    const_dnnl_primitive_attr_t attr, dnnl_dim_t *count, int *mask,
+    const float **scales);
 
 /// @} dnnl_api_attributes
 
@@ -2708,17 +2699,16 @@ dnnl_status_t DNNL_API dnnl_primitive_attr_get_rnn_weights_projection_qparams(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_vanilla_rnn_forward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, const dnnl_alg_kind_t activation,
-        const dnnl_rnn_direction_t direction,
-        const_dnnl_memory_desc_t src_layer_desc,
-        const_dnnl_memory_desc_t src_iter_desc,
-        const_dnnl_memory_desc_t weights_layer_desc,
-        const_dnnl_memory_desc_t weights_iter_desc,
-        const_dnnl_memory_desc_t bias_desc,
-        const_dnnl_memory_desc_t dst_layer_desc,
-        const_dnnl_memory_desc_t dst_iter_desc, unsigned flags, float alpha,
-        float beta, const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, const dnnl_alg_kind_t activation,
+    const dnnl_rnn_direction_t direction,
+    const_dnnl_memory_desc_t src_layer_desc,
+    const_dnnl_memory_desc_t src_iter_desc,
+    const_dnnl_memory_desc_t weights_layer_desc,
+    const_dnnl_memory_desc_t weights_iter_desc,
+    const_dnnl_memory_desc_t bias_desc, const_dnnl_memory_desc_t dst_layer_desc,
+    const_dnnl_memory_desc_t dst_iter_desc, unsigned flags, float alpha,
+    float beta, const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for vanilla RNN backward propagation
 ///     primitive.
@@ -2775,25 +2765,24 @@ dnnl_status_t DNNL_API dnnl_vanilla_rnn_forward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_vanilla_rnn_backward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, const dnnl_alg_kind_t activation,
-        const dnnl_rnn_direction_t direction,
-        const_dnnl_memory_desc_t src_layer_desc,
-        const_dnnl_memory_desc_t src_iter_desc,
-        const_dnnl_memory_desc_t weights_layer_desc,
-        const_dnnl_memory_desc_t weights_iter_desc,
-        const_dnnl_memory_desc_t bias_desc,
-        const_dnnl_memory_desc_t dst_layer_desc,
-        const_dnnl_memory_desc_t dst_iter_desc,
-        const_dnnl_memory_desc_t diff_src_layer_desc,
-        const_dnnl_memory_desc_t diff_src_iter_desc,
-        const_dnnl_memory_desc_t diff_weights_layer_desc,
-        const_dnnl_memory_desc_t diff_weights_iter_desc,
-        const_dnnl_memory_desc_t diff_bias_desc,
-        const_dnnl_memory_desc_t diff_dst_layer_desc,
-        const_dnnl_memory_desc_t diff_dst_iter_desc, unsigned flags,
-        float alpha, float beta, const_dnnl_primitive_desc_t hint_fwd_pd,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, const dnnl_alg_kind_t activation,
+    const dnnl_rnn_direction_t direction,
+    const_dnnl_memory_desc_t src_layer_desc,
+    const_dnnl_memory_desc_t src_iter_desc,
+    const_dnnl_memory_desc_t weights_layer_desc,
+    const_dnnl_memory_desc_t weights_iter_desc,
+    const_dnnl_memory_desc_t bias_desc, const_dnnl_memory_desc_t dst_layer_desc,
+    const_dnnl_memory_desc_t dst_iter_desc,
+    const_dnnl_memory_desc_t diff_src_layer_desc,
+    const_dnnl_memory_desc_t diff_src_iter_desc,
+    const_dnnl_memory_desc_t diff_weights_layer_desc,
+    const_dnnl_memory_desc_t diff_weights_iter_desc,
+    const_dnnl_memory_desc_t diff_bias_desc,
+    const_dnnl_memory_desc_t diff_dst_layer_desc,
+    const_dnnl_memory_desc_t diff_dst_iter_desc, unsigned flags, float alpha,
+    float beta, const_dnnl_primitive_desc_t hint_fwd_pd,
+    const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for an LSTM forward propagation primitive.
 ///
@@ -2846,20 +2835,19 @@ dnnl_status_t DNNL_API dnnl_vanilla_rnn_backward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_lstm_forward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, dnnl_rnn_direction_t direction,
-        const_dnnl_memory_desc_t src_layer_desc,
-        const_dnnl_memory_desc_t src_iter_desc,
-        const_dnnl_memory_desc_t src_iter_c_desc,
-        const_dnnl_memory_desc_t weights_layer_desc,
-        const_dnnl_memory_desc_t weights_iter_desc,
-        const_dnnl_memory_desc_t weights_peephole_desc,
-        const_dnnl_memory_desc_t weights_projection_desc,
-        const_dnnl_memory_desc_t bias_desc,
-        const_dnnl_memory_desc_t dst_layer_desc,
-        const_dnnl_memory_desc_t dst_iter_desc,
-        const_dnnl_memory_desc_t dst_iter_c_desc, unsigned flags,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, dnnl_rnn_direction_t direction,
+    const_dnnl_memory_desc_t src_layer_desc,
+    const_dnnl_memory_desc_t src_iter_desc,
+    const_dnnl_memory_desc_t src_iter_c_desc,
+    const_dnnl_memory_desc_t weights_layer_desc,
+    const_dnnl_memory_desc_t weights_iter_desc,
+    const_dnnl_memory_desc_t weights_peephole_desc,
+    const_dnnl_memory_desc_t weights_projection_desc,
+    const_dnnl_memory_desc_t bias_desc, const_dnnl_memory_desc_t dst_layer_desc,
+    const_dnnl_memory_desc_t dst_iter_desc,
+    const_dnnl_memory_desc_t dst_iter_c_desc, unsigned flags,
+    const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for an LSTM backward propagation primitive.
 ///
@@ -2937,32 +2925,30 @@ dnnl_status_t DNNL_API dnnl_lstm_forward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_lstm_backward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, dnnl_rnn_direction_t direction,
-        const_dnnl_memory_desc_t src_layer_desc,
-        const_dnnl_memory_desc_t src_iter_desc,
-        const_dnnl_memory_desc_t src_iter_c_desc,
-        const_dnnl_memory_desc_t weights_layer_desc,
-        const_dnnl_memory_desc_t weights_iter_desc,
-        const_dnnl_memory_desc_t weights_peephole_desc,
-        const_dnnl_memory_desc_t weights_projection_desc,
-        const_dnnl_memory_desc_t bias_desc,
-        const_dnnl_memory_desc_t dst_layer_desc,
-        const_dnnl_memory_desc_t dst_iter_desc,
-        const_dnnl_memory_desc_t dst_iter_c_desc,
-        const_dnnl_memory_desc_t diff_src_layer_desc,
-        const_dnnl_memory_desc_t diff_src_iter_desc,
-        const_dnnl_memory_desc_t diff_src_iter_c_desc,
-        const_dnnl_memory_desc_t diff_weights_layer_desc,
-        const_dnnl_memory_desc_t diff_weights_iter_desc,
-        const_dnnl_memory_desc_t diff_weights_peephole_desc,
-        const_dnnl_memory_desc_t diff_weights_projection_desc,
-        const_dnnl_memory_desc_t diff_bias_desc,
-        const_dnnl_memory_desc_t diff_dst_layer_desc,
-        const_dnnl_memory_desc_t diff_dst_iter_desc,
-        const_dnnl_memory_desc_t diff_dst_iter_c_desc, unsigned flags,
-        const_dnnl_primitive_desc_t hint_fwd_pd,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, dnnl_rnn_direction_t direction,
+    const_dnnl_memory_desc_t src_layer_desc,
+    const_dnnl_memory_desc_t src_iter_desc,
+    const_dnnl_memory_desc_t src_iter_c_desc,
+    const_dnnl_memory_desc_t weights_layer_desc,
+    const_dnnl_memory_desc_t weights_iter_desc,
+    const_dnnl_memory_desc_t weights_peephole_desc,
+    const_dnnl_memory_desc_t weights_projection_desc,
+    const_dnnl_memory_desc_t bias_desc, const_dnnl_memory_desc_t dst_layer_desc,
+    const_dnnl_memory_desc_t dst_iter_desc,
+    const_dnnl_memory_desc_t dst_iter_c_desc,
+    const_dnnl_memory_desc_t diff_src_layer_desc,
+    const_dnnl_memory_desc_t diff_src_iter_desc,
+    const_dnnl_memory_desc_t diff_src_iter_c_desc,
+    const_dnnl_memory_desc_t diff_weights_layer_desc,
+    const_dnnl_memory_desc_t diff_weights_iter_desc,
+    const_dnnl_memory_desc_t diff_weights_peephole_desc,
+    const_dnnl_memory_desc_t diff_weights_projection_desc,
+    const_dnnl_memory_desc_t diff_bias_desc,
+    const_dnnl_memory_desc_t diff_dst_layer_desc,
+    const_dnnl_memory_desc_t diff_dst_iter_desc,
+    const_dnnl_memory_desc_t diff_dst_iter_c_desc, unsigned flags,
+    const_dnnl_primitive_desc_t hint_fwd_pd, const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for GRU forward propagation primitive.
 ///
@@ -3001,16 +2987,15 @@ dnnl_status_t DNNL_API dnnl_lstm_backward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_gru_forward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, dnnl_rnn_direction_t direction,
-        const_dnnl_memory_desc_t src_layer_desc,
-        const_dnnl_memory_desc_t src_iter_desc,
-        const_dnnl_memory_desc_t weights_layer_desc,
-        const_dnnl_memory_desc_t weights_iter_desc,
-        const_dnnl_memory_desc_t bias_desc,
-        const_dnnl_memory_desc_t dst_layer_desc,
-        const_dnnl_memory_desc_t dst_iter_desc, unsigned flags,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, dnnl_rnn_direction_t direction,
+    const_dnnl_memory_desc_t src_layer_desc,
+    const_dnnl_memory_desc_t src_iter_desc,
+    const_dnnl_memory_desc_t weights_layer_desc,
+    const_dnnl_memory_desc_t weights_iter_desc,
+    const_dnnl_memory_desc_t bias_desc, const_dnnl_memory_desc_t dst_layer_desc,
+    const_dnnl_memory_desc_t dst_iter_desc, unsigned flags,
+    const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for GRU backward propagation primitive.
 ///
@@ -3062,24 +3047,22 @@ dnnl_status_t DNNL_API dnnl_gru_forward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_gru_backward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, dnnl_rnn_direction_t direction,
-        const_dnnl_memory_desc_t src_layer_desc,
-        const_dnnl_memory_desc_t src_iter_desc,
-        const_dnnl_memory_desc_t weights_layer_desc,
-        const_dnnl_memory_desc_t weights_iter_desc,
-        const_dnnl_memory_desc_t bias_desc,
-        const_dnnl_memory_desc_t dst_layer_desc,
-        const_dnnl_memory_desc_t dst_iter_desc,
-        const_dnnl_memory_desc_t diff_src_layer_desc,
-        const_dnnl_memory_desc_t diff_src_iter_desc,
-        const_dnnl_memory_desc_t diff_weights_layer_desc,
-        const_dnnl_memory_desc_t diff_weights_iter_desc,
-        const_dnnl_memory_desc_t diff_bias_desc,
-        const_dnnl_memory_desc_t diff_dst_layer_desc,
-        const_dnnl_memory_desc_t diff_dst_iter_desc, unsigned flags,
-        const_dnnl_primitive_desc_t hint_fwd_pd,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, dnnl_rnn_direction_t direction,
+    const_dnnl_memory_desc_t src_layer_desc,
+    const_dnnl_memory_desc_t src_iter_desc,
+    const_dnnl_memory_desc_t weights_layer_desc,
+    const_dnnl_memory_desc_t weights_iter_desc,
+    const_dnnl_memory_desc_t bias_desc, const_dnnl_memory_desc_t dst_layer_desc,
+    const_dnnl_memory_desc_t dst_iter_desc,
+    const_dnnl_memory_desc_t diff_src_layer_desc,
+    const_dnnl_memory_desc_t diff_src_iter_desc,
+    const_dnnl_memory_desc_t diff_weights_layer_desc,
+    const_dnnl_memory_desc_t diff_weights_iter_desc,
+    const_dnnl_memory_desc_t diff_bias_desc,
+    const_dnnl_memory_desc_t diff_dst_layer_desc,
+    const_dnnl_memory_desc_t diff_dst_iter_desc, unsigned flags,
+    const_dnnl_primitive_desc_t hint_fwd_pd, const_dnnl_primitive_attr_t attr);
 
 /// Creates a descriptor for LBR GRU forward propagation primitive.
 ///
@@ -3114,16 +3097,15 @@ dnnl_status_t DNNL_API dnnl_gru_backward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_lbr_gru_forward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, dnnl_rnn_direction_t direction,
-        const_dnnl_memory_desc_t src_layer_desc,
-        const_dnnl_memory_desc_t src_iter_desc,
-        const_dnnl_memory_desc_t weights_layer_desc,
-        const_dnnl_memory_desc_t weights_iter_desc,
-        const_dnnl_memory_desc_t bias_desc,
-        const_dnnl_memory_desc_t dst_layer_desc,
-        const_dnnl_memory_desc_t dst_iter_desc, unsigned flags,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, dnnl_rnn_direction_t direction,
+    const_dnnl_memory_desc_t src_layer_desc,
+    const_dnnl_memory_desc_t src_iter_desc,
+    const_dnnl_memory_desc_t weights_layer_desc,
+    const_dnnl_memory_desc_t weights_iter_desc,
+    const_dnnl_memory_desc_t bias_desc, const_dnnl_memory_desc_t dst_layer_desc,
+    const_dnnl_memory_desc_t dst_iter_desc, unsigned flags,
+    const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for LBR GRU backward propagation primitive.
 ///
@@ -3175,24 +3157,22 @@ dnnl_status_t DNNL_API dnnl_lbr_gru_forward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_lbr_gru_backward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, dnnl_rnn_direction_t direction,
-        const_dnnl_memory_desc_t src_layer_desc,
-        const_dnnl_memory_desc_t src_iter_desc,
-        const_dnnl_memory_desc_t weights_layer_desc,
-        const_dnnl_memory_desc_t weights_iter_desc,
-        const_dnnl_memory_desc_t bias_desc,
-        const_dnnl_memory_desc_t dst_layer_desc,
-        const_dnnl_memory_desc_t dst_iter_desc,
-        const_dnnl_memory_desc_t diff_src_layer_desc,
-        const_dnnl_memory_desc_t diff_src_iter_desc,
-        const_dnnl_memory_desc_t diff_weights_layer_desc,
-        const_dnnl_memory_desc_t diff_weights_iter_desc,
-        const_dnnl_memory_desc_t diff_bias_desc,
-        const_dnnl_memory_desc_t diff_dst_layer_desc,
-        const_dnnl_memory_desc_t diff_dst_iter_desc, unsigned flags,
-        const_dnnl_primitive_desc_t hint_fwd_pd,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, dnnl_rnn_direction_t direction,
+    const_dnnl_memory_desc_t src_layer_desc,
+    const_dnnl_memory_desc_t src_iter_desc,
+    const_dnnl_memory_desc_t weights_layer_desc,
+    const_dnnl_memory_desc_t weights_iter_desc,
+    const_dnnl_memory_desc_t bias_desc, const_dnnl_memory_desc_t dst_layer_desc,
+    const_dnnl_memory_desc_t dst_iter_desc,
+    const_dnnl_memory_desc_t diff_src_layer_desc,
+    const_dnnl_memory_desc_t diff_src_iter_desc,
+    const_dnnl_memory_desc_t diff_weights_layer_desc,
+    const_dnnl_memory_desc_t diff_weights_iter_desc,
+    const_dnnl_memory_desc_t diff_bias_desc,
+    const_dnnl_memory_desc_t diff_dst_layer_desc,
+    const_dnnl_memory_desc_t diff_dst_iter_desc, unsigned flags,
+    const_dnnl_primitive_desc_t hint_fwd_pd, const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for AUGRU forward propagation primitive.
 ///
@@ -3232,17 +3212,16 @@ dnnl_status_t DNNL_API dnnl_lbr_gru_backward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_augru_forward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, dnnl_rnn_direction_t direction,
-        const_dnnl_memory_desc_t src_layer_desc,
-        const_dnnl_memory_desc_t src_iter_desc,
-        const_dnnl_memory_desc_t attention_desc,
-        const_dnnl_memory_desc_t weights_layer_desc,
-        const_dnnl_memory_desc_t weights_iter_desc,
-        const_dnnl_memory_desc_t bias_desc,
-        const_dnnl_memory_desc_t dst_layer_desc,
-        const_dnnl_memory_desc_t dst_iter_desc, unsigned flags,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, dnnl_rnn_direction_t direction,
+    const_dnnl_memory_desc_t src_layer_desc,
+    const_dnnl_memory_desc_t src_iter_desc,
+    const_dnnl_memory_desc_t attention_desc,
+    const_dnnl_memory_desc_t weights_layer_desc,
+    const_dnnl_memory_desc_t weights_iter_desc,
+    const_dnnl_memory_desc_t bias_desc, const_dnnl_memory_desc_t dst_layer_desc,
+    const_dnnl_memory_desc_t dst_iter_desc, unsigned flags,
+    const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for AUGRU backward propagation primitive.
 ///
@@ -3279,7 +3258,8 @@ dnnl_status_t DNNL_API dnnl_augru_forward_primitive_desc_create(
 /// @param diff_src_layer_desc Memory descriptor for the diff of input vector.
 /// @param diff_src_iter_desc Memory descriptor for the diff of input recurrent
 ///     hidden state vector.
-/// @param diff_attention_desc Memory descriptor for the diff of attention vector.
+/// @param diff_attention_desc Memory descriptor for the diff of attention
+/// vector.
 /// @param diff_weights_layer_desc Memory descriptor for the diff of weights
 ///     applied to the layer input.
 /// @param diff_weights_iter_desc Memory descriptor for the diff of weights
@@ -3296,26 +3276,24 @@ dnnl_status_t DNNL_API dnnl_augru_forward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_augru_backward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, dnnl_rnn_direction_t direction,
-        const_dnnl_memory_desc_t src_layer_desc,
-        const_dnnl_memory_desc_t src_iter_desc,
-        const_dnnl_memory_desc_t attention_desc,
-        const_dnnl_memory_desc_t weights_layer_desc,
-        const_dnnl_memory_desc_t weights_iter_desc,
-        const_dnnl_memory_desc_t bias_desc,
-        const_dnnl_memory_desc_t dst_layer_desc,
-        const_dnnl_memory_desc_t dst_iter_desc,
-        const_dnnl_memory_desc_t diff_src_layer_desc,
-        const_dnnl_memory_desc_t diff_src_iter_desc,
-        const_dnnl_memory_desc_t diff_attention_desc,
-        const_dnnl_memory_desc_t diff_weights_layer_desc,
-        const_dnnl_memory_desc_t diff_weights_iter_desc,
-        const_dnnl_memory_desc_t diff_bias_desc,
-        const_dnnl_memory_desc_t diff_dst_layer_desc,
-        const_dnnl_memory_desc_t diff_dst_iter_desc, unsigned flags,
-        const_dnnl_primitive_desc_t hint_fwd_pd,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, dnnl_rnn_direction_t direction,
+    const_dnnl_memory_desc_t src_layer_desc,
+    const_dnnl_memory_desc_t src_iter_desc,
+    const_dnnl_memory_desc_t attention_desc,
+    const_dnnl_memory_desc_t weights_layer_desc,
+    const_dnnl_memory_desc_t weights_iter_desc,
+    const_dnnl_memory_desc_t bias_desc, const_dnnl_memory_desc_t dst_layer_desc,
+    const_dnnl_memory_desc_t dst_iter_desc,
+    const_dnnl_memory_desc_t diff_src_layer_desc,
+    const_dnnl_memory_desc_t diff_src_iter_desc,
+    const_dnnl_memory_desc_t diff_attention_desc,
+    const_dnnl_memory_desc_t diff_weights_layer_desc,
+    const_dnnl_memory_desc_t diff_weights_iter_desc,
+    const_dnnl_memory_desc_t diff_bias_desc,
+    const_dnnl_memory_desc_t diff_dst_layer_desc,
+    const_dnnl_memory_desc_t diff_dst_iter_desc, unsigned flags,
+    const_dnnl_primitive_desc_t hint_fwd_pd, const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for LBR AUGRU forward propagation primitive.
 ///
@@ -3351,17 +3329,16 @@ dnnl_status_t DNNL_API dnnl_augru_backward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_lbr_augru_forward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, dnnl_rnn_direction_t direction,
-        const_dnnl_memory_desc_t src_layer_desc,
-        const_dnnl_memory_desc_t src_iter_desc,
-        const_dnnl_memory_desc_t attention_desc,
-        const_dnnl_memory_desc_t weights_layer_desc,
-        const_dnnl_memory_desc_t weights_iter_desc,
-        const_dnnl_memory_desc_t bias_desc,
-        const_dnnl_memory_desc_t dst_layer_desc,
-        const_dnnl_memory_desc_t dst_iter_desc, unsigned flags,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, dnnl_rnn_direction_t direction,
+    const_dnnl_memory_desc_t src_layer_desc,
+    const_dnnl_memory_desc_t src_iter_desc,
+    const_dnnl_memory_desc_t attention_desc,
+    const_dnnl_memory_desc_t weights_layer_desc,
+    const_dnnl_memory_desc_t weights_iter_desc,
+    const_dnnl_memory_desc_t bias_desc, const_dnnl_memory_desc_t dst_layer_desc,
+    const_dnnl_memory_desc_t dst_iter_desc, unsigned flags,
+    const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for LBR AUGRU backward propagation primitive.
 ///
@@ -3398,7 +3375,8 @@ dnnl_status_t DNNL_API dnnl_lbr_augru_forward_primitive_desc_create(
 /// @param diff_src_layer_desc Memory descriptor for the diff of input vector.
 /// @param diff_src_iter_desc Memory descriptor for the diff of input recurrent
 ///     hidden state vector.
-/// @param diff_attention_desc Memory descriptor for the diff of attention vector.
+/// @param diff_attention_desc Memory descriptor for the diff of attention
+/// vector.
 /// @param diff_weights_layer_desc Memory descriptor for the diff of weights
 ///     applied to the layer input.
 /// @param diff_weights_iter_desc Memory descriptor for the diff of weights
@@ -3415,26 +3393,24 @@ dnnl_status_t DNNL_API dnnl_lbr_augru_forward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_lbr_augru_backward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, dnnl_rnn_direction_t direction,
-        const_dnnl_memory_desc_t src_layer_desc,
-        const_dnnl_memory_desc_t src_iter_desc,
-        const_dnnl_memory_desc_t attention_desc,
-        const_dnnl_memory_desc_t weights_layer_desc,
-        const_dnnl_memory_desc_t weights_iter_desc,
-        const_dnnl_memory_desc_t bias_desc,
-        const_dnnl_memory_desc_t dst_layer_desc,
-        const_dnnl_memory_desc_t dst_iter_desc,
-        const_dnnl_memory_desc_t diff_src_layer_desc,
-        const_dnnl_memory_desc_t diff_src_iter_desc,
-        const_dnnl_memory_desc_t diff_attention_desc,
-        const_dnnl_memory_desc_t diff_weights_layer_desc,
-        const_dnnl_memory_desc_t diff_weights_iter_desc,
-        const_dnnl_memory_desc_t diff_bias_desc,
-        const_dnnl_memory_desc_t diff_dst_layer_desc,
-        const_dnnl_memory_desc_t diff_dst_iter_desc, unsigned flags,
-        const_dnnl_primitive_desc_t hint_fwd_pd,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, dnnl_rnn_direction_t direction,
+    const_dnnl_memory_desc_t src_layer_desc,
+    const_dnnl_memory_desc_t src_iter_desc,
+    const_dnnl_memory_desc_t attention_desc,
+    const_dnnl_memory_desc_t weights_layer_desc,
+    const_dnnl_memory_desc_t weights_iter_desc,
+    const_dnnl_memory_desc_t bias_desc, const_dnnl_memory_desc_t dst_layer_desc,
+    const_dnnl_memory_desc_t dst_iter_desc,
+    const_dnnl_memory_desc_t diff_src_layer_desc,
+    const_dnnl_memory_desc_t diff_src_iter_desc,
+    const_dnnl_memory_desc_t diff_attention_desc,
+    const_dnnl_memory_desc_t diff_weights_layer_desc,
+    const_dnnl_memory_desc_t diff_weights_iter_desc,
+    const_dnnl_memory_desc_t diff_bias_desc,
+    const_dnnl_memory_desc_t diff_dst_layer_desc,
+    const_dnnl_memory_desc_t diff_dst_iter_desc, unsigned flags,
+    const_dnnl_primitive_desc_t hint_fwd_pd, const_dnnl_primitive_attr_t attr);
 
 /// @} dnnl_api_rnn
 
@@ -3455,11 +3431,10 @@ dnnl_status_t DNNL_API dnnl_lbr_augru_backward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_matmul_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        const_dnnl_memory_desc_t src_desc,
-        const_dnnl_memory_desc_t weights_desc,
-        const_dnnl_memory_desc_t bias_desc, const_dnnl_memory_desc_t dst_desc,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    const_dnnl_memory_desc_t src_desc, const_dnnl_memory_desc_t weights_desc,
+    const_dnnl_memory_desc_t bias_desc, const_dnnl_memory_desc_t dst_desc,
+    const_dnnl_primitive_attr_t attr);
 
 /// @} dnnl_api_matmul
 
@@ -3486,10 +3461,10 @@ dnnl_status_t DNNL_API dnnl_matmul_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_resampling_forward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_prop_kind_t prop_kind, dnnl_alg_kind_t alg_kind,
-        const float *factors, const_dnnl_memory_desc_t src_desc,
-        const_dnnl_memory_desc_t dst_desc, const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_prop_kind_t prop_kind, dnnl_alg_kind_t alg_kind, const float *factors,
+    const_dnnl_memory_desc_t src_desc, const_dnnl_memory_desc_t dst_desc,
+    const_dnnl_primitive_attr_t attr);
 
 /// Creates a primitive descriptor for a resampling backward propagation
 ///     primitive.
@@ -3508,12 +3483,11 @@ dnnl_status_t DNNL_API dnnl_resampling_forward_primitive_desc_create(
 ///     otherwise.
 ///
 dnnl_status_t DNNL_API dnnl_resampling_backward_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_alg_kind_t alg_kind, const float *factors,
-        const_dnnl_memory_desc_t diff_src_desc,
-        const_dnnl_memory_desc_t diff_dst_desc,
-        const_dnnl_primitive_desc_t hint_fwd_pd,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_alg_kind_t alg_kind, const float *factors,
+    const_dnnl_memory_desc_t diff_src_desc,
+    const_dnnl_memory_desc_t diff_dst_desc,
+    const_dnnl_primitive_desc_t hint_fwd_pd, const_dnnl_primitive_attr_t attr);
 
 /// @} dnnl_api_resampling
 
@@ -3541,10 +3515,10 @@ dnnl_status_t DNNL_API dnnl_resampling_backward_primitive_desc_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_reduction_primitive_desc_create(
-        dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
-        dnnl_alg_kind_t alg_kind, const_dnnl_memory_desc_t src_desc,
-        const_dnnl_memory_desc_t dst_desc, float p, float eps,
-        const_dnnl_primitive_attr_t attr);
+    dnnl_primitive_desc_t *primitive_desc, dnnl_engine_t engine,
+    dnnl_alg_kind_t alg_kind, const_dnnl_memory_desc_t src_desc,
+    const_dnnl_memory_desc_t dst_desc, float p, float eps,
+    const_dnnl_primitive_attr_t attr);
 
 /// @} dnnl_api_reduction
 
@@ -3559,8 +3533,8 @@ dnnl_status_t DNNL_API dnnl_reduction_primitive_desc_create(
 /// @param capacity Primitive cache capacity to query. Concurrently
 /// accessing @p capacity is safe.
 /// @returns #dnnl_invalid_arguments/#dnnl::status::invalid_arguments if the
-///     @p capacity value is invalid, and #dnnl_success/#dnnl::status::success on
-///     success.
+///     @p capacity value is invalid, and #dnnl_success/#dnnl::status::success
+///     on success.
 dnnl_status_t DNNL_API dnnl_get_primitive_cache_capacity(int *capacity);
 
 /// Sets a number of primitives that can be held in the primitive cache
@@ -3572,8 +3546,8 @@ dnnl_status_t DNNL_API dnnl_get_primitive_cache_capacity(int *capacity);
 /// clears the primitive cache and disables it. Concurrently modifying
 /// @p capacity is safe.
 /// @returns #dnnl_invalid_arguments/#dnnl::status::invalid_arguments if the
-///     @p capacity value is invalid, and #dnnl_success/#dnnl::status::success on
-///     success.
+///     @p capacity value is invalid, and #dnnl_success/#dnnl::status::success
+///     on success.
 dnnl_status_t DNNL_API dnnl_set_primitive_cache_capacity(int capacity);
 
 /// @} dnnl_api_primitive_cache
@@ -3670,8 +3644,8 @@ dnnl_status_t DNNL_API dnnl_set_jit_profiling_jitdumpdir(const char *dir);
 /// @sa @ref dev_guide_cpu_dispatcher_control for more details
 ///
 /// @param isa Maximal ISA the library should dispatch to. Pass
-///     #dnnl_cpu_isa_default/#dnnl::cpu_isa::isa_default to remove ISA restrictions
-///     (except for ISAs with initial support in the library).
+///     #dnnl_cpu_isa_default/#dnnl::cpu_isa::isa_default to remove ISA
+///     restrictions (except for ISAs with initial support in the library).
 /// @returns #dnnl_success/#dnnl::status::success on success and a
 ///     #dnnl_invalid_arguments/#dnnl::status::invalid_arguments if the @p isa
 ///     parameter is invalid or the ISA cannot be changed at this time.
@@ -3757,8 +3731,9 @@ dnnl_status_t DNNL_API dnnl_reset_profiling(dnnl_stream_t stream);
 ///
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_query_profiling_data(dnnl_stream_t stream,
-        dnnl_profiling_data_kind_t data_kind, int *num_entries, uint64_t *data);
+dnnl_status_t DNNL_API dnnl_query_profiling_data(
+    dnnl_stream_t stream, dnnl_profiling_data_kind_t data_kind,
+    int *num_entries, uint64_t *data);
 
 /// @} dnnl_api_profiling
 #endif
@@ -3807,8 +3782,10 @@ dnnl_status_t DNNL_API dnnl_query_profiling_data(dnnl_stream_t stream,
 /// @returns #dnnl_success/#dnnl::status::success on success and a status
 ///     describing the error otherwise.
 dnnl_status_t DNNL_API dnnl_sgemm(char transa, char transb, dnnl_dim_t M,
-        dnnl_dim_t N, dnnl_dim_t K, float alpha, const float *A, dnnl_dim_t lda,
-        const float *B, dnnl_dim_t ldb, float beta, float *C, dnnl_dim_t ldc);
+                                  dnnl_dim_t N, dnnl_dim_t K, float alpha,
+                                  const float *A, dnnl_dim_t lda,
+                                  const float *B, dnnl_dim_t ldb, float beta,
+                                  float *C, dnnl_dim_t ldc);
 
 /// Performs integer matrix-matrix multiply on 8-bit unsigned matrix A, 8-bit
 /// signed matrix B, and 32-bit signed resulting matrix C.
@@ -3826,7 +3803,8 @@ dnnl_status_t DNNL_API dnnl_sgemm(char transa, char transb, dnnl_dim_t M,
 ///     - `C` is an `MxN` matrix.
 ///  - `A_offset` is an `MxK` matrix with every element equal the `ao` value,
 ///  - `B_offset` is an `KxN` matrix with every element equal the `bo` value,
-///  - `C_offset` is an `MxN` matrix which is defined by the `co` array of size `len`:
+///  - `C_offset` is an `MxN` matrix which is defined by the `co` array of size
+///  `len`:
 ///    - if `offsetc = F`: the `len` must be at least `1`,
 ///    - if `offsetc = C`: the `len` must be at least `max(1, m)`,
 ///    - if `offsetc = R`: the `len` must be at least `max(1, n)`,
@@ -3873,10 +3851,11 @@ dnnl_status_t DNNL_API dnnl_sgemm(char transa, char transb, dnnl_dim_t M,
 ///     elements in the array depends on the value of @p offsetc.
 /// @returns #dnnl_success/#dnnl::status::success on success and a status
 ///     describing the error otherwise.
-dnnl_status_t DNNL_API dnnl_gemm_u8s8s32(char transa, char transb, char offsetc,
-        dnnl_dim_t M, dnnl_dim_t N, dnnl_dim_t K, float alpha, const uint8_t *A,
-        dnnl_dim_t lda, uint8_t ao, const int8_t *B, dnnl_dim_t ldb, int8_t bo,
-        float beta, int32_t *C, dnnl_dim_t ldc, const int32_t *co);
+dnnl_status_t DNNL_API dnnl_gemm_u8s8s32(
+    char transa, char transb, char offsetc, dnnl_dim_t M, dnnl_dim_t N,
+    dnnl_dim_t K, float alpha, const uint8_t *A, dnnl_dim_t lda, uint8_t ao,
+    const int8_t *B, dnnl_dim_t ldb, int8_t bo, float beta, int32_t *C,
+    dnnl_dim_t ldc, const int32_t *co);
 
 /// Performs integer matrix-matrix multiply on 8-bit signed matrix A, 8-bit
 /// signed matrix B, and 32-bit signed resulting matrix C.
@@ -3894,7 +3873,8 @@ dnnl_status_t DNNL_API dnnl_gemm_u8s8s32(char transa, char transb, char offsetc,
 ///     - `C` is an `MxN` matrix.
 ///  - `A_offset` is an `MxK` matrix with every element equal the `ao` value,
 ///  - `B_offset` is an `KxN` matrix with every element equal the `bo` value,
-///  - `C_offset` is an `MxN` matrix which is defined by the `co` array of size `len`:
+///  - `C_offset` is an `MxN` matrix which is defined by the `co` array of size
+///  `len`:
 ///    - if `offsetc = F`: the `len` must be at least `1`,
 ///    - if `offsetc = C`: the `len` must be at least `max(1, m)`,
 ///    - if `offsetc = R`: the `len` must be at least `max(1, n)`,
@@ -3941,10 +3921,11 @@ dnnl_status_t DNNL_API dnnl_gemm_u8s8s32(char transa, char transb, char offsetc,
 ///     elements in the array depends on the value of @p offsetc.
 /// @returns #dnnl_success/#dnnl::status::success on success and a status
 ///     describing the error otherwise.
-dnnl_status_t DNNL_API dnnl_gemm_s8s8s32(char transa, char transb, char offsetc,
-        dnnl_dim_t M, dnnl_dim_t N, dnnl_dim_t K, float alpha, const int8_t *A,
-        dnnl_dim_t lda, int8_t ao, const int8_t *B, dnnl_dim_t ldb, int8_t bo,
-        float beta, int32_t *C, dnnl_dim_t ldc, const int32_t *co);
+dnnl_status_t DNNL_API dnnl_gemm_s8s8s32(
+    char transa, char transb, char offsetc, dnnl_dim_t M, dnnl_dim_t N,
+    dnnl_dim_t K, float alpha, const int8_t *A, dnnl_dim_t lda, int8_t ao,
+    const int8_t *B, dnnl_dim_t ldb, int8_t bo, float beta, int32_t *C,
+    dnnl_dim_t ldc, const int32_t *co);
 
 /// @} dnnl_api_blas
 

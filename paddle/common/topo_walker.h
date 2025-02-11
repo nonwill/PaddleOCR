@@ -22,33 +22,31 @@
 namespace common {
 
 // Topological order visitor
-template <typename NodeType>
-class TopoWalker final {
- public:
-  TopoWalker(const TopoWalker&) = default;
-  TopoWalker(TopoWalker&&) = default;
+template <typename NodeType> class TopoWalker final {
+public:
+  TopoWalker(const TopoWalker &) = default;
+  TopoWalker(TopoWalker &&) = default;
 
   using NodeHandlerType = std::function<void(NodeType)>;
   using NodesVisitorType =
-      std::function<void(NodeType, const NodeHandlerType&)>;
+      std::function<void(NodeType, const NodeHandlerType &)>;
 
-  TopoWalker(const NodesVisitorType& VisitPrevNodesValue,
-             const NodesVisitorType& VisitNextNodesValue)
+  TopoWalker(const NodesVisitorType &VisitPrevNodesValue,
+             const NodesVisitorType &VisitNextNodesValue)
       : VisitPrevNodes(VisitPrevNodesValue),
         VisitNextNodes(VisitNextNodesValue) {}
 
-  void operator()(NodeType node, const NodeHandlerType& NodeHandler) const {
+  void operator()(NodeType node, const NodeHandlerType &NodeHandler) const {
     std::array<NodeType, 1> nodes{node};
     (*this)(nodes.begin(), nodes.end(), NodeHandler);
   }
 
   template <typename NodeIt>
-  void operator()(NodeIt begin,
-                  NodeIt end,
-                  const NodeHandlerType& NodeHandler) const {
+  void operator()(NodeIt begin, NodeIt end,
+                  const NodeHandlerType &NodeHandler) const {
     std::queue<NodeType> node_queue;
     std::unordered_set<NodeType> queued_nodes;
-    const auto& TryEnqueueNode = [&](NodeType node) {
+    const auto &TryEnqueueNode = [&](NodeType node) {
       if (queued_nodes.count(node) == 0) {
         node_queue.push(node);
         queued_nodes.insert(node);
@@ -77,4 +75,4 @@ class TopoWalker final {
   NodesVisitorType VisitNextNodes;
 };
 
-}  // namespace common
+} // namespace common

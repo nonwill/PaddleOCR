@@ -1,18 +1,18 @@
 /*******************************************************************************
-* Copyright 2024 Intel Corporation
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*******************************************************************************/
+ * Copyright 2024 Intel Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *******************************************************************************/
 
 /// @file
 /// ukernel C API
@@ -40,8 +40,8 @@ extern "C" {
 /// @param attr_params Output ukernel attributes memory storage.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_ukernel_attr_params_create(
-        dnnl_ukernel_attr_params_t *attr_params);
+dnnl_status_t DNNL_API
+dnnl_ukernel_attr_params_create(dnnl_ukernel_attr_params_t *attr_params);
 
 /// Sets post-operations arguments to a storage.
 ///
@@ -51,7 +51,7 @@ dnnl_status_t DNNL_API dnnl_ukernel_attr_params_create(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_ukernel_attr_params_set_post_ops_args(
-        dnnl_ukernel_attr_params_t attr_params, const void **post_ops_args);
+    dnnl_ukernel_attr_params_t attr_params, const void **post_ops_args);
 
 /// Sets tensor A scales argument to a storage.
 ///
@@ -60,7 +60,7 @@ dnnl_status_t DNNL_API dnnl_ukernel_attr_params_set_post_ops_args(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_ukernel_attr_params_set_A_scales(
-        dnnl_ukernel_attr_params_t attr_params, const void *a_scales);
+    dnnl_ukernel_attr_params_t attr_params, const void *a_scales);
 
 /// Sets tensor B scales argument to a storage.
 ///
@@ -72,7 +72,7 @@ dnnl_status_t DNNL_API dnnl_ukernel_attr_params_set_A_scales(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_ukernel_attr_params_set_B_scales(
-        dnnl_ukernel_attr_params_t attr_params, const void *b_scales);
+    dnnl_ukernel_attr_params_t attr_params, const void *b_scales);
 
 /// Sets tensor D scales argument to a storage.
 ///
@@ -81,15 +81,15 @@ dnnl_status_t DNNL_API dnnl_ukernel_attr_params_set_B_scales(
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_ukernel_attr_params_set_D_scales(
-        dnnl_ukernel_attr_params_t attr_params, const void *d_scales);
+    dnnl_ukernel_attr_params_t attr_params, const void *d_scales);
 
 /// Destroys a ukernel attributes memory storage.
 ///
 /// @param attr_params Memory pointers storage object to destroy.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_ukernel_attr_params_destroy(
-        dnnl_ukernel_attr_params_t attr_params);
+dnnl_status_t DNNL_API
+dnnl_ukernel_attr_params_destroy(dnnl_ukernel_attr_params_t attr_params);
 
 /// @addtogroup dnnl_api_ukernel_brgemm
 /// @{
@@ -110,10 +110,10 @@ dnnl_status_t DNNL_API dnnl_ukernel_attr_params_destroy(
 /// @param c_dt Data type of tensor C. Must be dnnl_f32.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_brgemm_create(dnnl_brgemm_t *brgemm, dnnl_dim_t M,
-        dnnl_dim_t N, dnnl_dim_t K, dnnl_dim_t batch_size, dnnl_dim_t lda,
-        dnnl_dim_t ldb, dnnl_dim_t ldc, dnnl_data_type_t a_dt,
-        dnnl_data_type_t b_dt, dnnl_data_type_t c_dt);
+dnnl_status_t DNNL_API dnnl_brgemm_create(
+    dnnl_brgemm_t *brgemm, dnnl_dim_t M, dnnl_dim_t N, dnnl_dim_t K,
+    dnnl_dim_t batch_size, dnnl_dim_t lda, dnnl_dim_t ldb, dnnl_dim_t ldc,
+    dnnl_data_type_t a_dt, dnnl_data_type_t b_dt, dnnl_data_type_t c_dt);
 
 /// Sets adding an intermediate result to the output tensor C instead of
 /// writing: `C += [A x B]`.
@@ -142,7 +142,9 @@ dnnl_status_t DNNL_API dnnl_brgemm_set_add_C(dnnl_brgemm_t brgemm, int add_C);
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_brgemm_set_post_ops(dnnl_brgemm_t brgemm,
-        dnnl_dim_t ldd, dnnl_data_type_t d_dt, const_dnnl_post_ops_t post_ops);
+                                                dnnl_dim_t ldd,
+                                                dnnl_data_type_t d_dt,
+                                                const_dnnl_post_ops_t post_ops);
 
 /// Sets tensor A scales mask to a BRGeMM ukernel object.
 ///
@@ -151,8 +153,8 @@ dnnl_status_t DNNL_API dnnl_brgemm_set_post_ops(dnnl_brgemm_t brgemm,
 ///
 /// @param brgemm BRGeMM ukernel object.
 /// @param a_scale_mask Tensor A scale mask. Can be `0` only.
-dnnl_status_t DNNL_API dnnl_brgemm_set_A_scales(
-        dnnl_brgemm_t brgemm, int a_scale_mask);
+dnnl_status_t DNNL_API dnnl_brgemm_set_A_scales(dnnl_brgemm_t brgemm,
+                                                int a_scale_mask);
 
 /// Sets tensor B scales mask to a BRGeMM ukernel object.
 ///
@@ -161,8 +163,8 @@ dnnl_status_t DNNL_API dnnl_brgemm_set_A_scales(
 ///
 /// @param brgemm BRGeMM ukernel object.
 /// @param b_scale_mask Tensor B scale mask. Can be `0` and `2` only.
-dnnl_status_t DNNL_API dnnl_brgemm_set_B_scales(
-        dnnl_brgemm_t brgemm, int b_scale_mask);
+dnnl_status_t DNNL_API dnnl_brgemm_set_B_scales(dnnl_brgemm_t brgemm,
+                                                int b_scale_mask);
 
 /// Sets tensor D scales mask to a BRGeMM ukernel object.
 ///
@@ -171,8 +173,8 @@ dnnl_status_t DNNL_API dnnl_brgemm_set_B_scales(
 ///
 /// @param brgemm BRGeMM ukernel object.
 /// @param d_scale_mask Tensor D scale mask. Can be `0` only.
-dnnl_status_t DNNL_API dnnl_brgemm_set_D_scales(
-        dnnl_brgemm_t brgemm, int d_scale_mask);
+dnnl_status_t DNNL_API dnnl_brgemm_set_D_scales(dnnl_brgemm_t brgemm,
+                                                int d_scale_mask);
 
 /// Finalizes initialization of a BRGeMM ukernel object.
 ///
@@ -190,8 +192,8 @@ dnnl_status_t DNNL_API dnnl_brgemm_finalize(dnnl_brgemm_t brgemm);
 ///     packing is not expected, and `dnnl_brgemm_pack_32`, otherwise.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_brgemm_get_B_pack_type(
-        const_dnnl_brgemm_t brgemm, dnnl_pack_type_t *pack_type);
+dnnl_status_t DNNL_API dnnl_brgemm_get_B_pack_type(const_dnnl_brgemm_t brgemm,
+                                                   dnnl_pack_type_t *pack_type);
 
 /// Returns the size of a scratchpad memory needed for the BRGeMM ukernel
 /// object.
@@ -200,8 +202,8 @@ dnnl_status_t DNNL_API dnnl_brgemm_get_B_pack_type(
 /// @param size Output size of a buffer required for the BRGeMM ukernel object.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_brgemm_get_scratchpad_size(
-        const_dnnl_brgemm_t brgemm, size_t *size);
+dnnl_status_t DNNL_API
+dnnl_brgemm_get_scratchpad_size(const_dnnl_brgemm_t brgemm, size_t *size);
 
 /// Initializes the hardware-specific context. If no initialization required,
 /// returns the success status.
@@ -238,8 +240,9 @@ dnnl_status_t DNNL_API dnnl_brgemm_generate(dnnl_brgemm_t brgemm);
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
 dnnl_status_t DNNL_API dnnl_brgemm_execute(const_dnnl_brgemm_t brgemm,
-        const void *A_ptr, const void *B_ptr, const dnnl_dim_t *A_B_offsets,
-        void *C_ptr, void *scratchpad_ptr);
+                                           const void *A_ptr, const void *B_ptr,
+                                           const dnnl_dim_t *A_B_offsets,
+                                           void *C_ptr, void *scratchpad_ptr);
 
 /// Executes a BRGeMM ukernel object with post operations.
 ///
@@ -257,10 +260,10 @@ dnnl_status_t DNNL_API dnnl_brgemm_execute(const_dnnl_brgemm_t brgemm,
 /// @param attr_params Ukernel attributes memory storage.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_brgemm_execute_postops(const_dnnl_brgemm_t brgemm,
-        const void *A, const void *B, const dnnl_dim_t *A_B_offsets,
-        const void *C_ptr, void *D_ptr, void *scratchpad_ptr,
-        const_dnnl_ukernel_attr_params_t attr_params);
+dnnl_status_t DNNL_API dnnl_brgemm_execute_postops(
+    const_dnnl_brgemm_t brgemm, const void *A, const void *B,
+    const dnnl_dim_t *A_B_offsets, const void *C_ptr, void *D_ptr,
+    void *scratchpad_ptr, const_dnnl_ukernel_attr_params_t attr_params);
 
 /// Destroys a BRGeMM ukernel object.
 ///
@@ -283,10 +286,10 @@ dnnl_status_t DNNL_API dnnl_brgemm_destroy(dnnl_brgemm_t brgemm);
 /// @param out_dt Output data type.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_transform_create(dnnl_transform_t *transform,
-        dnnl_dim_t K, dnnl_dim_t N, dnnl_pack_type_t in_pack_type,
-        dnnl_dim_t in_ld, dnnl_dim_t out_ld, dnnl_data_type_t in_dt,
-        dnnl_data_type_t out_dt);
+dnnl_status_t DNNL_API dnnl_transform_create(
+    dnnl_transform_t *transform, dnnl_dim_t K, dnnl_dim_t N,
+    dnnl_pack_type_t in_pack_type, dnnl_dim_t in_ld, dnnl_dim_t out_ld,
+    dnnl_data_type_t in_dt, dnnl_data_type_t out_dt);
 
 /// Generates an executable part of transform object.
 /// @param transform Transform object.
@@ -301,8 +304,9 @@ dnnl_status_t DNNL_API dnnl_transform_generate(dnnl_transform_t transform);
 /// @param out_ptr Pointer to an output buffer.
 /// @returns #dnnl_success on success and a status describing the error
 ///     otherwise.
-dnnl_status_t DNNL_API dnnl_transform_execute(
-        const_dnnl_transform_t transform, const void *in_ptr, void *out_ptr);
+dnnl_status_t DNNL_API dnnl_transform_execute(const_dnnl_transform_t transform,
+                                              const void *in_ptr,
+                                              void *out_ptr);
 
 /// Destroys a transform object.
 ///

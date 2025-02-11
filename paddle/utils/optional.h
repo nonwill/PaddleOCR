@@ -35,13 +35,12 @@ namespace paddle {
 // namespace boost.
 namespace paddle_optional_detail {
 template <class T, class Factory>
-void construct(Factory const& factory, void* address) {
+void construct(Factory const &factory, void *address) {
   factory.template apply<T>(address);
 }
-}  // namespace paddle_optional_detail
+} // namespace paddle_optional_detail
 
-template <typename T>
-class optional;
+template <typename T> class optional;
 
 class in_place_factory_base {};
 class typed_in_place_factory_base {};
@@ -56,16 +55,15 @@ class typed_in_place_factory_base {};
 // If none have valid pointees, returns true.
 // No-throw
 template <class OptionalPointee>
-inline bool equal_pointees(OptionalPointee const& x, OptionalPointee const& y) {
+inline bool equal_pointees(OptionalPointee const &x, OptionalPointee const &y) {
   return (!x) != (!y) ? false : (!x ? true : (*x) == (*y));
 }
 
-template <class OptionalPointee>
-struct equal_pointees_t {
+template <class OptionalPointee> struct equal_pointees_t {
   using first_argument_type = OptionalPointee;
   using second_argument_type = OptionalPointee;
   using result_type = bool;
-  bool operator()(OptionalPointee const& x, OptionalPointee const& y) const {
+  bool operator()(OptionalPointee const &x, OptionalPointee const &y) const {
     return equal_pointees(x, y);
   }
 };
@@ -80,53 +78,47 @@ struct equal_pointees_t {
 // ElseIf both x and y have valid pointees, returns the result of (*x < *y)
 // No-throw
 template <class OptionalPointee>
-inline bool less_pointees(OptionalPointee const& x, OptionalPointee const& y) {
+inline bool less_pointees(OptionalPointee const &x, OptionalPointee const &y) {
   return !y ? false : (!x ? true : (*x) < (*y));
 }
 
-template <class OptionalPointee>
-struct less_pointees_t {
+template <class OptionalPointee> struct less_pointees_t {
   using first_argument_type = OptionalPointee;
   using second_argument_type = OptionalPointee;
   using result_type = bool;
-  bool operator()(OptionalPointee const& x, OptionalPointee const& y) const {
+  bool operator()(OptionalPointee const &x, OptionalPointee const &y) const {
     return less_pointees(x, y);
   }
 };
 
 namespace detail {
 
-template <typename RefT>
-class reference_content {
- private:  // representation
+template <typename RefT> class reference_content {
+private: // representation
   RefT content_;
 
- public:  // structors
+public: // structors
   ~reference_content() {}
 
-  reference_content(RefT r) : content_(r) {}  // NOLINT
+  reference_content(RefT r) : content_(r) {} // NOLINT
 
-  reference_content(const reference_content& operand)
+  reference_content(const reference_content &operand)
       : content_(operand.content_) {}
 
- private:  // non-Assignable
-  reference_content& operator=(const reference_content&);
+private: // non-Assignable
+  reference_content &operator=(const reference_content &);
 
- public:  // queries
+public: // queries
   RefT get() const { return content_; }
 };
 
-template <typename T>
-struct make_reference_content {
-  typedef T type;
+template <typename T> struct make_reference_content { typedef T type; };
+
+template <typename T> struct make_reference_content<T &> {
+  typedef reference_content<T &> type;
 };
 
-template <typename T>
-struct make_reference_content<T&> {
-  typedef reference_content<T&> type;
-};
-
-}  // namespace detail
+} // namespace detail
 
 namespace optional_detail {
 
@@ -134,43 +126,39 @@ namespace optional_detail {
 // because I've found the 'official' class to ICE BCB5.5
 // when some types are used with optional<>
 // (due to sizeof() passed down as a non-type template parameter)
-template <class T>
-class aligned_storage {
+template <class T> class aligned_storage {
   // Borland ICEs if unnamed unions are used for this!
   union dummy_u {
     char data[sizeof(T)];
     typename std::aligned_storage<::std::alignment_of<T>::value>::type aligner_;
   } dummy_;
 
- public:
-  void const* address() const { return &dummy_.data[0]; }
-  void* address() { return &dummy_.data[0]; }
+public:
+  void const *address() const { return &dummy_.data[0]; }
+  void *address() { return &dummy_.data[0]; }
 };
 
-template <class T>
-struct types_when_isnt_ref {
-  typedef T const& reference_const_type;
-  typedef T& reference_type;
-  typedef T const* pointer_const_type;
-  typedef T* pointer_type;
-  typedef T const& argument_type;
+template <class T> struct types_when_isnt_ref {
+  typedef T const &reference_const_type;
+  typedef T &reference_type;
+  typedef T const *pointer_const_type;
+  typedef T *pointer_type;
+  typedef T const &argument_type;
 };
-template <class T>
-struct types_when_is_ref {
+template <class T> struct types_when_is_ref {
   typedef typename std::remove_reference<T>::type raw_type;
 
-  typedef raw_type& reference_const_type;
-  typedef raw_type& reference_type;
-  typedef raw_type* pointer_const_type;
-  typedef raw_type* pointer_type;
-  typedef raw_type& argument_type;
+  typedef raw_type &reference_const_type;
+  typedef raw_type &reference_type;
+  typedef raw_type *pointer_const_type;
+  typedef raw_type *pointer_type;
+  typedef raw_type &argument_type;
 };
 
 struct optional_tag {};
 
-template <class T>
-class optional_base : public optional_tag {
- private:
+template <class T> class optional_base : public optional_tag {
+private:
   typedef
       typename ::paddle::detail::make_reference_content<T>::type internal_type;
 
@@ -181,7 +169,7 @@ class optional_base : public optional_tag {
 
   typedef optional_base<T> this_type;
 
- protected:
+protected:
   typedef T value_type;
 
   typedef std::true_type is_reference_tag;
@@ -189,9 +177,9 @@ class optional_base : public optional_tag {
 
   typedef typename std::is_reference<T>::type is_reference_predicate;
 
-  typedef typename std::conditional<is_reference_predicate::value,
-                                    types_when_ref,
-                                    types_when_not_ref>::type types;
+  typedef
+      typename std::conditional<is_reference_predicate::value, types_when_ref,
+                                types_when_not_ref>::type types;
 
   typedef bool (this_type::*unspecified_bool_type)() const;
 
@@ -207,11 +195,11 @@ class optional_base : public optional_tag {
 
   // Creates an optional<T> uninitialized.
   // No-throw
-  optional_base(none_t) : m_initialized(false) {}  // NOLINT
+  optional_base(none_t) : m_initialized(false) {} // NOLINT
 
   // Creates an optional<T> initialized with 'val'.
   // Can throw if T::T(T const&) does
-  optional_base(argument_type val) : m_initialized(false) {  // NOLINT
+  optional_base(argument_type val) : m_initialized(false) { // NOLINT
     construct(val);
   }
 
@@ -219,20 +207,22 @@ class optional_base : public optional_tag {
   // creates an uninitialized optional<T>.
   // Can throw if T::T(T const&) does
   optional_base(bool cond, argument_type val) : m_initialized(false) {
-    if (cond) construct(val);
+    if (cond)
+      construct(val);
   }
 
   // Creates a deep copy of another optional<T>
   // Can throw if T::T(T const&) does
-  optional_base(optional_base const& rhs) : m_initialized(false) {
-    if (rhs.is_initialized()) construct(rhs.get_impl());
+  optional_base(optional_base const &rhs) : m_initialized(false) {
+    if (rhs.is_initialized())
+      construct(rhs.get_impl());
   }
 
   // This is used for both converting and in-place constructions.
   // Derived classes use the 'tag' to select the appropriate
   // implementation (the correct 'construct()' overload)
   template <class Expr>
-  explicit optional_base(Expr const& expr, Expr const* tag)
+  explicit optional_base(Expr const &expr, Expr const *tag)
       : m_initialized(false) {
     construct(expr, tag);
   }
@@ -241,20 +231,20 @@ class optional_base : public optional_tag {
   ~optional_base() { destroy(); }
 
   // Assigns from another optional<T> (deep-copies the rhs value)
-  void assign(optional_base const& rhs) {
+  void assign(optional_base const &rhs) {
     if (is_initialized()) {
       if (rhs.is_initialized())
         assign_value(rhs.get_impl(), is_reference_predicate());
       else
         destroy();
     } else {
-      if (rhs.is_initialized()) construct(rhs.get_impl());
+      if (rhs.is_initialized())
+        construct(rhs.get_impl());
     }
   }
 
   // Assigns from another _convertible_ optional<U> (deep-copies the rhs value)
-  template <class U>
-  void assign(optional<U> const& rhs) {
+  template <class U> void assign(optional<U> const &rhs) {
     if (is_initialized()) {
       if (rhs.is_initialized())
         assign_value(static_cast<value_type>(rhs.get()),
@@ -262,7 +252,8 @@ class optional_base : public optional_tag {
       else
         destroy();
     } else {
-      if (rhs.is_initialized()) construct(static_cast<value_type>(rhs.get()));
+      if (rhs.is_initialized())
+        construct(static_cast<value_type>(rhs.get()));
     }
   }
 
@@ -279,15 +270,14 @@ class optional_base : public optional_tag {
   // No-throw (assuming T::~T() doesn't)
   void assign(none_t) { destroy(); }
 
-  template <class Expr>
-  void assign_expr(Expr const& expr, Expr const* tag) {
+  template <class Expr> void assign_expr(Expr const &expr, Expr const *tag) {
     if (is_initialized())
       assign_expr_to_initialized(expr, tag);
     else
       construct(expr, tag);
   }
 
- public:
+public:
   // Destroys the current value, if any, leaving this UNINITIALIZED
   // No-throw (assuming T::~T() doesn't)
   void reset() { destroy(); }
@@ -305,7 +295,7 @@ class optional_base : public optional_tag {
 
   bool is_initialized() const { return m_initialized; }
 
- protected:
+protected:
   void construct(argument_type val) {
     new (m_storage.address()) internal_type(val);
     m_initialized = true;
@@ -313,7 +303,7 @@ class optional_base : public optional_tag {
 
   // Constructs in-place using the given factory
   template <class Expr>
-  void construct(Expr const& factory, in_place_factory_base const*) {
+  void construct(Expr const &factory, in_place_factory_base const *) {
     static_assert(!is_reference_predicate::value,
                   "!is_reference_predicate::value");
     paddle_optional_detail::construct<value_type>(factory, m_storage.address());
@@ -322,7 +312,7 @@ class optional_base : public optional_tag {
 
   // Constructs in-place using the given typed factory
   template <class Expr>
-  void construct(Expr const& factory, typed_in_place_factory_base const*) {
+  void construct(Expr const &factory, typed_in_place_factory_base const *) {
     static_assert(!is_reference_predicate::value,
                   "!is_reference_predicate::value");
     factory.apply(m_storage.address());
@@ -330,16 +320,16 @@ class optional_base : public optional_tag {
   }
 
   template <class Expr>
-  void assign_expr_to_initialized(Expr const& factory,
-                                  in_place_factory_base const* tag) {
+  void assign_expr_to_initialized(Expr const &factory,
+                                  in_place_factory_base const *tag) {
     destroy();
     construct(factory, tag);
   }
 
   // Constructs in-place using the given typed factory
   template <class Expr>
-  void assign_expr_to_initialized(Expr const& factory,
-                                  typed_in_place_factory_base const* tag) {
+  void assign_expr_to_initialized(Expr const &factory,
+                                  typed_in_place_factory_base const *tag) {
     destroy();
     construct(factory, tag);
   }
@@ -351,8 +341,7 @@ class optional_base : public optional_tag {
   // with
   // 'Expr' being of type 'U' and relying on a converting constructor of T from
   // U.
-  template <class Expr>
-  void construct(Expr const& expr, void const*) {
+  template <class Expr> void construct(Expr const &expr, void const *) {
     new (m_storage.address()) internal_type(expr);
     m_initialized = true;
   }
@@ -365,7 +354,7 @@ class optional_base : public optional_tag {
   // 'Expr' being of type 'U' and relying on a converting assignment of T from
   // U.
   template <class Expr>
-  void assign_expr_to_initialized(Expr const& expr, void const*) {
+  void assign_expr_to_initialized(Expr const &expr, void const *) {
     assign_value(expr, is_reference_predicate());
   }
 
@@ -375,7 +364,8 @@ class optional_base : public optional_tag {
   void assign_value(argument_type val, is_reference_tag) { construct(val); }
 
   void destroy() {
-    if (m_initialized) destroy_impl(is_reference_predicate());
+    if (m_initialized)
+      destroy_impl(is_reference_predicate());
   }
 
   unspecified_bool_type safe_bool() const {
@@ -396,29 +386,29 @@ class optional_base : public optional_tag {
     return cast_ptr(get_object(), is_reference_predicate());
   }
 
- private:
+private:
   // internal_type can be either T or reference_content<T>
-  internal_type const* get_object() const {
-    return static_cast<internal_type const*>(m_storage.address());
+  internal_type const *get_object() const {
+    return static_cast<internal_type const *>(m_storage.address());
   }
-  internal_type* get_object() {
-    return static_cast<internal_type*>(m_storage.address());
+  internal_type *get_object() {
+    return static_cast<internal_type *>(m_storage.address());
   }
 
   // reference_content<T> lacks an implicit conversion to T&, so the following
   // is needed to obtain a proper reference.
-  reference_const_type dereference(internal_type const* p,
+  reference_const_type dereference(internal_type const *p,
                                    is_not_reference_tag) const {
     return *p;
   }
-  reference_type dereference(internal_type* p, is_not_reference_tag) {
+  reference_type dereference(internal_type *p, is_not_reference_tag) {
     return *p;
   }
-  reference_const_type dereference(internal_type const* p,
+  reference_const_type dereference(internal_type const *p,
                                    is_reference_tag) const {
     return p->get();
   }
-  reference_type dereference(internal_type* p, is_reference_tag) {
+  reference_type dereference(internal_type *p, is_reference_tag) {
     return p->get();
   }
 
@@ -435,15 +425,15 @@ class optional_base : public optional_tag {
   // T*, but just in case,
   // the following olverloads are used to filter out the case and guarantee an
   // error in case of T being a reference.
-  pointer_const_type cast_ptr(internal_type const* p,
+  pointer_const_type cast_ptr(internal_type const *p,
                               is_not_reference_tag) const {
     return p;
   }
-  pointer_type cast_ptr(internal_type* p, is_not_reference_tag) { return p; }
-  pointer_const_type cast_ptr(internal_type const* p, is_reference_tag) const {
+  pointer_type cast_ptr(internal_type *p, is_not_reference_tag) { return p; }
+  pointer_const_type cast_ptr(internal_type const *p, is_reference_tag) const {
     return &p->get();
   }
-  pointer_type cast_ptr(internal_type* p, is_reference_tag) {
+  pointer_type cast_ptr(internal_type *p, is_reference_tag) {
     return &p->get();
   }
 
@@ -451,15 +441,14 @@ class optional_base : public optional_tag {
   storage_type m_storage;
 };
 
-}  // namespace optional_detail
+} // namespace optional_detail
 
-template <class T>
-class optional : public optional_detail::optional_base<T> {
+template <class T> class optional : public optional_detail::optional_base<T> {
   typedef optional_detail::optional_base<T> base;
 
   typedef typename base::unspecified_bool_type unspecified_bool_type;
 
- public:
+public:
   typedef optional<T> this_type;
 
   typedef typename base::value_type value_type;
@@ -475,11 +464,11 @@ class optional : public optional_detail::optional_base<T> {
 
   // Creates an optional<T> uninitialized.
   // No-throw
-  optional(none_t none_) : base(none_) {}  // NOLINT
+  optional(none_t none_) : base(none_) {} // NOLINT
 
   // Creates an optional<T> initialized with 'val'.
   // Can throw if T::T(T const&) does
-  optional(argument_type val) : base(val) {}  // NOLINT
+  optional(argument_type val) : base(val) {} // NOLINT
 
   // Creates an optional<T> initialized with 'val' IFF cond is true, otherwise
   // creates an uninitialized optional.
@@ -489,9 +478,9 @@ class optional : public optional_detail::optional_base<T> {
   // Creates a deep copy of another convertible optional<U>
   // Requires a valid conversion from U to T.
   // Can throw if T::T(U const&) does
-  template <class U>
-  explicit optional(optional<U> const& rhs) : base() {
-    if (rhs.is_initialized()) this->construct(rhs.get());
+  template <class U> explicit optional(optional<U> const &rhs) : base() {
+    if (rhs.is_initialized())
+      this->construct(rhs.get());
   }
 
   // Creates an optional<T> with an expression which can be either
@@ -505,19 +494,18 @@ class optional : public optional_detail::optional_base<T> {
   // Depending on the above some T ctor is called.
   // Can throw is the resolved T ctor throws.
   template <class Expr>
-  explicit optional(Expr const& expr) : base(expr, &expr) {}
+  explicit optional(Expr const &expr) : base(expr, &expr) {}
 
   // Creates a deep copy of another optional<T>
   // Can throw if T::T(T const&) does
-  optional(optional const& rhs) : base(rhs) {}
+  optional(optional const &rhs) : base(rhs) {}
 
   // No-throw (assuming T::~T() doesn't)
   ~optional() {}
 
   // Assigns from an expression. See corresponding constructor.
   // Basic Guarantee: If the resolved T ctor throws, this is left UNINITIALIZED
-  template <class Expr>
-  optional& operator=(Expr expr) {
+  template <class Expr> optional &operator=(Expr expr) {
     this->assign_expr(expr, &expr);
     return *this;
   }
@@ -526,8 +514,7 @@ class optional : public optional_detail::optional_base<T> {
   // rhs value)
   // Requires a valid conversion from U to T.
   // Basic Guarantee: If T::T( U const& ) throws, this is left UNINITIALIZED
-  template <class U>
-  optional& operator=(optional<U> const& rhs) {
+  template <class U> optional &operator=(optional<U> const &rhs) {
     this->assign(rhs);
     return *this;
   }
@@ -536,14 +523,14 @@ class optional : public optional_detail::optional_base<T> {
   // Basic Guarantee: If T::T( T const& ) throws, this is left UNINITIALIZED
   //  (NOTE: On BCB, this operator is not actually called and left is left
   //  UNMODIFIED in case of a throw)
-  optional& operator=(optional const& rhs) {
+  optional &operator=(optional const &rhs) {
     this->assign(rhs);
     return *this;
   }
 
   // Assigns from a T (deep-copies the rhs value)
   // Basic Guarantee: If T::( T const& ) throws, this is left UNINITIALIZED
-  optional& operator=(argument_type val) {
+  optional &operator=(argument_type val) {
     this->assign(val);
     return *this;
   }
@@ -551,7 +538,7 @@ class optional : public optional_detail::optional_base<T> {
   // Assigns from a "none"
   // Which destroys the current value, if any, leaving this UNINITIALIZED
   // No-throw (assuming T::~T() doesn't)
-  optional& operator=(none_t none_) {
+  optional &operator=(none_t none_) {
     this->assign(none_);
     return *this;
   }
@@ -605,14 +592,12 @@ class optional : public optional_detail::optional_base<T> {
 };
 
 // Returns optional<T>(v)
-template <class T>
-inline optional<T> make_optional(T const& v) {
+template <class T> inline optional<T> make_optional(T const &v) {
   return optional<T>(v);
 }
 
 // Returns optional<T>(cond,v)
-template <class T>
-inline optional<T> make_optional(bool cond, T const& v) {
+template <class T> inline optional<T> make_optional(bool cond, T const &v) {
   return optional<T>(cond, v);
 }
 
@@ -620,12 +605,12 @@ inline optional<T> make_optional(bool cond, T const& v) {
 // behaviour is UNDEFINED.
 // No-throw
 template <class T>
-inline typename optional<T>::reference_const_type get(optional<T> const& opt) {
+inline typename optional<T>::reference_const_type get(optional<T> const &opt) {
   return opt.get();
 }
 
 template <class T>
-inline typename optional<T>::reference_type get(optional<T>& opt) {  // NOLINT
+inline typename optional<T>::reference_type get(optional<T> &opt) { // NOLINT
   return opt.get();
 }
 
@@ -633,12 +618,12 @@ inline typename optional<T>::reference_type get(optional<T>& opt) {  // NOLINT
 // NULL.
 // No-throw
 template <class T>
-inline typename optional<T>::pointer_const_type get(optional<T> const* opt) {
+inline typename optional<T>::pointer_const_type get(optional<T> const *opt) {
   return opt->get_ptr();
 }
 
 template <class T>
-inline typename optional<T>::pointer_type get(optional<T>* opt) {
+inline typename optional<T>::pointer_type get(optional<T> *opt) {
   return opt->get_ptr();
 }
 
@@ -646,14 +631,16 @@ inline typename optional<T>::pointer_type get(optional<T>* opt) {
 // behaviour is UNDEFINED.
 // No-throw
 template <class T>
-inline typename optional<T>::reference_const_type get_optional_value_or(
-    optional<T> const& opt, typename optional<T>::reference_const_type v) {
+inline typename optional<T>::reference_const_type
+get_optional_value_or(optional<T> const &opt,
+                      typename optional<T>::reference_const_type v) {
   return opt.get_value_or(v);
 }
 
 template <class T>
-inline typename optional<T>::reference_type get_optional_value_or(
-    optional<T>& opt, typename optional<T>::reference_type v) {  // NOLINT
+inline typename optional<T>::reference_type
+get_optional_value_or(optional<T> &opt,
+                      typename optional<T>::reference_type v) { // NOLINT
   return opt.get_value_or(v);
 }
 
@@ -661,14 +648,14 @@ inline typename optional<T>::reference_type get_optional_value_or(
 // NULL.
 // No-throw
 template <class T>
-inline typename optional<T>::pointer_const_type get_pointer(
-    optional<T> const& opt) {
+inline typename optional<T>::pointer_const_type
+get_pointer(optional<T> const &opt) {
   return opt.get_ptr();
 }
 
 template <class T>
-inline typename optional<T>::pointer_type get_pointer(
-    optional<T>& opt) {  // NOLINT
+inline typename optional<T>::pointer_type
+get_pointer(optional<T> &opt) { // NOLINT
   return opt.get_ptr();
 }
 
@@ -682,65 +669,59 @@ inline typename optional<T>::pointer_type get_pointer(
 //
 
 template <class T>
-inline bool operator==(optional<T> const& x, optional<T> const& y) {
+inline bool operator==(optional<T> const &x, optional<T> const &y) {
   return equal_pointees(x, y);
 }
 
 template <class T>
-inline bool operator<(optional<T> const& x, optional<T> const& y) {
+inline bool operator<(optional<T> const &x, optional<T> const &y) {
   return less_pointees(x, y);
 }
 
 template <class T>
-inline bool operator!=(optional<T> const& x, optional<T> const& y) {
+inline bool operator!=(optional<T> const &x, optional<T> const &y) {
   return !(x == y);
 }
 
 template <class T>
-inline bool operator>(optional<T> const& x, optional<T> const& y) {
+inline bool operator>(optional<T> const &x, optional<T> const &y) {
   return y < x;
 }
 
 template <class T>
-inline bool operator<=(optional<T> const& x, optional<T> const& y) {
+inline bool operator<=(optional<T> const &x, optional<T> const &y) {
   return !(y < x);
 }
 
 template <class T>
-inline bool operator>=(optional<T> const& x, optional<T> const& y) {
+inline bool operator>=(optional<T> const &x, optional<T> const &y) {
   return !(x < y);
 }
 
 //
 // optional<T> vs T cases
 //
-template <class T>
-inline bool operator==(optional<T> const& x, T const& y) {
+template <class T> inline bool operator==(optional<T> const &x, T const &y) {
   return equal_pointees(x, optional<T>(y));
 }
 
-template <class T>
-inline bool operator<(optional<T> const& x, T const& y) {
+template <class T> inline bool operator<(optional<T> const &x, T const &y) {
   return less_pointees(x, optional<T>(y));
 }
 
-template <class T>
-inline bool operator!=(optional<T> const& x, T const& y) {
+template <class T> inline bool operator!=(optional<T> const &x, T const &y) {
   return !(x == y);
 }
 
-template <class T>
-inline bool operator>(optional<T> const& x, T const& y) {
+template <class T> inline bool operator>(optional<T> const &x, T const &y) {
   return y < x;
 }
 
-template <class T>
-inline bool operator<=(optional<T> const& x, T const& y) {
+template <class T> inline bool operator<=(optional<T> const &x, T const &y) {
   return !(y < x);
 }
 
-template <class T>
-inline bool operator>=(optional<T> const& x, T const& y) {
+template <class T> inline bool operator>=(optional<T> const &x, T const &y) {
   return !(x < y);
 }
 
@@ -748,33 +729,27 @@ inline bool operator>=(optional<T> const& x, T const& y) {
 // T vs optional<T> cases
 //
 
-template <class T>
-inline bool operator==(T const& x, optional<T> const& y) {
+template <class T> inline bool operator==(T const &x, optional<T> const &y) {
   return equal_pointees(optional<T>(x), y);
 }
 
-template <class T>
-inline bool operator<(T const& x, optional<T> const& y) {
+template <class T> inline bool operator<(T const &x, optional<T> const &y) {
   return less_pointees(optional<T>(x), y);
 }
 
-template <class T>
-inline bool operator!=(T const& x, optional<T> const& y) {
+template <class T> inline bool operator!=(T const &x, optional<T> const &y) {
   return !(x == y);
 }
 
-template <class T>
-inline bool operator>(T const& x, optional<T> const& y) {
+template <class T> inline bool operator>(T const &x, optional<T> const &y) {
   return y < x;
 }
 
-template <class T>
-inline bool operator<=(T const& x, optional<T> const& y) {
+template <class T> inline bool operator<=(T const &x, optional<T> const &y) {
   return !(y < x);
 }
 
-template <class T>
-inline bool operator>=(T const& x, optional<T> const& y) {
+template <class T> inline bool operator>=(T const &x, optional<T> const &y) {
   return !(x < y);
 }
 
@@ -782,33 +757,27 @@ inline bool operator>=(T const& x, optional<T> const& y) {
 // optional<T> vs none cases
 //
 
-template <class T>
-inline bool operator==(optional<T> const& x, none_t) {
+template <class T> inline bool operator==(optional<T> const &x, none_t) {
   return equal_pointees(x, optional<T>());
 }
 
-template <class T>
-inline bool operator<(optional<T> const& x, none_t) {
+template <class T> inline bool operator<(optional<T> const &x, none_t) {
   return less_pointees(x, optional<T>());
 }
 
-template <class T>
-inline bool operator!=(optional<T> const& x, none_t y) {
+template <class T> inline bool operator!=(optional<T> const &x, none_t y) {
   return !(x == y);
 }
 
-template <class T>
-inline bool operator>(optional<T> const& x, none_t y) {
+template <class T> inline bool operator>(optional<T> const &x, none_t y) {
   return y < x;
 }
 
-template <class T>
-inline bool operator<=(optional<T> const& x, none_t y) {
+template <class T> inline bool operator<=(optional<T> const &x, none_t y) {
   return !(y < x);
 }
 
-template <class T>
-inline bool operator>=(optional<T> const& x, none_t y) {
+template <class T> inline bool operator>=(optional<T> const &x, none_t y) {
   return !(x < y);
 }
 
@@ -816,33 +785,27 @@ inline bool operator>=(optional<T> const& x, none_t y) {
 // none vs optional<T> cases
 //
 
-template <class T>
-inline bool operator==(none_t x, optional<T> const& y) {
+template <class T> inline bool operator==(none_t x, optional<T> const &y) {
   return equal_pointees(optional<T>(), y);
 }
 
-template <class T>
-inline bool operator<(none_t x, optional<T> const& y) {
+template <class T> inline bool operator<(none_t x, optional<T> const &y) {
   return less_pointees(optional<T>(), y);
 }
 
-template <class T>
-inline bool operator!=(none_t x, optional<T> const& y) {
+template <class T> inline bool operator!=(none_t x, optional<T> const &y) {
   return !(x == y);
 }
 
-template <class T>
-inline bool operator>(none_t x, optional<T> const& y) {
+template <class T> inline bool operator>(none_t x, optional<T> const &y) {
   return y < x;
 }
 
-template <class T>
-inline bool operator<=(none_t x, optional<T> const& y) {
+template <class T> inline bool operator<=(none_t x, optional<T> const &y) {
   return !(y < x);
 }
 
-template <class T>
-inline bool operator>=(none_t x, optional<T> const& y) {
+template <class T> inline bool operator>=(none_t x, optional<T> const &y) {
   return !(x < y);
 }
 
@@ -855,8 +818,7 @@ namespace optional_detail {
 // If U.reset(*I) throws, both are left UNCHANGED (U is kept uinitialized and I
 // is never reset)
 // If both are uninitialized, do nothing (no-throw)
-template <class T>
-inline void optional_swap(optional<T>& x, optional<T>& y) {
+template <class T> inline void optional_swap(optional<T> &x, optional<T> &y) {
   if (!x && !!y) {
     x.reset(*y);
     y.reset();
@@ -870,6 +832,6 @@ inline void optional_swap(optional<T>& x, optional<T>& y) {
   }
 }
 
-}  // namespace optional_detail
+} // namespace optional_detail
 
-}  // namespace paddle
+} // namespace paddle

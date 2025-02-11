@@ -1,31 +1,32 @@
 /* file: mkl_vml_defines.h */
 /*******************************************************************************
-* Copyright (c) 2006-2019, Intel Corporation
-* All rights reserved.
-*
-* Redistribution and use in source and binary forms, with or without
-* modification, are permitted provided that the following conditions are met:
-*
-*     * Redistributions of source code must retain the above copyright notice,
-*       this list of conditions and the following disclaimer.
-*     * Redistributions in binary form must reproduce the above copyright
-*       notice, this list of conditions and the following disclaimer in the
-*       documentation and/or other materials provided with the distribution.
-*     * Neither the name of Intel Corporation nor the names of its contributors
-*       may be used to endorse or promote products derived from this software
-*       without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*******************************************************************************/
+ * Copyright (c) 2006-2019, Intel Corporation
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *     * Redistributions of source code must retain the above copyright notice,
+ *       this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of Intel Corporation nor the names of its contributors
+ *       may be used to endorse or promote products derived from this software
+ *       without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ *ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ *LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ *SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ *INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ *CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ *ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ *POSSIBILITY OF SUCH DAMAGE.
+ *******************************************************************************/
 
 /*
 //++
@@ -66,7 +67,6 @@ extern "C" {
 #define VML_HA 0x00000002
 #define VML_EP 0x00000003
 
-
 /*
 //  SETTING OPTIMAL FLOATING-POINT PRECISION AND ROUNDING MODE
 //  Definitions below are to set optimal floating-point control word
@@ -89,9 +89,9 @@ extern "C" {
 //        VML_DEFAULT_PRECISION must not be used in combination
 */
 #define VML_DEFAULT_PRECISION 0x00000000
-#define VML_FLOAT_CONSISTENT  0x00000010
+#define VML_FLOAT_CONSISTENT 0x00000010
 #define VML_DOUBLE_CONSISTENT 0x00000020
-#define VML_RESTORE           0x00000030
+#define VML_RESTORE 0x00000030
 
 /*
 //  VML ERROR HANDLING CONTROL
@@ -111,14 +111,14 @@ extern "C" {
 //  NOTE: VML_ERRMODE_NOERR must not be used in combination with any
 //        other VML_ERRMODE setting.
 */
-#define VML_ERRMODE_IGNORE   0x00000100
-#define VML_ERRMODE_ERRNO    0x00000200
-#define VML_ERRMODE_STDERR   0x00000400
-#define VML_ERRMODE_EXCEPT   0x00000800
+#define VML_ERRMODE_IGNORE 0x00000100
+#define VML_ERRMODE_ERRNO 0x00000200
+#define VML_ERRMODE_STDERR 0x00000400
+#define VML_ERRMODE_EXCEPT 0x00000800
 #define VML_ERRMODE_CALLBACK 0x00001000
-#define VML_ERRMODE_NOERR    0x00002000
-#define VML_ERRMODE_DEFAULT  \
-VML_ERRMODE_ERRNO | VML_ERRMODE_CALLBACK | VML_ERRMODE_EXCEPT
+#define VML_ERRMODE_NOERR 0x00002000
+#define VML_ERRMODE_DEFAULT                                                    \
+  VML_ERRMODE_ERRNO | VML_ERRMODE_CALLBACK | VML_ERRMODE_EXCEPT
 
 /*
 //  OpenMP(R) number of threads mode macros
@@ -129,8 +129,8 @@ VML_ERRMODE_ERRNO | VML_ERRMODE_CALLBACK | VML_ERRMODE_EXCEPT
 //                               environmental variable OPM_NUM_THREADS
 //                               omp_set_num_threads() functions
 */
-#define VML_NUM_THREADS_OMP_AUTO   0x00000000
-#define VML_NUM_THREADS_OMP_FIXED  0x00010000
+#define VML_NUM_THREADS_OMP_AUTO 0x00000000
+#define VML_NUM_THREADS_OMP_FIXED 0x00010000
 
 /*
 //  FTZ & DAZ mode macros
@@ -139,8 +139,8 @@ VML_ERRMODE_ERRNO | VML_ERRMODE_CALLBACK | VML_ERRMODE_EXCEPT
 //  VML_FTZDAZ_OFF  - FTZ & DAZ MXCSR mode disabled
 //                    for accurate (sub)denormal values processing
 */
-#define VML_FTZDAZ_ON   0x00280000
-#define VML_FTZDAZ_OFF  0x00140000
+#define VML_FTZDAZ_ON 0x00280000
+#define VML_FTZDAZ_OFF 0x00140000
 
 /*
 //  Exception trap macros
@@ -150,10 +150,10 @@ VML_ERRMODE_ERRNO | VML_ERRMODE_CALLBACK | VML_ERRMODE_EXCEPT
 //  VML_TRAP_UNDERFLOW           Trap numeric underflow exception
 */
 
-#define VML_TRAP_INVALID    0x01000000
-#define VML_TRAP_DIVBYZERO  0x02000000
-#define VML_TRAP_OVERFLOW   0x04000000
-#define VML_TRAP_UNDERFLOW  0x08000000
+#define VML_TRAP_INVALID 0x01000000
+#define VML_TRAP_DIVBYZERO 0x02000000
+#define VML_TRAP_OVERFLOW 0x04000000
+#define VML_TRAP_UNDERFLOW 0x08000000
 
 /*
 //  ACCURACY, FLOATING-POINT CONTROL, FTZDAZ AND ERROR HANDLING MASKS
@@ -172,14 +172,14 @@ VML_ERRMODE_ERRNO | VML_ERRMODE_CALLBACK | VML_ERRMODE_EXCEPT
 //  VML_FTZDAZ_MASK             - extract FTZ & DAZ bits
 //  VML_TRAP_EXCEPTIONS_MASK    - extract exception trap bits
 */
-#define VML_ACCURACY_MASK           0x0000000F
-#define VML_FPUMODE_MASK            0x000000F0
-#define VML_ERRMODE_MASK            0x0000FF00
+#define VML_ACCURACY_MASK 0x0000000F
+#define VML_FPUMODE_MASK 0x000000F0
+#define VML_ERRMODE_MASK 0x0000FF00
 #define VML_ERRMODE_STDHANDLER_MASK 0x00002F00
-#define VML_ERRMODE_CALLBACK_MASK   0x00001000
-#define VML_NUM_THREADS_OMP_MASK    0x00030000
-#define VML_FTZDAZ_MASK             0x003C0000
-#define VML_TRAP_EXCEPTIONS_MASK    0x0F000000
+#define VML_ERRMODE_CALLBACK_MASK 0x00001000
+#define VML_NUM_THREADS_OMP_MASK 0x00030000
+#define VML_FTZDAZ_MASK 0x003C0000
+#define VML_TRAP_EXCEPTIONS_MASK 0x0F000000
 
 /*
 //  ERROR STATUS MACROS
@@ -193,14 +193,14 @@ VML_ERRMODE_ERRNO | VML_ERRMODE_CALLBACK | VML_ERRMODE_EXCEPT
 //  VML_STATUS_ACCURACYWARNING - function doesn't support set accuracy mode,
 //                               lower accuracy mode was used instead
 */
-#define VML_STATUS_OK                    0
-#define VML_STATUS_BADSIZE              -1
-#define VML_STATUS_BADMEM               -2
-#define VML_STATUS_ERRDOM                1
-#define VML_STATUS_SING                  2
-#define VML_STATUS_OVERFLOW              3
-#define VML_STATUS_UNDERFLOW             4
-#define VML_STATUS_ACCURACYWARNING       1000
+#define VML_STATUS_OK 0
+#define VML_STATUS_BADSIZE -1
+#define VML_STATUS_BADMEM -2
+#define VML_STATUS_ERRDOM 1
+#define VML_STATUS_SING 2
+#define VML_STATUS_OVERFLOW 3
+#define VML_STATUS_UNDERFLOW 4
+#define VML_STATUS_ACCURACYWARNING 1000
 
 #ifdef __cplusplus
 }

@@ -11,15 +11,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#include <ppocr_c.h>
-#include <paddlestructure.h>
-#include <opencv2/imgcodecs.hpp>
 #include <args.h>
 #include <iostream>
+#include <opencv2/imgcodecs.hpp>
+#include <paddlestructure.h>
+#include <ppocr_c.h>
 
 using namespace PaddleOCR;
 
-int check_params( Args const & args ) noexcept {
+int check_params(Args const &args) noexcept {
   if (args.det) {
     if (args.det_model_dir.empty() || args.image_dir.empty()) {
       return 1;
@@ -41,7 +41,7 @@ int check_params( Args const & args ) noexcept {
   if (args.table) {
     if (args.table_model_dir.empty() || args.det_model_dir.empty() ||
         args.rec_model_dir.empty() || args.image_dir.empty()) {
-       return 4;
+      return 4;
     }
   }
 
@@ -60,28 +60,23 @@ int check_params( Args const & args ) noexcept {
 }
 
 /// Print help messages
-void ppocr_print_help() noexcept
-{
-  ArgsHelp(std::cout);
-}
+void ppocr_print_help() noexcept { ArgsHelp(std::cout); }
 
 struct PPOCRC {
-  PPOCR* exe;
+  PPOCR *exe;
 };
 
-int ppocr_from_Args( CPPOCR * cppocr, Args const & args ) noexcept
-{
-  if ( args.help )
-  {
+int ppocr_from_Args(CPPOCR *cppocr, Args const &args) noexcept {
+  if (args.help) {
     ppocr_print_help();
     exit(0);
   }
 
   int ret = check_params(args);
-  if ( ret )
+  if (ret)
     return ret;
 
-  PPOCR * ocr;
+  PPOCR *ocr;
 
   if (args.type == "ocr")
     ocr = new PaddleOCR::PPOCR(args);
@@ -90,12 +85,11 @@ int ppocr_from_Args( CPPOCR * cppocr, Args const & args ) noexcept
   else
     return 7;
 
-  if ( !ocr )
+  if (!ocr)
     return -2;
 
   *cppocr = new struct PPOCRC;
-  if ( !(*cppocr) )
-  {
+  if (!(*cppocr)) {
     delete ocr;
     return -1;
   }
@@ -105,52 +99,42 @@ int ppocr_from_Args( CPPOCR * cppocr, Args const & args ) noexcept
   return 0;
 }
 
-
-int ppocr_from_args( CPPOCR * cppocr, int argc, char ** argv ) noexcept
-{
-  return ppocr_from_Args( cppocr, Args( argc, argv ) );
+int ppocr_from_args(CPPOCR *cppocr, int argc, char **argv) noexcept {
+  return ppocr_from_Args(cppocr, Args(argc, argv));
 }
 
-int ppocr_from_inis( CPPOCR * cppocr, const char *inis ) noexcept
-{
-  return ppocr_from_Args( cppocr, Args(inis) );
+int ppocr_from_inis(CPPOCR *cppocr, const char *inis) noexcept {
+  return ppocr_from_Args(cppocr, Args(inis));
 }
 
-int ppocr_from_sxml( CPPOCR * cppocr, char const * xmlfile ) noexcept
-{
-    return -5;
-}
+int ppocr_from_sxml(CPPOCR *cppocr, char const *xmlfile) noexcept { return -5; }
 
-void ppocr_destroy( CPPOCR cppocr ) noexcept
-{
-  if ( !cppocr )
+void ppocr_destroy(CPPOCR cppocr) noexcept {
+  if (!cppocr)
     return;
 
   delete cppocr->exe;
   delete cppocr;
 }
 
-void ppocr_print_result( PPPOcrResult results ) noexcept
-{
+void ppocr_print_result(PPPOcrResult results) noexcept {
   int i = 0;
   PPPOcrResult current = results;
-  while ( current )
-  {
-    printf( "%d\t", i++ );
+  while (current) {
+    printf("%d\t", i++);
 
     // rec
     if (current->score != -1.0) {
-      printf( "rec text: %s rec score: %f ",
-               current->text, current->score );
+      printf("rec text: %s rec score: %f ", current->text, current->score);
     }
 
     // cls
     if (current->cls_label != -1) {
-      printf( "cls label: %d rec score: %f",
-              current->cls_label, current->cls_score );
+      printf("cls label: %d rec score: %f", current->cls_label,
+             current->cls_score);
     }
 
-    printf( "\n" );
+    printf("\n");
 
     current = current->next;
   }
@@ -159,7 +143,7 @@ void ppocr_print_result( PPPOcrResult results ) noexcept
 int ocr(std::vector<cv::String> &cv_all_img_names, CPPOCR cppocr,
         std::vector<std::vector<OCRPredictResult>> &ocr_results) noexcept {
   PPOCR &ocr = *(cppocr->exe);
-  Args const & args = ocr.args();
+  Args const &args = ocr.args();
 
   std::vector<cv::Mat> img_list;
   std::vector<cv::String> img_names;
@@ -171,7 +155,7 @@ int ocr(std::vector<cv::String> &cv_all_img_names, CPPOCR cppocr,
     img_names.emplace_back(cv_all_img_names[i]);
   }
 
-  if ( img_list.empty() )
+  if (img_list.empty())
     return -8;
 
   ocr_results = ocr.ocr(img_list);
@@ -188,10 +172,11 @@ int ocr(std::vector<cv::String> &cv_all_img_names, CPPOCR cppocr,
   return 0;
 }
 
-int structure(std::vector<cv::String> &cv_all_img_names, CPPOCR cppocr,
-              std::vector<std::vector<OCRPredictResult>> &ocr_results) noexcept {
-  PaddleStructure &engine = *dynamic_cast<PaddleStructure*>(cppocr->exe);
-  Args const & args = engine.args();
+int structure(
+    std::vector<cv::String> &cv_all_img_names, CPPOCR cppocr,
+    std::vector<std::vector<OCRPredictResult>> &ocr_results) noexcept {
+  PaddleStructure &engine = *dynamic_cast<PaddleStructure *>(cppocr->exe);
+  Args const &args = engine.args();
 
   for (int i = 0; i < cv_all_img_names.size(); ++i) {
     // std::cout << "predict img: " << cv_all_img_names[i] << std::endl;
@@ -202,7 +187,8 @@ int structure(std::vector<cv::String> &cv_all_img_names, CPPOCR cppocr,
       continue;
     }
 
-    std::vector<StructurePredictResult> structure_results = engine.structure(img);
+    std::vector<StructurePredictResult> structure_results =
+        engine.structure(img);
 
     for (size_t j = 0; j < structure_results.size(); ++j) {
       if (structure_results[j].type == "table") {
@@ -211,8 +197,8 @@ int structure(std::vector<cv::String> &cv_all_img_names, CPPOCR cppocr,
           std::string file_name = Utility::basename(cv_all_img_names[i]);
 
           Utility::VisualizeBboxes(img, structure_results[j],
-                                   args.output + "/" + std::to_string(j) +
-                                       "_" + file_name);
+                                   args.output + "/" + std::to_string(j) + "_" +
+                                       file_name);
         }
       }
       ocr_results.emplace_back(std::move(structure_results[j].text_res));
@@ -222,11 +208,12 @@ int structure(std::vector<cv::String> &cv_all_img_names, CPPOCR cppocr,
   return 0;
 }
 
-int ppocr_cmd( CPPOCR cppocr, PPPOcrResult * result ) noexcept {
-  return ppocr_exe( cppocr, cppocr->exe->args().image_dir.c_str(), result );
+int ppocr_cmd(CPPOCR cppocr, PPPOcrResult *result) noexcept {
+  return ppocr_exe(cppocr, cppocr->exe->args().image_dir.c_str(), result);
 }
 
-int ppocr_exe( CPPOCR cppocr, char const * image_dir, PPPOcrResult * result ) noexcept {
+int ppocr_exe(CPPOCR cppocr, char const *image_dir,
+              PPPOcrResult *result) noexcept {
 
   if (!Utility::PathExists(image_dir)) {
     return -3;
@@ -235,7 +222,7 @@ int ppocr_exe( CPPOCR cppocr, char const * image_dir, PPPOcrResult * result ) no
   std::vector<cv::String> cv_all_img_names;
   cv::glob(image_dir, cv_all_img_names);
 
-  Args const & args = cppocr->exe->args();
+  Args const &args = cppocr->exe->args();
 
   if (!Utility::PathExists(args.output))
     Utility::CreateDir(args.output);
@@ -248,29 +235,27 @@ int ppocr_exe( CPPOCR cppocr, char const * image_dir, PPPOcrResult * result ) no
   else if (args.type == "structure")
     ret = structure(cv_all_img_names, cppocr, ocr_results);
 
-  if ( ret || !result )
+  if (ret || !result)
     return ret;
 
   *result = nullptr;
 
-  PPPOcrResult * recent = result;
+  PPPOcrResult *recent = result;
 
-  for ( int i = 0; i < ocr_results.size(); ++i )
-  {
-    std::vector<OCRPredictResult> const & results = ocr_results[i];
-    for ( int j = 0; j < results.size(); ++j )
-    {
-      if ( results[j].score < 0.1 )
+  for (int i = 0; i < ocr_results.size(); ++i) {
+    std::vector<OCRPredictResult> const &results = ocr_results[i];
+    for (int j = 0; j < results.size(); ++j) {
+      if (results[j].score < 0.1)
         continue;
 
-      if ( *recent == nullptr )
-      {
+      if (*recent == nullptr) {
         *recent = new PPOcrResult;
         (*recent)->next = nullptr;
       }
 
       (*recent)->text = new char[results[j].text.size() + 1];
-      strncpy( (*recent)->text, results[j].text.c_str(), results[j].text.size()+1 );
+      strncpy((*recent)->text, results[j].text.c_str(),
+              results[j].text.size() + 1);
       (*recent)->score = results[j].score;
       (*recent)->cls_score = results[j].cls_score;
       (*recent)->cls_label = results[j].cls_label;
@@ -281,14 +266,12 @@ int ppocr_exe( CPPOCR cppocr, char const * image_dir, PPPOcrResult * result ) no
   return 0;
 }
 
-void ppocr_free( PPPOcrResult result ) noexcept
-{
+void ppocr_free(PPPOcrResult result) noexcept {
   PPPOcrResult recent = result;
-  while(recent)
-  {
+  while (recent) {
     PPPOcrResult toDel = recent;
     recent = recent->next;
-    delete [] toDel->text;
+    delete[] toDel->text;
     delete toDel;
   }
 }

@@ -26,10 +26,9 @@ ExportedFlagInfoMap *GetMutableExportedFlagInfoMap() {
   return &g_exported_flag_info_map;
 }
 
-}  // namespace phi
+} // namespace phi
 
-PHI_DEFINE_EXPORTED_int32(inner_op_parallelism,
-                          0,
+PHI_DEFINE_EXPORTED_int32(inner_op_parallelism, 0,
                           "number of threads for inner op");
 
 /**
@@ -46,8 +45,7 @@ PHI_DEFINE_EXPORTED_int32(inner_op_parallelism,
  * Note:
  */
 
-PHI_DEFINE_EXPORTED_int32(paddle_num_threads,
-                          1,
+PHI_DEFINE_EXPORTED_int32(paddle_num_threads, 1,
                           "Number of threads for each paddle instance.");
 
 /**
@@ -61,8 +59,7 @@ PHI_DEFINE_EXPORTED_int32(paddle_num_threads,
  * - 1, return the low precision op list of current module.
  * - 2, return the op list of current module.
  */
-PHI_DEFINE_EXPORTED_int32(low_precision_op_list,
-                          0,
+PHI_DEFINE_EXPORTED_int32(low_precision_op_list, 0,
                           "Setting the level of low precision op"
                           "list printing. It will be return the "
                           "low precision op list of current module.");
@@ -76,8 +73,7 @@ PHI_DEFINE_EXPORTED_int32(low_precision_op_list,
  * Note: Used to debug. Checking whether operator produce NAN/INF or not.
  */
 PHI_DEFINE_EXPORTED_bool(
-    check_nan_inf,
-    false,
+    check_nan_inf, false,
     "Checking whether operator produce NAN/INF or not. It will be "
     "extremely slow so please use this flag wisely.");
 
@@ -98,8 +94,7 @@ PHI_DEFINE_EXPORTED_bool(
  * - 3, print the information of all tensors.
  */
 PHI_DEFINE_EXPORTED_int32(
-    check_nan_inf_level,
-    0,
+    check_nan_inf_level, 0,
     "Setting the check and print level when FLAGS_check_nan_inf is set.");
 
 /**
@@ -111,8 +106,7 @@ PHI_DEFINE_EXPORTED_int32(
  * Note: Used to debug. Checking whether operator produce NAN/INF or not.
  */
 PHI_DEFINE_EXPORTED_bool(
-    enable_opt_get_features,
-    false,
+    enable_opt_get_features, false,
     "Checking whether operator produce NAN/INF or not. It will be "
     "extremely slow so please use this flag wisely.");
 
@@ -129,8 +123,7 @@ PHI_DEFINE_EXPORTED_bool(
  * Note: whether to use Tensor Core, faster but it may loss precision.
  */
 PHI_DEFINE_EXPORTED_bool(
-    enable_cublas_tensor_op_math,
-    false,
+    enable_cublas_tensor_op_math, false,
     "The enable_cublas_tensor_op_math indicate whether to use Tensor Core, "
     "but it may loss precision. Currently, There are two CUDA libraries that"
     " use Tensor Cores, cuBLAS and cuDNN. cuBLAS uses Tensor Cores to speed up"
@@ -149,8 +142,7 @@ PHI_DEFINE_EXPORTED_bool(
  * faster but it may loss precision.
  */
 PHI_DEFINE_EXPORTED_bool(
-    gemm_use_half_precision_compute_type,
-    false,
+    gemm_use_half_precision_compute_type, false,
     "Whether to use fp16 compute type when the input and output is fp16, "
     "faster but it may loss precision in most case. If true, the compute "
     "type will be set to fp16. Default is false.");
@@ -165,8 +157,7 @@ PHI_DEFINE_EXPORTED_bool(
  * Note: A list of device ids separated by comma, like: 0,1,2,3
  */
 PHI_DEFINE_EXPORTED_string(
-    selected_gpus,
-    "",
+    selected_gpus, "",
     "A list of device ids separated by comma, like: 0,1,2,3. "
     "This option is useful when doing multi process training and "
     "each process have only one device (GPU). If you want to use "
@@ -194,8 +185,7 @@ PHI_DEFINE_EXPORTED_string(
  *       (such as M, N and K), it will re-search again.
  */
 PHI_DEFINE_EXPORTED_int64(
-    cublaslt_exhaustive_search_times,
-    0,
+    cublaslt_exhaustive_search_times, 0,
     "The times of exhaustive search for cuBlasLt matmul with/without "
     " epilogue algorithms, default is 0, means disabling exhaustive search.");
 #endif
@@ -209,8 +199,7 @@ PHI_DEFINE_EXPORTED_int64(
  * backend fallback to CPU one when not found
  */
 PHI_DEFINE_EXPORTED_bool(
-    enable_api_kernel_fallback,
-    true,
+    enable_api_kernel_fallback, true,
     "Whether enable api kernel fallback to CPU one when not found");
 
 #if defined(PADDLE_WITH_CUDA) || defined(PADDLE_WITH_HIP)
@@ -224,8 +213,7 @@ PHI_DEFINE_EXPORTED_bool(
  *       If true, it will slow down some operators such as conv and pooling.
  */
 PHI_DEFINE_EXPORTED_bool(
-    cudnn_deterministic,
-    false,
+    cudnn_deterministic, false,
     "Whether allow using an autotuning algorithm for convolution "
     "operator. The autotuning algorithm may be non-deterministic. If "
     "true, the algorithm is deterministic.");
@@ -242,8 +230,7 @@ PHI_DEFINE_EXPORTED_bool(
  *       CUDA kernel in embedding op.
  */
 PHI_DEFINE_EXPORTED_int64(
-    embedding_deterministic,
-    0,
+    embedding_deterministic, 0,
     "Whether allow using an deterministic algorithm for embedding "
     "operator. The deterministic algorithm may be slower. If "
     "it is larger than 0, the algorithm is deterministic.");
@@ -263,8 +250,7 @@ PHI_DEFINE_EXPORTED_int64(
  *       (such as batch size, feature map size), it will search again.
  */
 PHI_DEFINE_EXPORTED_bool(
-    cudnn_exhaustive_search,
-    false,
+    cudnn_exhaustive_search, false,
     "Whether enable exhaustive search for cuDNN convolution or "
     "not, default is False.");
 
@@ -276,8 +262,7 @@ PHI_DEFINE_EXPORTED_bool(
  * Example:
  * Note: only used to predict for advanced developer
  */
-PHI_DEFINE_EXPORTED_int64(cudnn_exhaustive_search_times,
-                          -1,
+PHI_DEFINE_EXPORTED_int64(cudnn_exhaustive_search_times, -1,
                           "Exhaustive search times for cuDNN convolution, "
                           "default is -1, not exhaustive search");
 
@@ -290,8 +275,7 @@ PHI_DEFINE_EXPORTED_int64(cudnn_exhaustive_search_times,
  * Example:
  * Note: Use MIOpen batch norm instead of native
  */
-PHI_DEFINE_EXPORTED_bool(batch_norm_use_miopen,
-                         false,
+PHI_DEFINE_EXPORTED_bool(batch_norm_use_miopen, false,
                          "Whether use MIOpen batch norm or not, "
                          "default is false, not use miopen bn");
 #endif
@@ -313,8 +297,7 @@ PHI_DEFINE_EXPORTED_bool(batch_norm_use_miopen,
  *       input data range.
  */
 PHI_DEFINE_EXPORTED_bool(
-    cudnn_batchnorm_spatial_persistent,
-    false,
+    cudnn_batchnorm_spatial_persistent, false,
     "Whether enable CUDNN_BATCHNORM_SPATIAL_PERSISTENT mode for cudnn "
     "batch_norm, default is False.");
 #endif
@@ -332,8 +315,7 @@ PHI_DEFINE_EXPORTED_bool(
  *       If you want to change this default value, why?(gongwb)
  */
 PHI_DEFINE_EXPORTED_bool(
-    sync_nccl_allreduce,
-    true,
+    sync_nccl_allreduce, true,
     "If set true, will call `cudaStreamSynchronize(nccl_stream)`"
     "after allreduce, this mode can get better performance in some scenarios.");
 #endif
@@ -350,12 +332,10 @@ PHI_DEFINE_EXPORTED_bool(
  *       into the queue, and then the communicator takes the gradients out
  *       of the queue and sends them after merging.
  */
-PHI_DEFINE_EXPORTED_int32(communicator_max_merge_var_num,
-                          20,
+PHI_DEFINE_EXPORTED_int32(communicator_max_merge_var_num, 20,
                           "max var num to merge and send");
 PHI_DEFINE_EXPORTED_bool(
-    communicator_is_sgd_optimizer,
-    true,
+    communicator_is_sgd_optimizer, true,
     "gradient sent to the server is the sum of the gradients "
     "calculated by each thread if optimizer is sgd");
 /**
@@ -371,8 +351,7 @@ PHI_DEFINE_EXPORTED_bool(
  *       space. It is used to avoid training much faster than communication,
  *       so that too many gradients are not sent out in time.
  */
-PHI_DEFINE_EXPORTED_int32(communicator_send_queue_size,
-                          20,
+PHI_DEFINE_EXPORTED_int32(communicator_send_queue_size, 20,
                           "queue size to recv gradient before send");
 #endif
 
@@ -385,8 +364,7 @@ PHI_DEFINE_EXPORTED_int32(communicator_send_queue_size,
  * Note: Control the number of threads used for distributed modules.
  *       If it is not set, it is set to a hard thread.
  */
-PHI_DEFINE_EXPORTED_int32(dist_threadpool_size,
-                          0,
+PHI_DEFINE_EXPORTED_int32(dist_threadpool_size, 0,
                           "number of threads used for distributed executed.");
 
 /**
@@ -409,8 +387,7 @@ PHI_DEFINE_EXPORTED_int32(dist_threadpool_size,
 static const double kDefaultEagerDeleteTensorGB = 0;
 
 PHI_DEFINE_EXPORTED_double(
-    eager_delete_tensor_gb,
-    kDefaultEagerDeleteTensorGB,
+    eager_delete_tensor_gb, kDefaultEagerDeleteTensorGB,
     "Memory size threshold (GB) when the garbage collector clear tensors."
     "Disabled when this value is less than 0");
 
@@ -427,8 +404,7 @@ PHI_DEFINE_EXPORTED_double(
  *       Only works when garbage collection strategy is enabled.
  */
 PHI_DEFINE_EXPORTED_bool(
-    fast_eager_deletion_mode,
-    true,
+    fast_eager_deletion_mode, true,
     "Fast eager deletion mode. If enabled, memory would release "
     "immediately without waiting GPU kernel ends.");
 
@@ -451,8 +427,7 @@ PHI_DEFINE_EXPORTED_bool(
  *       The flag is only valid when running parallel data compilers.
  */
 PHI_DEFINE_EXPORTED_double(
-    memory_fraction_of_eager_deletion,
-    1.0,
+    memory_fraction_of_eager_deletion, 1.0,
     "Fraction of eager deletion. If less than 1.0, all variables in "
     "the program would be sorted according to its memory size, and "
     "only the FLAGS_memory_fraction_of_eager_deletion of the largest "
@@ -467,10 +442,9 @@ PHI_DEFINE_EXPORTED_double(
  * Example:
  * Note: For selecting allocator policy of PaddlePaddle.
  */
-static constexpr char kDefaultAllocatorStrategy[] = "auto_growth";  // NOLINT
+static constexpr char kDefaultAllocatorStrategy[] = "auto_growth"; // NOLINT
 PHI_DEFINE_EXPORTED_string(
-    allocator_strategy,
-    kDefaultAllocatorStrategy,
+    allocator_strategy, kDefaultAllocatorStrategy,
     "The allocation strategy, enum in [naive_best_fit, auto_growth]. "
     "naive_best_fit means the original pre-allocated allocator of Paddle. "
     "auto_growth means the auto-growth allocator. "
@@ -496,8 +470,7 @@ PHI_DEFINE_EXPORTED_string(
  *       size as the memory block will be allocated from the CUDA pinned
  *       request util the CPU does not have enough memory.
  */
-PHI_DEFINE_EXPORTED_double(fraction_of_cpu_memory_to_use,
-                           1,
+PHI_DEFINE_EXPORTED_double(fraction_of_cpu_memory_to_use, 1,
                            "Default use 100% of CPU memory for PaddlePaddle,"
                            "reserve the rest for page tables, etc");
 
@@ -513,8 +486,7 @@ PHI_DEFINE_EXPORTED_double(fraction_of_cpu_memory_to_use,
  *       FLAGS_fraction_of_cpu_memory_to_use*(total physical memory)
  *       as memory block sizes.
  */
-PHI_DEFINE_EXPORTED_uint64(initial_cpu_memory_in_mb,
-                           500ul,
+PHI_DEFINE_EXPORTED_uint64(initial_cpu_memory_in_mb, 500ul,
                            "Initial CPU memory for PaddlePaddle, in MD unit.");
 
 /**
@@ -531,14 +503,13 @@ PHI_DEFINE_EXPORTED_uint64(initial_cpu_memory_in_mb,
  *       request util the CPU does not have enough memory.
  */
 PHI_DEFINE_EXPORTED_double(
-    fraction_of_cuda_pinned_memory_to_use,
-    0.5,
+    fraction_of_cuda_pinned_memory_to_use, 0.5,
     "Default use 50% of CPU memory as the pinned_memory for PaddlePaddle,"
     "reserve the rest for page tables, etc");
 
 // NOTE(zhiqiu): better to share the flags, otherwise we will have too many
 // flags.
-#if defined(PADDLE_WITH_CUDA) || defined(PADDLE_WITH_HIP) || \
+#if defined(PADDLE_WITH_CUDA) || defined(PADDLE_WITH_HIP) ||                   \
     defined(PADDLE_WITH_CUSTOM_DEVICE) || defined(PADDLE_WITH_XPU)
 
 /**
@@ -567,8 +538,7 @@ constexpr static float fraction_of_gpu_memory_to_use = 0.92f;
 constexpr static float fraction_of_gpu_memory_to_use = 0.5f;
 #endif
 PHI_DEFINE_EXPORTED_double(
-    fraction_of_gpu_memory_to_use,
-    fraction_of_gpu_memory_to_use,
+    fraction_of_gpu_memory_to_use, fraction_of_gpu_memory_to_use,
     "Allocate a trunk of gpu memory that is this fraction of the "
     "total gpu memory size. Future memory usage will be allocated "
     "from the trunk. If the trunk doesn't have enough gpu memory, "
@@ -588,8 +558,7 @@ PHI_DEFINE_EXPORTED_double(
  *       the GPU has no remaining memory.
  */
 PHI_DEFINE_EXPORTED_uint64(
-    initial_gpu_memory_in_mb,
-    0ul,
+    initial_gpu_memory_in_mb, 0ul,
     "Allocate a trunk of gpu memory whose byte size is specified by "
     "the flag. Future memory usage will be allocated from the "
     "trunk. If the trunk doesn't have enough gpu memory, additional "
@@ -611,15 +580,13 @@ PHI_DEFINE_EXPORTED_uint64(
  *       additional GPU memory blocks are reallocated
  */
 PHI_DEFINE_EXPORTED_uint64(
-    reallocate_gpu_memory_in_mb,
-    0ul,
+    reallocate_gpu_memory_in_mb, 0ul,
     "If this flag is set, Paddle will reallocate the gpu memory with "
     "size specified by this flag. Else Paddle will reallocate by "
     "FLAGS_fraction_of_gpu_memory_to_use");
 
 PHI_DEFINE_EXPORTED_uint64(
-    gpu_memory_limit_mb,
-    0UL,
+    gpu_memory_limit_mb, 0UL,
     "The maximum gpu memory limit that the process can allocate. "
     "If it is equal to 0, there would be no limit and all gpu memory "
     "would be available to the process. If it is larger than 0, "
@@ -638,8 +605,7 @@ PHI_DEFINE_EXPORTED_uint64(
  *       FLAGS_auto_growth_chunk_size_in_mb).
  */
 PHI_DEFINE_EXPORTED_uint64(
-    auto_growth_chunk_size_in_mb,
-    0ul,
+    auto_growth_chunk_size_in_mb, 0ul,
     "The minimal chunk size of GPU memory block in auto_growth allocator.  "
     "The real chunk size is max(request_size, "
     "FLAGS_auto_growth_chunk_size_in_mb).");
@@ -656,15 +622,14 @@ PHI_DEFINE_EXPORTED_uint64(
  */
 PHI_DEFINE_EXPORTED_double(
     local_exe_sub_scope_limit,
-    256.0,  // MBytes
+    256.0, // MBytes
     "The memory up limit of sub-scopes of local execution scope for "
     "each CUDAPlace. If you don't need to limit the memory, "
     "you should set FLAGS_local_exe_sub_scope_limit=-1. "
     "The default value is 256 MBytes.");
 
 PHI_DEFINE_EXPORTED_bool(
-    reader_queue_speed_test_mode,
-    false,
+    reader_queue_speed_test_mode, false,
     "If set true, the queue.pop will only get data from queue but not "
     "remove the data from queue for speed testing");
 
@@ -699,8 +664,7 @@ static const int32_t kDefaultCallStackLevel = 1;
 #endif
 
 PHI_DEFINE_EXPORTED_int32(
-    call_stack_level,
-    kDefaultCallStackLevel,
+    call_stack_level, kDefaultCallStackLevel,
     "Determine the call stack to print when error or exception happens."
     // TODO(zhiqiu): implement logic of FLAGS_call_stack_level==0
     // "If FLAGS_call_stack_level == 0, only the error message summary will be "
@@ -719,8 +683,7 @@ PHI_DEFINE_EXPORTED_int32(
  * Note: If True, gradients are summed by the reverse order of
  * the forward execution sequence.
  */
-PHI_DEFINE_EXPORTED_bool(sort_sum_gradient,
-                         false,
+PHI_DEFINE_EXPORTED_bool(sort_sum_gradient, false,
                          "Sum gradients by the reverse order of "
                          "the forward execution sequence.");
 
@@ -733,8 +696,7 @@ PHI_DEFINE_EXPORTED_bool(sort_sum_gradient,
  * Note: The maximum number of inplace grad_add.
  */
 PHI_DEFINE_EXPORTED_int32(
-    max_inplace_grad_add,
-    0,
+    max_inplace_grad_add, 0,
     "The maximum number of inplace grad_add. When doing "
     "gradient accumulation, if the number of gradients need to that "
     "less FLAGS_max_inplace_grad_add, than it will be use several grad_add"
@@ -758,8 +720,7 @@ PHI_DEFINE_EXPORTED_bool(set_to_1d, false, "set 0D Tensor to 1D numpy");
  * Example:
  * Note: Holds list of operation types with OneDNN kernels to be enabled.
  */
-PHI_DEFINE_EXPORTED_string(tracer_onednn_ops_on,
-                           "",
+PHI_DEFINE_EXPORTED_string(tracer_onednn_ops_on, "",
                            "List of OneDNN operation types to be turned on");
 
 /**
@@ -770,8 +731,7 @@ PHI_DEFINE_EXPORTED_string(tracer_onednn_ops_on,
  * Example:
  * Note: set the static runtime tensor save path.
  */
-PHI_DEFINE_EXPORTED_string(static_runtime_data_save_path,
-                           "./",
+PHI_DEFINE_EXPORTED_string(static_runtime_data_save_path, "./",
                            "set the static runtime tensor save path");
 
 /**
@@ -782,8 +742,7 @@ PHI_DEFINE_EXPORTED_string(static_runtime_data_save_path,
  * Example:
  * Note: Holds list of operation types with OneDNN kernels to be disabled.
  */
-PHI_DEFINE_EXPORTED_string(tracer_onednn_ops_off,
-                           "",
+PHI_DEFINE_EXPORTED_string(tracer_onednn_ops_off, "",
                            "List of OneDNN operation types to be turned off");
 
 /**
@@ -796,8 +755,7 @@ PHI_DEFINE_EXPORTED_string(tracer_onednn_ops_off,
  */
 #if defined(PADDLE_WITH_CUDA) || defined(PADDLE_WITH_HIP)
 PHI_DEFINE_EXPORTED_bool(
-    check_kernel_launch,
-    false,
+    check_kernel_launch, false,
     "Check kernel launch status after every kernel compute");
 #endif
 
@@ -810,12 +768,10 @@ PHI_DEFINE_EXPORTED_bool(
  * Note: Disable cudnn in conv2d.
  */
 #if defined(PADDLE_WITH_CUDA) || defined(PADDLE_WITH_HIP)
-PHI_DEFINE_EXPORTED_bool(conv2d_disable_cudnn,
-                         false,
+PHI_DEFINE_EXPORTED_bool(conv2d_disable_cudnn, false,
                          "Disable cudnn in conv2d");
 
-PHI_DEFINE_EXPORTED_bool(use_fast_math,
-                         false,
+PHI_DEFINE_EXPORTED_bool(use_fast_math, false,
                          "Whether to use fast math GPU functions.");
 #endif
 
@@ -827,10 +783,9 @@ PHI_DEFINE_EXPORTED_bool(use_fast_math,
  * Example:
  * Note: Get host by name time.
  */
-#if defined(PADDLE_WITH_CUDA) || defined(PADDLE_WITH_XPU) || \
+#if defined(PADDLE_WITH_CUDA) || defined(PADDLE_WITH_XPU) ||                   \
     defined(PADDLE_WITH_HIP) || defined(PADDLE_WITH_CUSTOM_DEVICE)
-PHI_DEFINE_EXPORTED_int32(get_host_by_name_time,
-                          120,
+PHI_DEFINE_EXPORTED_int32(get_host_by_name_time, 120,
                           "The maximum time for get host by name time");
 #endif
 
@@ -844,8 +799,7 @@ PHI_DEFINE_EXPORTED_int32(get_host_by_name_time,
  * Note: Apply IR pass to program. Be only useful when using Fleet APIs.
  */
 PHI_DEFINE_EXPORTED_bool(
-    apply_pass_to_program,
-    false,
+    apply_pass_to_program, false,
     "It controls whether to apply IR pass to program when using Fleet APIs");
 
 /**
@@ -857,8 +811,7 @@ PHI_DEFINE_EXPORTED_bool(
  * Note: It controls whether to save runtime tensor in static mode.
  */
 PHI_DEFINE_EXPORTED_bool(
-    save_static_runtime_data,
-    false,
+    save_static_runtime_data, false,
     "It controls whether to save runtime tensor in static mode");
 
 /**
@@ -870,8 +823,7 @@ PHI_DEFINE_EXPORTED_bool(
  * Note: Control whether load graph node and edge with multi threads parallelly
  *       If it is not set, load graph data with one thread
  */
-PHI_DEFINE_EXPORTED_bool(graph_load_in_parallel,
-                         false,
+PHI_DEFINE_EXPORTED_bool(graph_load_in_parallel, false,
                          "It controls whether load graph node and edge with "
                          "multi threads parallelly.");
 
@@ -883,8 +835,7 @@ PHI_DEFINE_EXPORTED_bool(graph_load_in_parallel,
  * Example:
  * Note: Control whether store neighbor_list with UVA in gpu graph mode
  */
-PHI_DEFINE_EXPORTED_bool(enable_neighbor_list_use_uva,
-                         false,
+PHI_DEFINE_EXPORTED_bool(enable_neighbor_list_use_uva, false,
                          "It controls whether store neighbor_list with UVA");
 
 /**
@@ -896,8 +847,7 @@ PHI_DEFINE_EXPORTED_bool(enable_neighbor_list_use_uva,
  * Note: Control whether load graph node and edge with multi threads parallelly
  *       If it is not set, load graph data with one thread
  */
-PHI_DEFINE_EXPORTED_double(graph_neighbor_size_percent,
-                           1.0,
+PHI_DEFINE_EXPORTED_double(graph_neighbor_size_percent, 1.0,
                            "It controls whether percent of neighbor_size.");
 
 /**
@@ -909,8 +859,7 @@ PHI_DEFINE_EXPORTED_double(graph_neighbor_size_percent,
  * Note: Control whether load graph node and edge with multi threads parallelly
  *       If it is not set, load graph data with one thread
  */
-PHI_DEFINE_EXPORTED_bool(graph_metapath_split_opt,
-                         false,
+PHI_DEFINE_EXPORTED_bool(graph_metapath_split_opt, false,
                          "It controls whether load graph node and edge with "
                          "multi threads parallelly.");
 
@@ -924,8 +873,7 @@ PHI_DEFINE_EXPORTED_bool(graph_metapath_split_opt,
  *       If it is not set, do not need get neighbor id when run all part graph
  */
 PHI_DEFINE_EXPORTED_bool(
-    graph_get_neighbor_id,
-    false,
+    graph_get_neighbor_id, false,
     "It controls get all neighbor id when running sub part graph.");
 
 /**
@@ -938,8 +886,7 @@ PHI_DEFINE_EXPORTED_bool(
  *       If it is not set, trainer will exit until all worker finish train.
  */
 PHI_DEFINE_EXPORTED_bool(
-    enable_exit_when_partial_worker,
-    false,
+    enable_exit_when_partial_worker, false,
     "It controls whether exit trainer when an worker has no ins.");
 
 /**
@@ -952,8 +899,7 @@ PHI_DEFINE_EXPORTED_bool(
  * graph mode.
  */
 PHI_DEFINE_EXPORTED_int32(
-    enable_adjust_op_order,
-    0,
+    enable_adjust_op_order, 0,
     "It controls whether adjust op order in worker to reduce hbm cost");
 
 /**
@@ -964,8 +910,7 @@ PHI_DEFINE_EXPORTED_int32(
  * Example:
  * Note: represent gpugraph storage mode, 1 for full hbm, 2 for hbm + mem + ssd.
  */
-PHI_DEFINE_EXPORTED_int32(gpugraph_storage_mode,
-                          1,
+PHI_DEFINE_EXPORTED_int32(gpugraph_storage_mode, 1,
                           "gpugraph storage mode, default 1");
 
 /**
@@ -977,8 +922,7 @@ PHI_DEFINE_EXPORTED_int32(gpugraph_storage_mode,
  * Op.
  * Note:
  */
-PHI_DEFINE_EXPORTED_bool(run_kp_kernel,
-                         false,
+PHI_DEFINE_EXPORTED_bool(run_kp_kernel, false,
                          "It controls whether to run PaddlePaddle using KP");
 
 /**
@@ -992,8 +936,7 @@ PHI_DEFINE_EXPORTED_bool(run_kp_kernel,
  *       multiple events. Currently, only fuse allreduce supports this.
  *       Otherwise, the precision may be wrong.
  */
-PHI_DEFINE_EXPORTED_bool(allreduce_record_one_event,
-                         false,
+PHI_DEFINE_EXPORTED_bool(allreduce_record_one_event, false,
                          "It controls whether the allreduce operations "
                          "would only wait one event instead of multiple "
                          "events. Currently, only fuse allreduce supports "
@@ -1007,8 +950,7 @@ PHI_DEFINE_EXPORTED_bool(allreduce_record_one_event,
  * Value Range: bool, default=false
  * Example: FLAGS_use_cinn=true would run PaddlePaddle using CINN
  */
-PHI_DEFINE_EXPORTED_bool(use_cinn,
-                         false,
+PHI_DEFINE_EXPORTED_bool(use_cinn, false,
                          "It controls whether to run PaddlePaddle using CINN");
 
 /*
@@ -1019,8 +961,7 @@ PHI_DEFINE_EXPORTED_bool(use_cinn,
  * Example: FLAGS_allow_cinn_ops="mul;relu" would only cover `mul` and `relu`
  * when using CINN
  */
-PHI_DEFINE_EXPORTED_string(allow_cinn_ops,
-                           "",
+PHI_DEFINE_EXPORTED_string(allow_cinn_ops, "",
                            "It controls the cinn op subset to be used, "
                            "which has the highest priority.");
 
@@ -1032,8 +973,7 @@ PHI_DEFINE_EXPORTED_string(allow_cinn_ops,
  * Example: FLAGS_deny_cinn_ops="mul;relu" would block `mul` and `relu` two ops
  * when using CINN
  */
-PHI_DEFINE_EXPORTED_string(deny_cinn_ops,
-                           "",
+PHI_DEFINE_EXPORTED_string(deny_cinn_ops, "",
                            "It controls the cinn op subset to be not used.");
 
 /*
@@ -1045,8 +985,7 @@ PHI_DEFINE_EXPORTED_string(deny_cinn_ops,
  * function
  */
 PHI_DEFINE_EXPORTED_bool(
-    enable_cinn_compile_cache,
-    true,
+    enable_cinn_compile_cache, true,
     "It controls whether to enable cinn compilation cache.");
 /*
  * CINN related FLAG
@@ -1056,8 +995,7 @@ PHI_DEFINE_EXPORTED_bool(
  * Example: FLAGS_cinn_compile_thread_nume=8
  */
 PHI_DEFINE_EXPORTED_int64(
-    cinn_compile_thread_num,
-    -1,
+    cinn_compile_thread_num, -1,
     "It controls how many thread numbers applying compilation cache.");
 
 /*
@@ -1068,8 +1006,7 @@ PHI_DEFINE_EXPORTED_int64(
  * Example: FLAGS_cinn_specify_input_dynamic_dim=true will use file set by
  * FLAGS_cinn_input_dynamic_dim_spec_file to specify input dynamic dimension.
  */
-PHI_DEFINE_EXPORTED_bool(cinn_specify_input_dynamic_dim,
-                         false,
+PHI_DEFINE_EXPORTED_bool(cinn_specify_input_dynamic_dim, false,
                          "Whether to specify input dynamic dimension.");
 
 /*
@@ -1082,8 +1019,7 @@ PHI_DEFINE_EXPORTED_bool(cinn_specify_input_dynamic_dim,
  * predefined in ./config.json to specify input dynamic dimension.
  */
 PHI_DEFINE_EXPORTED_string(
-    cinn_input_dynamic_dim_spec_file,
-    "",
+    cinn_input_dynamic_dim_spec_file, "",
     "File path of predefined input dynamic dimension specification.");
 
 #endif
@@ -1096,8 +1032,7 @@ PHI_DEFINE_EXPORTED_string(
  * Example: FLAGS_new_executor_use_cuda_graph=true would allow
  * new executor to use CUDA Graph.
  */
-PHI_DEFINE_EXPORTED_bool(new_executor_use_cuda_graph,
-                         false,
+PHI_DEFINE_EXPORTED_bool(new_executor_use_cuda_graph, false,
                          "Use CUDA Graph in new executor");
 
 /*
@@ -1108,8 +1043,7 @@ PHI_DEFINE_EXPORTED_bool(new_executor_use_cuda_graph,
  * Example: FLAGS_use_cuda_malloc_async_allocator=true would allow
  * CUDAMallocAsyncAllocator replace StreamSafeCUDAAllocator.
  */
-PHI_DEFINE_EXPORTED_bool(use_cuda_malloc_async_allocator,
-                         false,
+PHI_DEFINE_EXPORTED_bool(use_cuda_malloc_async_allocator, false,
                          "Enable CUDAMallocAsyncAllocator");
 
 /*
@@ -1126,8 +1060,7 @@ PHI_DEFINE_EXPORTED_bool(use_cuda_malloc_async_allocator,
  * Please see Note [cuda_malloc_async_pool_memory_throttle_ratio]
  */
 PHI_DEFINE_EXPORTED_double(
-    cuda_malloc_async_pool_memory_throttle_ratio,
-    0.8,
+    cuda_malloc_async_pool_memory_throttle_ratio, 0.8,
     "memory_throttle_ratio provides a threshold that determines when to "
     "initiate synchronization operations to deallocate memory. "
     "This mechanism helps in ensuring that the system does not exceed its "
@@ -1144,8 +1077,7 @@ PHI_DEFINE_EXPORTED_double(
  * release graph-owned blocks that have not freed before relaunching.
  */
 PHI_DEFINE_EXPORTED_bool(
-    auto_free_cudagraph_allocations_on_launch,
-    true,
+    auto_free_cudagraph_allocations_on_launch, true,
     "When enabling CUDA Graph with CUDAMallocAsyncAllocator, we add "
     "cudaGraphInstantiateFlagAutoFreeOnLaunch so it would automatically "
     "release graph-owned blocks that have not freed before relaunching.");
@@ -1158,93 +1090,68 @@ PHI_DEFINE_EXPORTED_bool(
  * Example: FLAGS_executor_log_deps_every_microseconds=n (n>0) would
  * allow new executor log deps every n microseconds.
  */
-PHI_DEFINE_EXPORTED_uint64(executor_log_deps_every_microseconds,
-                           0,
+PHI_DEFINE_EXPORTED_uint64(executor_log_deps_every_microseconds, 0,
                            "Enable new executor log deps every n microseconds");
 
-PD_DEFINE_int32(record_pool_max_size,
-                2000000,
+PD_DEFINE_int32(record_pool_max_size, 2000000,
                 "SlotRecordDataset slot record pool max size");
-PD_DEFINE_int32(slotpool_thread_num,
-                1,
+PD_DEFINE_int32(slotpool_thread_num, 1,
                 "SlotRecordDataset slot pool thread num");
-PD_DEFINE_bool(enable_slotpool_wait_release,  // NOLINT
-               false,
-               "enable slotrecord object wait release, default false");
-PD_DEFINE_bool(enable_slotrecord_reset_shrink,  // NOLINT
+PD_DEFINE_bool(enable_slotpool_wait_release, // NOLINT
+               false, "enable slotrecord object wait release, default false");
+PD_DEFINE_bool(enable_slotrecord_reset_shrink, // NOLINT
                false,
                "enable slotrecord object reset shrink memory, default false");
-PD_DEFINE_bool(enable_ins_parser_file,  // NOLINT
-               false,
-               "enable parser ins file, default false");
+PD_DEFINE_bool(enable_ins_parser_file, // NOLINT
+               false, "enable parser ins file, default false");
 PHI_DEFINE_EXPORTED_bool(
-    gpugraph_enable_hbm_table_collision_stat,
-    false,
+    gpugraph_enable_hbm_table_collision_stat, false,
     "enable hash collisions stat for hbm table, default false");
 PHI_DEFINE_EXPORTED_bool(
-    cache_inference_while_scope,
-    false,
+    cache_inference_while_scope, false,
     "Cache the scope of the while op to avoid repeated creation of the scope "
     "for each iteration and improve inference performance.");
-PHI_DEFINE_EXPORTED_double(gpugraph_hbm_table_load_factor,
-                           0.75,
+PHI_DEFINE_EXPORTED_double(gpugraph_hbm_table_load_factor, 0.75,
                            "the load factor of hbm table, default 0.75");
 PHI_DEFINE_EXPORTED_bool(
-    gpugraph_enable_gpu_direct_access,
-    false,
+    gpugraph_enable_gpu_direct_access, false,
     "enable direct access between multi gpu cards, default false");
 PHI_DEFINE_EXPORTED_bool(
-    gpugraph_enable_segment_merge_grads,
-    false,
+    gpugraph_enable_segment_merge_grads, false,
     "enable segment merge gradients while push sparse, default false");
 PHI_DEFINE_EXPORTED_uint64(
-    gpugraph_merge_grads_segment_size,
-    128,
+    gpugraph_merge_grads_segment_size, 128,
     "segment size with segment gradient merge, default 128");
-PHI_DEFINE_EXPORTED_uint64(gpugraph_slot_feasign_max_num,
-                           5,
+PHI_DEFINE_EXPORTED_uint64(gpugraph_slot_feasign_max_num, 5,
                            "max feasign number in one slot, default 5");
 PHI_DEFINE_EXPORTED_int32(
-    gpugraph_dedup_pull_push_mode,
-    0,
+    gpugraph_dedup_pull_push_mode, 0,
     "enable dedup keys while pull push sparse, default 0");
-PHI_DEFINE_EXPORTED_bool(gpugraph_load_node_list_into_hbm,
-                         true,
+PHI_DEFINE_EXPORTED_bool(gpugraph_load_node_list_into_hbm, true,
                          "enable load_node_list_into_hbm, default true");
-PHI_DEFINE_EXPORTED_int32(gpugraph_sparse_table_storage_mode,
-                          0,
+PHI_DEFINE_EXPORTED_int32(gpugraph_sparse_table_storage_mode, 0,
                           "parse_table_storage_mode, default 0");
-PHI_DEFINE_EXPORTED_bool(enable_auto_detect_gpu_topo,
-                         true,
+PHI_DEFINE_EXPORTED_bool(enable_auto_detect_gpu_topo, true,
                          "enable auto detect gpu topo, default true");
-PHI_DEFINE_EXPORTED_bool(enable_auto_rdma_trans,
-                         true,
+PHI_DEFINE_EXPORTED_bool(enable_auto_rdma_trans, true,
                          "enable auto gpu rdma trans, default true");
-PHI_DEFINE_EXPORTED_bool(enable_tracker_all2all,
-                         false,
+PHI_DEFINE_EXPORTED_bool(enable_tracker_all2all, false,
                          "enable tracker all2all log, default false");
-PHI_DEFINE_EXPORTED_bool(enable_all2all_use_fp16,
-                         false,
+PHI_DEFINE_EXPORTED_bool(enable_all2all_use_fp16, false,
                          "enable all2all use fp16, default false");
-PHI_DEFINE_EXPORTED_bool(enable_sparse_inner_gather,
-                         false,
+PHI_DEFINE_EXPORTED_bool(enable_sparse_inner_gather, false,
                          "enable sparse inner gather, default false");
-PHI_DEFINE_EXPORTED_bool(gpugraph_debug_gpu_memory,
-                         false,
+PHI_DEFINE_EXPORTED_bool(gpugraph_debug_gpu_memory, false,
                          "enable debug gpu memory, default false");
 PHI_DEFINE_EXPORTED_bool(
-    graph_embedding_split_infer_mode,
-    true,
+    graph_embedding_split_infer_mode, true,
     "graph embedding split infer mode not need nccl barrier in gpu graph mode");
-PHI_DEFINE_EXPORTED_bool(enable_graph_multi_node_sampling,
-                         false,
+PHI_DEFINE_EXPORTED_bool(enable_graph_multi_node_sampling, false,
                          "control multi-node sample in gpu graph mode");
 PHI_DEFINE_EXPORTED_bool(
-    query_dest_rank_by_multi_node,
-    false,
+    query_dest_rank_by_multi_node, false,
     "Control whether to query dest rank by multi machine in gpu graph mode");
-PHI_DEFINE_EXPORTED_bool(multi_node_sample_use_gpu_table,
-                         true,
+PHI_DEFINE_EXPORTED_bool(multi_node_sample_use_gpu_table, true,
                          "Control whether to use gpu table in sample multi "
                          "machine in gpu graph mode");
 
@@ -1262,26 +1169,22 @@ PHI_DEFINE_EXPORTED_bool(nccl_blocking_wait, false, "nccl blocking wait");
 #endif
 
 #if defined(PADDLE_WITH_CUDA) || defined(PADDLE_WITH_HIP)
-PHI_DEFINE_EXPORTED_bool(benchmark_nccl,
-                         false,
+PHI_DEFINE_EXPORTED_bool(benchmark_nccl, false,
                          "enable nccl debug mode to synchronize nccl comm");
 #endif
 
 PHI_DEFINE_EXPORTED_bool(
-    benchmark,
-    false,
+    benchmark, false,
     "Doing memory benchmark. It will make deleting scope synchronized, "
     "and add some memory usage logs."
     "Default cuda is asynchronous device, set to True will"
     "force op run in synchronous mode.");
 
-PHI_DEFINE_EXPORTED_bool(eager_communication_connection,
-                         false,
+PHI_DEFINE_EXPORTED_bool(eager_communication_connection, false,
                          "enable eager to create nccl comm");
 
 PHI_DEFINE_EXPORTED_int64(
-    tcp_max_syn_backlog,
-    2048,
+    tcp_max_syn_backlog, 2048,
     "The maximum length of the queue for completely established sockets "
     "waiting to be accepted for tcp, default is 2048.");
 
@@ -1301,8 +1204,7 @@ PHI_DEFINE_EXPORTED_bool(use_autotune, false, "Whether enable autotune.");
  * Value Range: bool, default=false
  * Example:
  */
-PHI_DEFINE_EXPORTED_bool(disable_dyshape_in_train,
-                         false,
+PHI_DEFINE_EXPORTED_bool(disable_dyshape_in_train, false,
                          "Whether disable dyshape in training.");
 
 /**
@@ -1311,8 +1213,7 @@ PHI_DEFINE_EXPORTED_bool(disable_dyshape_in_train,
  * Since Version: 3.0 beta
  * Value Range: bool, default=false
  */
-PHI_DEFINE_EXPORTED_bool(enable_cinn_accuracy_check,
-                         false,
+PHI_DEFINE_EXPORTED_bool(enable_cinn_accuracy_check, false,
                          "Whether enable accuracy check in cinn.");
 
 /**
@@ -1321,8 +1222,7 @@ PHI_DEFINE_EXPORTED_bool(enable_cinn_accuracy_check,
  * Since Version: 3.0 beta
  * Value Range: bool, default=true
  */
-PHI_DEFINE_EXPORTED_bool(enable_fuse_parallel_matmul_pass,
-                         true,
+PHI_DEFINE_EXPORTED_bool(enable_fuse_parallel_matmul_pass, true,
                          "Whether enable fuse_parallel_matmul_pass in cinn.");
 
 /**
@@ -1331,8 +1231,7 @@ PHI_DEFINE_EXPORTED_bool(enable_fuse_parallel_matmul_pass,
  * Since Version: 3.0 beta
  * Value Range: bool, default=false
  */
-PHI_DEFINE_EXPORTED_bool(enable_fusion_fallback,
-                         false,
+PHI_DEFINE_EXPORTED_bool(enable_fusion_fallback, false,
                          "Whether enable fallback fusion ops in cinn.");
 
 /**
@@ -1341,8 +1240,7 @@ PHI_DEFINE_EXPORTED_bool(enable_fusion_fallback,
  * Since Version: 3.0 beta
  * Value Range: bool, default=false
  */
-PHI_DEFINE_EXPORTED_bool(enable_fusion_result_check,
-                         false,
+PHI_DEFINE_EXPORTED_bool(enable_fusion_result_check, false,
                          "Whether enable fusion result check in cinn.");
 
 /**
@@ -1352,8 +1250,7 @@ PHI_DEFINE_EXPORTED_bool(enable_fusion_result_check,
  * Value Range: bool, default=true
  */
 PHI_DEFINE_EXPORTED_bool(
-    enable_transpose_iters_in_fusion,
-    true,
+    enable_transpose_iters_in_fusion, true,
     "Whether enable use transpose iters transform in cinn fusion.");
 
 /**
@@ -1363,8 +1260,7 @@ PHI_DEFINE_EXPORTED_bool(
  * Value Range: bool, default=true
  */
 PHI_DEFINE_EXPORTED_bool(
-    enable_reuse_iters_in_fusion,
-    true,
+    enable_reuse_iters_in_fusion, true,
     "Whether enable use reuse iters transform in cinn fusion.");
 
 /**
@@ -1374,8 +1270,7 @@ PHI_DEFINE_EXPORTED_bool(
  * Value Range: bool, default=true
  */
 PHI_DEFINE_EXPORTED_bool(
-    enable_append_iters_in_fusion,
-    true,
+    enable_append_iters_in_fusion, true,
     "Whether enable use append iters transform in cinn fusion.");
 
 /**
@@ -1385,8 +1280,7 @@ PHI_DEFINE_EXPORTED_bool(
  * Value Range: int32, default=1000000
  * Example:
  */
-PHI_DEFINE_EXPORTED_int32(search_cache_max_number,
-                          1000000,
+PHI_DEFINE_EXPORTED_int32(search_cache_max_number, 1000000,
                           "search_cache_max_number.");
 
 /**
@@ -1399,8 +1293,7 @@ PHI_DEFINE_EXPORTED_int32(search_cache_max_number,
  * uses more gpu memory.
  */
 PHI_DEFINE_EXPORTED_bool(
-    einsum_opt,
-    false,
+    einsum_opt, false,
     "EinsumOp backward will be speedup at the expense of more gpu memory.");
 
 /**
@@ -1412,8 +1305,7 @@ PHI_DEFINE_EXPORTED_bool(
  * Note: If True, using AutoLayoutInsertPass and AutuLayoutSimplifyPass by
  * default
  */
-PHI_DEFINE_EXPORTED_bool(enable_auto_layout_pass,
-                         false,
+PHI_DEFINE_EXPORTED_bool(enable_auto_layout_pass, false,
                          "Whether enable auto_layout_pass.");
 
 /**
@@ -1427,8 +1319,7 @@ PHI_DEFINE_EXPORTED_bool(enable_auto_layout_pass,
  * FLAGS_jit_engine_type == New, using InterpreterEngine by default
  * FLAGS_jit_engine_type == Predictor, using inference Predictor by default
  */
-PHI_DEFINE_EXPORTED_string(jit_engine_type,
-                           "Predictor",
+PHI_DEFINE_EXPORTED_string(jit_engine_type, "Predictor",
                            "Choose default function type in JitLayer.");
 
 /**
@@ -1464,7 +1355,7 @@ PHI_DEFINE_EXPORTED_bool(enable_cudnn_frontend, false, "");
  * the result of exhaustive search is unstable.
  */
 PHI_DEFINE_EXPORTED_int32(cudnn_cache_saturation_count, 1, "");
-#endif  // PADDLE_WITH_CUDNN_FRONTEND
+#endif // PADDLE_WITH_CUDNN_FRONTEND
 
 /**
  * CI related FLAG
@@ -1475,8 +1366,7 @@ PHI_DEFINE_EXPORTED_int32(cudnn_cache_saturation_count, 1, "");
  * Note: This FLAG is only enabled when CI is running. If True, a persistent
  * IBuilder is added to avoid TensorRT unload/reload kernels.
  */
-PHI_DEFINE_EXPORTED_bool(trt_ibuilder_cache,
-                         false,
+PHI_DEFINE_EXPORTED_bool(trt_ibuilder_cache, false,
                          "Add a persistent ibuilder.");
 
 /**
@@ -1488,8 +1378,7 @@ PHI_DEFINE_EXPORTED_bool(trt_ibuilder_cache,
  * Note: . If True, mmap_allocator will cache shm file to decrease munmap
  * operation.
  */
-PHI_DEFINE_EXPORTED_bool(use_shm_cache,
-                         false,
+PHI_DEFINE_EXPORTED_bool(use_shm_cache, false,
                          "Use shm cache in mmap_allocator.");
 
 /**
@@ -1501,8 +1390,7 @@ PHI_DEFINE_EXPORTED_bool(use_shm_cache,
  * Note: . If True, mmap_allocator will use file descriptor to open shared
  * memory operation.
  */
-PHI_DEFINE_EXPORTED_bool(dataloader_use_file_descriptor,
-                         false,
+PHI_DEFINE_EXPORTED_bool(dataloader_use_file_descriptor, false,
                          "Use file descriptor in mmap_allocator.");
 
 /**
@@ -1517,8 +1405,7 @@ PHI_DEFINE_EXPORTED_bool(dataloader_use_file_descriptor,
  *       - phi mode: tensor operants with only phi forward API;
  *       - static mode: tensor operants within static graph.
  */
-PHI_DEFINE_EXPORTED_string(tensor_operants_mode,
-                           "eager",
+PHI_DEFINE_EXPORTED_string(tensor_operants_mode, "eager",
                            "Tensor operants mode");
 
 /**
@@ -1529,8 +1416,7 @@ PHI_DEFINE_EXPORTED_string(tensor_operants_mode,
  * Example:
  * Note: If True, executor will use PIR
  */
-PHI_DEFINE_EXPORTED_bool(enable_pir_in_executor,
-                         false,
+PHI_DEFINE_EXPORTED_bool(enable_pir_in_executor, false,
                          "Enable PIR in executor");
 
 /**
@@ -1541,8 +1427,7 @@ PHI_DEFINE_EXPORTED_bool(enable_pir_in_executor,
  * Example:
  * Note: If True, CustomDevice can use subgraph engine optimize
  */
-PHI_DEFINE_EXPORTED_string(enable_custom_engine,
-                           "",
+PHI_DEFINE_EXPORTED_string(enable_custom_engine, "",
                            "Set CustomDevice subgraph engine translate pass");
 
 /**
@@ -1555,31 +1440,25 @@ PHI_DEFINE_EXPORTED_string(enable_custom_engine,
  * Note: If True, program will be translated to pir program
  * and then run in executor for dy2st mode.
  */
-PHI_DEFINE_EXPORTED_bool(enable_pir_with_pt_in_dy2st,
-                         true,
+PHI_DEFINE_EXPORTED_bool(enable_pir_with_pt_in_dy2st, true,
                          "Enable PIR in executor");
 
-PHI_DEFINE_EXPORTED_string(logging_pir_py_code_dir,
-                           "",
+PHI_DEFINE_EXPORTED_string(logging_pir_py_code_dir, "",
                            "the logging directory to save pir py code");
 
 PHI_DEFINE_EXPORTED_int64(
-    logging_pir_py_code_int_tensor_element_limit,
-    2048,
+    logging_pir_py_code_int_tensor_element_limit, 2048,
     "dump int tensor data if its element count less than this limit.");
 
-PHI_DEFINE_EXPORTED_bool(logging_trunc_pir_py_code,
-                         true,
+PHI_DEFINE_EXPORTED_bool(logging_trunc_pir_py_code, true,
                          "whether truncate the logging files under directory "
                          "FLAGS_logging_pir_py_code_dir");
 
-PHI_DEFINE_EXPORTED_bool(logging_pir_py_code_dump_symbolic_dims,
-                         false,
+PHI_DEFINE_EXPORTED_bool(logging_pir_py_code_dump_symbolic_dims, false,
                          "whether dump symbolic dims into pir py code.");
 
 PHI_DEFINE_EXPORTED_bool(
-    pir_interpreter_record_stream_for_gc_cache,
-    false,
+    pir_interpreter_record_stream_for_gc_cache, false,
     "whether PirInterpreter::RecordStreamForGC use cache strategy.");
 
 /**
@@ -1601,8 +1480,7 @@ PHI_DEFINE_EXPORTED_bool(enable_pir_api, true, "Enable PIR API in Python");
  * Note: If True, executor will use PIR and run in beta version by for trace
  * version.
  */
-PHI_DEFINE_EXPORTED_bool(enable_pir_in_executor_trace_run,
-                         false,
+PHI_DEFINE_EXPORTED_bool(enable_pir_in_executor_trace_run, false,
                          "Enable PIR in executor");
 
 /**
@@ -1613,49 +1491,41 @@ PHI_DEFINE_EXPORTED_bool(enable_pir_in_executor_trace_run,
  * Example:
  * Note: If True, will apply inplace pass to PIR.
  */
-PHI_DEFINE_EXPORTED_bool(pir_apply_inplace_pass,
-                         true,
+PHI_DEFINE_EXPORTED_bool(pir_apply_inplace_pass, true,
                          "Whether to apply inplace pass on lowering "
                          "::pir::Program to Kernel Dialect");
 
 PHI_DEFINE_EXPORTED_string(
-    ir_inplace_kernel_blacklist,
-    "",
+    ir_inplace_kernel_blacklist, "",
     "It controls the ir inplace kernel subset do not use.");
 
 PHI_DEFINE_EXPORTED_bool(enable_record_memory, false, "Enable memory recorder");
 
 PHI_DEFINE_EXPORTED_bool(
-    eager_delete_scope,
-    true,
+    eager_delete_scope, true,
     "Delete local scope eagerly. It will reduce GPU memory usage but "
     "slow down the destruction of variables.(around 1% performance harm)");
 
 // Used to filter events, works like glog VLOG(level).
 // RecordEvent will works if host_trace_level >= level.
-PHI_DEFINE_EXPORTED_int64(host_trace_level,
-                          1,
+PHI_DEFINE_EXPORTED_int64(host_trace_level, 1,
                           "RecordEvent will works "
                           "if host_trace_level >= level.");
 
 PHI_DEFINE_EXPORTED_int32(
-    multiple_of_cupti_buffer_size,
-    1,
+    multiple_of_cupti_buffer_size, 1,
     "Multiple of the CUPTI device buffer size. If the timestamps have "
     "been dropped when you are profiling, try increasing this value.");
 
 PHI_DEFINE_EXPORTED_bool(print_ir, false, "Whether print ir debug str.");
 
 PHI_DEFINE_EXPORTED_bool(
-    prim_skip_dynamic,
-    true,
+    prim_skip_dynamic, true,
     "Whether to skip decomposing vjp op with dynamic shape.");
 PHI_DEFINE_EXPORTED_bool(
-    prim_enable_dynamic,
-    false,
+    prim_enable_dynamic, false,
     "Whether to enable decomposing composite op with dynamic shape.");
-PHI_DEFINE_EXPORTED_bool(prim_check_ops,
-                         false,
+PHI_DEFINE_EXPORTED_bool(prim_check_ops, false,
                          "Whether to check the decomposed program, to ensure "
                          "that only the primitive operator is present.");
 
@@ -1663,8 +1533,7 @@ PHI_DEFINE_EXPORTED_bool(prim_check_ops,
 // Example: FLAGS_prim_forward_blacklist="pd_op.relu;pd_op.mean" would block
 // `relu` and `mean` two ops in decompsition.
 PHI_DEFINE_EXPORTED_string(
-    prim_forward_blacklist,
-    "",
+    prim_forward_blacklist, "",
     "It controls the forward blacklist ops not to be decomposed.");
 
 /**
@@ -1676,11 +1545,10 @@ PHI_DEFINE_EXPORTED_string(
  * Note: If "dtype", "dtype:float32" will be deleted in Pir program
  */
 PHI_DEFINE_EXPORTED_string(
-    disable_logging_op_attr_list,
-    "",
+    disable_logging_op_attr_list, "",
     "Remove some redundant information when printing the pir program");
 
-#if defined(PADDLE_WITH_NCCL) || defined(PADDLE_WITH_RCCL) || \
+#if defined(PADDLE_WITH_NCCL) || defined(PADDLE_WITH_RCCL) ||                  \
     defined(PADDLE_WITH_XPU_BKCL) || defined(PADDLE_WITH_CUSTOM_DEVICE)
 /**
  * Communication library related FLAG
@@ -1691,11 +1559,10 @@ PHI_DEFINE_EXPORTED_string(
  * Note: Whether to use new communication library in auto parallel and static
  * mode. If true, it will use unified CommContextManager for communication.
  */
-PHI_DEFINE_EXPORTED_bool(dynamic_static_unified_comm,
-                         true,
+PHI_DEFINE_EXPORTED_bool(dynamic_static_unified_comm, true,
                          "Whether to use new communication library in auto "
                          "parallel and static mode.");
-#endif  // FLAGS_dynamic_static_unified_comm
+#endif // FLAGS_dynamic_static_unified_comm
 
 /**
  * ProcessGroupNCCL related FLAG
@@ -1706,23 +1573,19 @@ PHI_DEFINE_EXPORTED_bool(dynamic_static_unified_comm,
  * Note: enable nccl async trace.
  */
 
-PHI_DEFINE_EXPORTED_bool(enable_async_trace,
-                         false,
+PHI_DEFINE_EXPORTED_bool(enable_async_trace, false,
                          "enable collective async trace");
 
 PHI_DEFINE_EXPORTED_int32(async_trace_count, 5, "collective async trace count");
 
 PHI_DEFINE_EXPORTED_bool(
-    use_auto_growth_pinned_allocator,
-    false,
+    use_auto_growth_pinned_allocator, false,
     "Whether to use the auto_growth CUDA pinned allocator.");
 
 PHI_DEFINE_EXPORTED_bool(
-    sync_after_alloc,
-    false,
+    sync_after_alloc, false,
     "Whether to perform device synchronization after allocation.");
-PHI_DEFINE_EXPORTED_int64(alloc_fill_value,
-                          -1,
+PHI_DEFINE_EXPORTED_int64(alloc_fill_value, -1,
                           "Whether to fill fixed value after allocation. "
                           "This is useful for debugging.");
 
@@ -1734,63 +1597,55 @@ PHI_DEFINE_EXPORTED_int64(alloc_fill_value,
  * Example:
  * Note: If True, will apply shape_optimization pass to PIR.
  */
-PHI_DEFINE_EXPORTED_bool(pir_apply_shape_optimization_pass,
-                         false,
+PHI_DEFINE_EXPORTED_bool(pir_apply_shape_optimization_pass, false,
                          "Whether to apply shape_optimization pass "
                          "to infer symbolic shape");
 
 PHI_DEFINE_EXPORTED_int64(
-    pir_broadcast_tree_limit,
-    32,
+    pir_broadcast_tree_limit, 32,
     "Maximum number of broadcast nodes allowed in a tree");
 
 PHI_DEFINE_EXPORTED_string(
-    nvidia_package_dir,  // NOLINT
+    nvidia_package_dir, // NOLINT
     "",
     "Specify root dir path for nvidia site-package, such as "
     "python3.9/site-packages/nvidia");
 
 PHI_DEFINE_EXPORTED_string(
-    cudnn_dir,  // NOLINT
+    cudnn_dir, // NOLINT
     "",
     "Specify path for loading libcudnn.so. For instance, "
     "/usr/local/cudnn/lib. If empty [default], dlopen "
     "will search cudnn from LD_LIBRARY_PATH");
 
-PHI_DEFINE_EXPORTED_string(  // NOLINT
-    cuda_dir,
-    "",
+PHI_DEFINE_EXPORTED_string( // NOLINT
+    cuda_dir, "",
     "Specify path for loading cuda library, such as libcublas, libcublasLt "
     "libcurand, libcusolver. For instance, /usr/local/cuda/lib64. "
     "If default, dlopen will search cuda from LD_LIBRARY_PATH");
 
-PHI_DEFINE_EXPORTED_string(cublas_dir,  // NOLINT
-                           "",
-                           "Specify path for loading libcublas.so.");
+PHI_DEFINE_EXPORTED_string(cublas_dir, // NOLINT
+                           "", "Specify path for loading libcublas.so.");
 PHI_DEFINE_EXPORTED_string(
-    nccl_dir,  // NOLINT
+    nccl_dir, // NOLINT
     "",
     "Specify path for loading nccl library, such as libnccl.so. "
     "For instance, /usr/local/cuda/lib64. If default, "
     "dlopen will search cuda from LD_LIBRARY_PATH");
 
-PHI_DEFINE_EXPORTED_string(cupti_dir,
-                           "",
-                           "Specify path for loading cupti.so.");  // NOLINT
+PHI_DEFINE_EXPORTED_string(cupti_dir, "",
+                           "Specify path for loading cupti.so."); // NOLINT
 
-PHI_DEFINE_EXPORTED_string(  // NOLINT
-    tensorrt_dir,
-    "",
+PHI_DEFINE_EXPORTED_string( // NOLINT
+    tensorrt_dir, "",
     "Specify path for loading tensorrt library, such as libnvinfer.so.");
 
 PHI_DEFINE_EXPORTED_string(
-    mklml_dir,
-    "",
-    "Specify path for loading libmklml_intel.so.");  // NOLINT
+    mklml_dir, "",
+    "Specify path for loading libmklml_intel.so."); // NOLINT
 
-PHI_DEFINE_EXPORTED_string(lapack_dir,
-                           "",
-                           "Specify path for loading liblapack.so.");  // NOLINT
+PHI_DEFINE_EXPORTED_string(lapack_dir, "",
+                           "Specify path for loading liblapack.so."); // NOLINT
 
 /**
  * Apply check infer symbolic pass FLAG
@@ -1801,8 +1656,7 @@ PHI_DEFINE_EXPORTED_string(lapack_dir,
  * Note: If True, will apply check_infer_symbolic pass.
  */
 PHI_DEFINE_EXPORTED_bool(
-    check_infer_symbolic,
-    false,
+    check_infer_symbolic, false,
     "Whether to use check_infer_symbolic_pass. This pass can check "
     "the symbolic inference accuracy by comparing the the value "
     "shape between dynamic shape and static shape.");
@@ -1813,8 +1667,7 @@ PHI_DEFINE_EXPORTED_bool(
  * Value Range: bool, default=false
  */
 PHI_DEFINE_EXPORTED_bool(
-    manually_trans_conv_filter,
-    false,
+    manually_trans_conv_filter, false,
     "Whether to manually transpose the filter of conv2d. This pass can "
     "accelerate the performance of conv2d since it transpose filter ahead");
 
@@ -1826,8 +1679,7 @@ PHI_DEFINE_EXPORTED_bool(
  * Example:
  * Note: If True, will apply CSE optimize pass in Dy2St.
  */
-PHI_DEFINE_EXPORTED_bool(enable_cse_in_dy2st,
-                         true,
+PHI_DEFINE_EXPORTED_bool(enable_cse_in_dy2st, true,
                          "Apply CSE optimize pass in Dy2St");
 
 /**
@@ -1839,8 +1691,7 @@ PHI_DEFINE_EXPORTED_bool(enable_cse_in_dy2st,
  * Note: If -1, will not limit the max count of eliminate redundant computation.
  */
 PHI_DEFINE_EXPORTED_int32(
-    cse_max_count,
-    -1,
+    cse_max_count, -1,
     "Max count of eliminate redundant computation in CSE, for debug usage");
 
 /**
@@ -1851,8 +1702,7 @@ PHI_DEFINE_EXPORTED_int32(
  * Example:
  * Note: If True, will apply global search in blaslt.
  */
-PHI_DEFINE_EXPORTED_bool(enable_blaslt_global_search,
-                         false,
+PHI_DEFINE_EXPORTED_bool(enable_blaslt_global_search, false,
                          "Whether to use global search in cublaslt gemm.");
 
 /**
@@ -1863,8 +1713,7 @@ PHI_DEFINE_EXPORTED_bool(enable_blaslt_global_search,
  * Example:
  * Note: If set this flag, will load search configs file generated by offline.
  */
-PHI_DEFINE_EXPORTED_string(cublaslt_device_best_config,
-                           "",
+PHI_DEFINE_EXPORTED_string(cublaslt_device_best_config, "",
                            "Whether to load search configs file generated by "
                            "offline in cublaslt gemm.");
 
@@ -1877,42 +1726,35 @@ PHI_DEFINE_EXPORTED_string(cublaslt_device_best_config,
  * Note: If True, will use xqa optim in block_multihead_attention kernel (GQA).
  */
 PHI_DEFINE_EXPORTED_bool(
-    use_xqa_optim,
-    false,
+    use_xqa_optim, false,
     "Enable xqa optim in block_multihead_attention kernel (GQA).");
 
-PHI_DEFINE_EXPORTED_bool(cuda_core_int8_gemm,
-                         false,
+PHI_DEFINE_EXPORTED_bool(cuda_core_int8_gemm, false,
                          "Enable speed up int8 gemm calculations when m<=4");
 
 PHI_DEFINE_EXPORTED_string(
-    mkl_dir,  // NOLINT
+    mkl_dir, // NOLINT
     "",
     "Specify path for loading libmkl_rt.so. "
     "For instance, /opt/intel/oneapi/mkl/latest/lib/intel64/."
     "If default, "
     "dlopen will search mkl from LD_LIBRARY_PATH");
 
-PHI_DEFINE_EXPORTED_string(op_dir,  // NOLINT
+PHI_DEFINE_EXPORTED_string(op_dir, // NOLINT
                            "",
                            "Specify path for loading user-defined op library.");
 
-PHI_DEFINE_EXPORTED_string(cusparselt_dir,  // NOLINT
-                           "",
-                           "Specify path for loading libcusparseLt.so.");
-PHI_DEFINE_EXPORTED_string(curand_dir,  // NOLINT
-                           "",
-                           "Specify path for loading libcurand.so.10.");
-PHI_DEFINE_EXPORTED_string(cusolver_dir,  // NOLINT
-                           "",
-                           "Specify path for loading libcusolver.so.*.");
-PHI_DEFINE_EXPORTED_string(cusparse_dir,  // NOLINT
-                           "",
-                           "Specify path for loading libcusparse.so.*.");
+PHI_DEFINE_EXPORTED_string(cusparselt_dir, // NOLINT
+                           "", "Specify path for loading libcusparseLt.so.");
+PHI_DEFINE_EXPORTED_string(curand_dir, // NOLINT
+                           "", "Specify path for loading libcurand.so.10.");
+PHI_DEFINE_EXPORTED_string(cusolver_dir, // NOLINT
+                           "", "Specify path for loading libcusolver.so.*.");
+PHI_DEFINE_EXPORTED_string(cusparse_dir, // NOLINT
+                           "", "Specify path for loading libcusparse.so.*.");
 PHI_DEFINE_EXPORTED_string(
-    win_cuda_bin_dir,  // NOLINT
-    "",
-    "Specify path for loading *.dll about cuda on windows");
+    win_cuda_bin_dir, // NOLINT
+    "", "Specify path for loading *.dll about cuda on windows");
 
 /**
  * Collect shapes of value for TensorRTEngine
@@ -1922,47 +1764,38 @@ PHI_DEFINE_EXPORTED_string(
  * Example:
  * Note: If True, will collect shapes of value when run executor.
  */
-PHI_DEFINE_EXPORTED_bool(enable_collect_shape,
-                         false,
+PHI_DEFINE_EXPORTED_bool(enable_collect_shape, false,
                          "Collect shapes of value for TensorRTEngine");
 // Example: FLAGS_accuracy_check_atol=1e-3 would set the atol to 1e-3.
-PHI_DEFINE_EXPORTED_double(accuracy_check_atol_fp32,
-                           1e-6,
+PHI_DEFINE_EXPORTED_double(accuracy_check_atol_fp32, 1e-6,
                            "It controls the atol of accuracy_check op");
 
 // Example: FLAGS_accuracy_check_rtol=1e-3 would set the rtol to 1e-3.
-PHI_DEFINE_EXPORTED_double(accuracy_check_rtol_fp32,
-                           1e-6,
+PHI_DEFINE_EXPORTED_double(accuracy_check_rtol_fp32, 1e-6,
                            "It controls the rtol of accuracy_check op");
 
 // Example: FLAGS_accuracy_check_atol=1e-3 would set the atol to 1e-3.
-PHI_DEFINE_EXPORTED_double(accuracy_check_atol_fp16,
-                           1e-3,
+PHI_DEFINE_EXPORTED_double(accuracy_check_atol_fp16, 1e-3,
                            "It controls the atol of accuracy_check op");
 
 // Example: FLAGS_accuracy_check_rtol=1e-3 would set the rtol to 1e-3.
-PHI_DEFINE_EXPORTED_double(accuracy_check_rtol_fp16,
-                           1e-3,
+PHI_DEFINE_EXPORTED_double(accuracy_check_rtol_fp16, 1e-3,
                            "It controls the rtol of accuracy_check op");
 
 // Example: FLAGS_accuracy_check_atol=1e-3 would set the atol to 1e-3.
-PHI_DEFINE_EXPORTED_double(accuracy_check_atol_bf16,
-                           1e-3,
+PHI_DEFINE_EXPORTED_double(accuracy_check_atol_bf16, 1e-3,
                            "It controls the atol of accuracy_check op");
 
 // Example: FLAGS_accuracy_check_rtol=1e-3 would set the rtol to 1e-3.
-PHI_DEFINE_EXPORTED_double(accuracy_check_rtol_bf16,
-                           1e-3,
+PHI_DEFINE_EXPORTED_double(accuracy_check_rtol_bf16, 1e-3,
                            "It controls the rtol of accuracy_check op");
 
 PHI_DEFINE_EXPORTED_bool(
-    pinned_memory_as_cpu_backend,
-    false,
+    pinned_memory_as_cpu_backend, false,
     "Whether use CPU backend, when tensor is pinned_memory.");
 
 PHI_DEFINE_EXPORTED_int32(
-    trt_min_group_size,
-    3,
+    trt_min_group_size, 3,
     "when the trt subgraph size is not larger than `trt_min_group_size`, the "
     "group will fallback to original graph.");
 
@@ -1974,8 +1807,7 @@ PHI_DEFINE_EXPORTED_int32(
  * Value Range: bool, default=false
  * Note: Just used for testing. Do not use in model training.
  */
-PHI_DEFINE_EXPORTED_bool(enable_auto_parallel_align_mode,
-                         false,
+PHI_DEFINE_EXPORTED_bool(enable_auto_parallel_align_mode, false,
                          "Enable align mode for auto parallel");
 
 /**
@@ -1986,17 +1818,14 @@ PHI_DEFINE_EXPORTED_bool(enable_auto_parallel_align_mode,
  * Example:
  * Note: Enable flash decoding for mmha kernels in fused_multi_transformer_op.
  */
-PHI_DEFINE_EXPORTED_bool(fused_multi_transformer_op_use_mbfmha,
-                         false,
+PHI_DEFINE_EXPORTED_bool(fused_multi_transformer_op_use_mbfmha, false,
                          "Enable flash decoding for mmha kernels in "
                          "fused_multi_transformer_op.");
 
-PHI_DEFINE_EXPORTED_int64(multi_block_attention_min_partition_size,
-                          1024,
+PHI_DEFINE_EXPORTED_int64(multi_block_attention_min_partition_size, 1024,
                           "The minimum partition size for flash decoding");
 
-PHI_DEFINE_EXPORTED_bool(save_cf_stack_op,
-                         false,
+PHI_DEFINE_EXPORTED_bool(save_cf_stack_op, false,
                          "Save cf stack op for higher-order derivatives.");
 
 #if defined(PADDLE_WITH_CUDA) || defined(PADDLE_WITH_HIP)
@@ -2010,8 +1839,7 @@ PHI_DEFINE_EXPORTED_bool(save_cf_stack_op,
  *        while version 3 requires Hopper architecture.
  */
 PHI_DEFINE_EXPORTED_int32(
-    flash_attn_version,
-    2,
+    flash_attn_version, 2,
     "Specify the version of FlashAttention to use, options are 2 or 3. "
     "Version 2 requires Ampere architecture or higher, "
     "while version 3 requires Hopper architecture.");

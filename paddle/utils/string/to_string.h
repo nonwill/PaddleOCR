@@ -21,7 +21,7 @@ limitations under the License. */
 
 namespace paddle {
 namespace string {
-inline std::ostream& operator<<(std::ostream& s, const std::type_index& t) {
+inline std::ostream &operator<<(std::ostream &s, const std::type_index &t) {
   s << t.name();
   return s;
 }
@@ -40,29 +40,22 @@ inline std::string to_string(T v) {
   return std::to_string(static_cast<int>(v));
 }
 
-template <>
-inline std::string to_string(std::type_index t) {
-  return t.name();
-}
+template <> inline std::string to_string(std::type_index t) { return t.name(); }
 
 // Faster std::string/const char* type
-template <>
-inline std::string to_string(std::string v) {
-  return v;
-}
+template <> inline std::string to_string(std::string v) { return v; }
 
-template <>
-inline std::string to_string(const char* v) {
+template <> inline std::string to_string(const char *v) {
   return std::string(v);
 }
 
-inline std::ostream& operator<<(std::ostream& os,
-                                const std::vector<std::vector<size_t>>& lod) {
+inline std::ostream &operator<<(std::ostream &os,
+                                const std::vector<std::vector<size_t>> &lod) {
   os << "{";
-  for (auto& v : lod) {
+  for (auto &v : lod) {
     os << "{";
     bool is_first = true;
-    for (auto& i : v) {
+    for (auto &i : v) {
       if (is_first) {
         os << i;
         is_first = false;
@@ -77,5 +70,5 @@ inline std::ostream& operator<<(std::ostream& os,
   return os;
 }
 
-}  // namespace string
-}  // namespace paddle
+} // namespace string
+} // namespace paddle
