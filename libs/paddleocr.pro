@@ -3,7 +3,7 @@ CONFIG -= qt
 
 TEMPLATE = lib
 
-TARGET = pdddleocr
+TARGET = paddleocr
 
 
 mac:CONFIG += static

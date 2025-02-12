@@ -29,7 +29,7 @@ ppocr_capi {
   win32-msvc* {
    LIBS += -L$${OPENCV_DIR}/x64/vc16/lib
   }
-  LIBS += -lpdddleocr -lopencv_world3420
+  LIBS += -lpaddleocr -lopencv_world3420
 }
 
 

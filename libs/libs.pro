@@ -2,6 +2,6 @@ TEMPLATE = subdirs
 
 CONFIG += ordered
 
-SUBDIRS += pdddleocr.pro
+SUBDIRS += paddleocr.pro
 
 SUBDIRS += ppocr.pro
