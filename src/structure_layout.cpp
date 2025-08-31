@@ -87,18 +87,26 @@ void StructureLayoutRecognizer::Run(
 void StructureLayoutRecognizer::LoadModel(
     const std::string &model_dir) noexcept {
   paddle_infer::Config config;
-  if (Utility::PathExists(model_dir + "/inference.pdmodel") &&
-      Utility::PathExists(model_dir + "/inference.pdiparams")) {
-    config.SetModel(model_dir + "/inference.pdmodel",
-                    model_dir + "/inference.pdiparams");
-  } else if (Utility::PathExists(model_dir + "/model.pdmodel") &&
-             Utility::PathExists(model_dir + "/model.pdiparams")) {
-    config.SetModel(model_dir + "/model.pdmodel",
-                    model_dir + "/model.pdiparams");
-  } else {
-    std::cerr << "[ERROR] not find model.pdiparams or inference.pdiparams in "
-              << model_dir << std::endl;
-    exit(1);
+  bool json_model = false;
+  std::string model_file_path, param_file_path;
+  char const *model_variants[8] = {"/inference.json",    "/inference.pdiparams",
+                                   "/model.json",        "/model.pdiparams",
+                                   "/inference.pdmodel", "/inference.pdiparams",
+                                   "/model.pdmodel",     "/model.pdiparams"};
+  for (int i = 0; i < 8; i += 2) {
+    std::string model_file = model_dir + model_variants[i];
+    if (Utility::PathExists(model_file)) {
+      model_file_path = std::move(model_file);
+      param_file_path = model_dir + model_variants[i + 1];
+      json_model = (i == 0 || i == 2);
+      break;
+    }
+  }
+  if (model_file_path.empty()) {
+    fprintf(stderr, "[ERROR] No valid model file found in %s\n",
+            model_dir.c_str());
+    fflush(stderr);
+    return;
   }
 
   if (args_.use_gpu) {
@@ -126,6 +134,10 @@ void StructureLayoutRecognizer::LoadModel(
       config.DisableMKLDNN();
     }
     config.SetCpuMathLibraryNumThreads(args_.cpu_threads);
+    if (json_model) {
+      config.EnableNewIR();
+      config.EnableNewExecutor();
+    }
   }
 
   // false for zero copy tensor

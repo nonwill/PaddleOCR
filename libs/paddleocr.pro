@@ -13,14 +13,14 @@ CONFIG += Clipper2Lib
 
 include($$PWD/../../nwDeployed/nwDeployed.pri)
 
-CONFIG += ppmkl
+#CONFIG += ppmkl
 
 PPOCR_ROOT_DIR = $$PWD/..
 # PPOCR_ROOT_DIR = Z:/PaddleOCR_Origin/deploy/cpp_infer
 PPOCR_DEPS_DIR = $$PWD/../deps
 
 OPENCV_DIR = $${PPOCR_DEPS_DIR}/opencv-3.4.20
-PADDLE_LIB = $${PPOCR_DEPS_DIR}/paddle_inference-2.6.2
+PADDLE_LIB = $${PPOCR_DEPS_DIR}/paddle_inference-3.0.0
 
 
 INCLUDEPATH += $${PPOCR_ROOT_DIR} \

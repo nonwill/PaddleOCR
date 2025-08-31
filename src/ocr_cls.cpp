@@ -91,8 +91,28 @@ void Classifier::Run(const std::vector<cv::Mat> &img_list,
 
 void Classifier::LoadModel(const std::string &model_dir) noexcept {
   paddle_infer::Config config;
-  config.SetModel(model_dir + "/inference.pdmodel",
-                  model_dir + "/inference.pdiparams");
+  bool json_model = false;
+  std::string model_file_path, param_file_path;
+  char const *model_variants[8] = {"/inference.json",    "/inference.pdiparams",
+                                   "/model.json",        "/model.pdiparams",
+                                   "/inference.pdmodel", "/inference.pdiparams",
+                                   "/model.pdmodel",     "/model.pdiparams"};
+  for (int i = 0; i < 8; i += 2) {
+    std::string model_file = model_dir + model_variants[i];
+    if (Utility::PathExists(model_file)) {
+      model_file_path = std::move(model_file);
+      param_file_path = model_dir + model_variants[i + 1];
+      json_model = (i == 0 || i == 2);
+      break;
+    }
+  }
+  if (model_file_path.empty()) {
+    fprintf(stderr, "[ERROR] No valid model file found in %s\n",
+            model_dir.c_str());
+    fflush(stderr);
+    return;
+  }
+  config.SetModel(model_file_path, param_file_path);
 
   if (args_.use_gpu) {
     config.EnableUseGpu(args_.gpu_mem, args_.gpu_id);
@@ -119,6 +139,10 @@ void Classifier::LoadModel(const std::string &model_dir) noexcept {
       config.DisableMKLDNN();
     }
     config.SetCpuMathLibraryNumThreads(args_.cpu_threads);
+    if (json_model) {
+      config.EnableNewIR();
+      config.EnableNewExecutor();
+    }
   }
 
   // false for zero copy tensor
