@@ -48,7 +48,7 @@ void StructureTableRecognizer::Run(
       cv::Mat resize_img;
       cv::Mat pad_img;
       TableResizeImg::Run(srcimg, resize_img, args_.table_max_len);
-      Normalize::Run(resize_img, this->mean_, this->scale_, this->is_scale_);
+      Normalize::Run(resize_img, mean_, scale_, is_scale_);
       TablePadImg::Run(resize_img, pad_img, args_.table_max_len);
       norm_img_batch.emplace_back(std::move(pad_img));
       width_list.emplace_back(srcimg.cols);
@@ -59,14 +59,14 @@ void StructureTableRecognizer::Run(
         batch_num * 3 * args_.table_max_len * args_.table_max_len, 0.0f);
     PermuteBatch::Run(norm_img_batch, input.data());
     // inference.
-    auto input_names = this->predictor_->GetInputNames();
-    auto input_t = this->predictor_->GetInputHandle(input_names[0]);
+    auto input_names = predictor_->GetInputNames();
+    auto input_t = predictor_->GetInputHandle(input_names[0]);
     input_t->Reshape({batch_num, 3, args_.table_max_len, args_.table_max_len});
     input_t->CopyFromCpu(input.data());
-    this->predictor_->Run();
-    auto output_names = this->predictor_->GetOutputNames();
-    auto output_tensor0 = this->predictor_->GetOutputHandle(output_names[0]);
-    auto output_tensor1 = this->predictor_->GetOutputHandle(output_names[1]);
+    predictor_->Run();
+    auto output_names = predictor_->GetOutputNames();
+    auto output_tensor0 = predictor_->GetOutputHandle(output_names[0]);
+    auto output_tensor1 = predictor_->GetOutputHandle(output_names[1]);
     std::vector<int> predict_shape0 = output_tensor0->shape();
     std::vector<int> predict_shape1 = output_tensor1->shape();
 
@@ -85,10 +85,10 @@ void StructureTableRecognizer::Run(
     std::vector<std::vector<std::string>> structure_html_tag_batch;
     std::vector<float> structure_score_batch;
     std::vector<std::vector<std::vector<int>>> structure_boxes_batch;
-    this->post_processor_.Run(loc_preds, structure_probs, structure_score_batch,
-                              predict_shape0, predict_shape1,
-                              structure_html_tag_batch, structure_boxes_batch,
-                              width_list, height_list);
+    post_processor_.Run(loc_preds, structure_probs, structure_score_batch,
+                        predict_shape0, predict_shape1,
+                        structure_html_tag_batch, structure_boxes_batch,
+                        width_list, height_list);
     for (int m = 0; m < predict_shape0[0]; ++m) {
 
       structure_html_tag_batch[m].emplace(structure_html_tag_batch[m].begin(),
@@ -174,6 +174,6 @@ void StructureTableRecognizer::LoadModel(
   config.EnableMemoryOptim();
   config.DisableGlogInfo();
 
-  this->predictor_ = paddle_infer::CreatePredictor(config);
+  predictor_ = paddle_infer::CreatePredictor(config);
 }
 } // namespace PaddleOCR

@@ -58,16 +58,16 @@ void Classifier::Run(const std::vector<cv::Mat> &img_list,
     PermuteBatch::Run(norm_img_batch, input.data());
 
     // inference.
-    auto input_names = this->predictor_->GetInputNames();
-    auto input_t = this->predictor_->GetInputHandle(input_names[0]);
+    auto input_names = predictor_->GetInputNames();
+    auto input_t = predictor_->GetInputHandle(input_names[0]);
     input_t->Reshape({batch_num, cls_image_shape[0], cls_image_shape[1],
                       cls_image_shape[2]});
     input_t->CopyFromCpu(input.data());
-    this->predictor_->Run();
+    predictor_->Run();
 
     std::vector<float> predict_batch;
-    auto output_names = this->predictor_->GetOutputNames();
-    auto output_t = this->predictor_->GetOutputHandle(output_names[0]);
+    auto output_names = predictor_->GetOutputNames();
+    auto output_t = predictor_->GetOutputHandle(output_names[0]);
     auto predict_shape = output_t->shape();
 
     int out_num = std::accumulate(predict_shape.begin(), predict_shape.end(), 1,
@@ -156,6 +156,6 @@ void Classifier::LoadModel(const std::string &model_dir) noexcept {
   config.EnableMemoryOptim();
   config.DisableGlogInfo();
 
-  this->predictor_ = paddle_infer::CreatePredictor(config);
+  predictor_ = paddle_infer::CreatePredictor(config);
 }
 } // namespace PaddleOCR

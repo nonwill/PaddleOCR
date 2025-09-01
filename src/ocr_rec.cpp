@@ -51,8 +51,8 @@ void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
        beg_img_no += args_.rec_batch_num) {
     size_t end_img_no = std::min(img_num, beg_img_no + args_.rec_batch_num);
     int batch_num = end_img_no - beg_img_no;
-    int imgH = this->rec_image_shape_[1];
-    int imgW = this->rec_image_shape_[2];
+    int imgH = rec_image_shape_[1];
+    int imgW = rec_image_shape_[2];
     float max_wh_ratio = imgW * 1.0 / imgH;
     for (size_t ino = beg_img_no; ino < end_img_no; ++ino) {
       int h = img_list[indices[ino]].rows;
@@ -68,8 +68,8 @@ void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
       img_list[indices[ino]].copyTo(srcimg);
       cv::Mat resize_img;
       CrnnResizeImg::Run(srcimg, resize_img, max_wh_ratio, args_.use_tensorrt,
-                         this->rec_image_shape_);
-      Normalize::Run(resize_img, this->mean_, this->scale_, this->is_scale_);
+                         rec_image_shape_);
+      Normalize::Run(resize_img, mean_, scale_, is_scale_);
       batch_width = std::max(resize_img.cols, batch_width);
       norm_img_batch.emplace_back(std::move(resize_img));
     }
@@ -77,15 +77,15 @@ void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
     std::vector<float> input(batch_num * 3 * imgH * batch_width, 0.0f);
     PermuteBatch::Run(norm_img_batch, input.data());
     // Inference.
-    auto input_names = this->predictor_->GetInputNames();
-    auto input_t = this->predictor_->GetInputHandle(input_names[0]);
+    auto input_names = predictor_->GetInputNames();
+    auto input_t = predictor_->GetInputHandle(input_names[0]);
     input_t->Reshape({batch_num, 3, imgH, batch_width});
     input_t->CopyFromCpu(input.data());
-    this->predictor_->Run();
+    predictor_->Run();
 
     std::vector<float> predict_batch;
-    auto output_names = this->predictor_->GetOutputNames();
-    auto output_t = this->predictor_->GetOutputHandle(output_names[0]);
+    auto output_names = predictor_->GetOutputNames();
+    auto output_t = predictor_->GetOutputHandle(output_names[0]);
     auto predict_shape = output_t->shape();
 
     size_t out_num = std::accumulate(predict_shape.begin(), predict_shape.end(),
@@ -199,7 +199,7 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) noexcept {
   config.EnableMemoryOptim();
   config.DisableGlogInfo();
 
-  this->predictor_ = paddle_infer::CreatePredictor(config);
+  predictor_ = paddle_infer::CreatePredictor(config);
 }
 
 } // namespace PaddleOCR

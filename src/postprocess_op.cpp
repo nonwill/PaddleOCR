@@ -443,7 +443,7 @@ void TablePostProcessor::Run(
       char_score = float(*std::max_element(
           &structure_probs[step_start_idx],
           &structure_probs[step_start_idx + structure_probs_shape[2]]));
-      html_tag = this->label_list_[char_idx];
+      html_tag = label_list_[char_idx];
 
       if (step_idx > 0 && html_tag == TablePostProcessor::end) {
         break;
@@ -499,32 +499,32 @@ void PicodetPostProcessor::Run(std::vector<StructurePredictResult> &results,
   float scale_factor_w = resize_shape[1] / float(ori_shape[1]);
 
   std::vector<std::vector<StructurePredictResult>> bbox_results;
-  bbox_results.resize(this->label_list_.size());
-  for (size_t i = 0; i < this->fpn_stride_.size(); ++i) {
-    const int feature_h = std::ceil((float)in_h / this->fpn_stride_[i]);
-    const int feature_w = std::ceil((float)in_w / this->fpn_stride_[i]);
+  bbox_results.resize(label_list_.size());
+  for (size_t i = 0; i < fpn_stride_.size(); ++i) {
+    const int feature_h = std::ceil((float)in_h / fpn_stride_[i]);
+    const int feature_w = std::ceil((float)in_w / fpn_stride_[i]);
     const size_t hxw = feature_h * feature_w;
     for (size_t idx = 0; idx < hxw; ++idx) {
       // score and label
       float score = 0;
       int cur_label = 0;
-      for (size_t label = 0; label < this->label_list_.size(); ++label) {
-        float osc = outs[i][idx * this->label_list_.size() + label];
+      for (size_t label = 0; label < label_list_.size(); ++label) {
+        float osc = outs[i][idx * label_list_.size() + label];
         if (osc > score) {
           score = osc;
           cur_label = label;
         }
       }
       // bbox
-      if (score > this->score_threshold_) {
+      if (score > score_threshold_) {
         int row = idx / feature_w;
         int col = idx % feature_w;
         std::vector<float>::const_iterator itemp =
-            outs[i + this->fpn_stride_.size()].begin() + idx * 4 * reg_max;
+            outs[i + fpn_stride_.size()].begin() + idx * 4 * reg_max;
         std::vector<float> bbox_pred(itemp, itemp + 4 * reg_max);
-        bbox_results[cur_label].emplace_back(std::move(
-            this->disPred2Bbox(bbox_pred, cur_label, score, col, row,
-                               this->fpn_stride_[i], resize_shape, reg_max)));
+        bbox_results[cur_label].emplace_back(
+            std::move(disPred2Bbox(bbox_pred, cur_label, score, col, row,
+                                   fpn_stride_[i], resize_shape, reg_max)));
       }
     }
   }
@@ -538,7 +538,7 @@ void PicodetPostProcessor::Run(std::vector<StructurePredictResult> &results,
     if (bbox_results[i].size() <= 0) {
       continue;
     }
-    this->nms(bbox_results[i], this->nms_threshold_);
+    nms(bbox_results[i], nms_threshold_);
     for (auto &box : bbox_results[i]) {
       box.box[0] = box.box[0] / scale_factor_w;
       box.box[2] = box.box[2] / scale_factor_w;
@@ -576,7 +576,7 @@ StructurePredictResult PicodetPostProcessor::disPred2Bbox(
 
   StructurePredictResult result_item;
   result_item.box = {xmin, ymin, xmax, ymax};
-  result_item.type = this->label_list_[label];
+  result_item.type = label_list_[label];
   result_item.confidence = score;
 
   return result_item;

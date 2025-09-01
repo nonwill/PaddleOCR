@@ -37,25 +37,25 @@ void StructureLayoutRecognizer::Run(
   img.copyTo(srcimg);
   cv::Mat resize_img;
   Resize::Run(srcimg, resize_img, 800, 608);
-  Normalize::Run(resize_img, this->mean_, this->scale_, this->is_scale_);
+  Normalize::Run(resize_img, mean_, scale_, is_scale_);
 
   std::vector<float> input(1 * 3 * resize_img.rows * resize_img.cols, 0.0f);
   Permute::Run(resize_img, input.data());
 
   // inference.
-  auto input_names = this->predictor_->GetInputNames();
-  auto input_t = this->predictor_->GetInputHandle(input_names[0]);
+  auto input_names = predictor_->GetInputNames();
+  auto input_t = predictor_->GetInputHandle(input_names[0]);
   input_t->Reshape({1, 3, resize_img.rows, resize_img.cols});
   input_t->CopyFromCpu(input.data());
 
-  this->predictor_->Run();
+  predictor_->Run();
 
   // Get output tensor
   std::vector<std::vector<float>> out_tensor_list;
   std::vector<std::vector<int>> output_shape_list;
-  auto output_names = this->predictor_->GetOutputNames();
+  auto output_names = predictor_->GetOutputNames();
   for (size_t j = 0; j < output_names.size(); ++j) {
-    auto output_tensor = this->predictor_->GetOutputHandle(output_names[j]);
+    auto output_tensor = predictor_->GetOutputHandle(output_names[j]);
     std::vector<int> output_shape = output_tensor->shape();
     int out_num = std::accumulate(output_shape.begin(), output_shape.end(), 1,
                                   std::multiplies<int>());
@@ -72,15 +72,15 @@ void StructureLayoutRecognizer::Run(
   std::vector<int> bbox_num;
   int reg_max = 0;
   for (size_t i = 0; i < out_tensor_list.size(); ++i) {
-    if (i == this->post_processor_.fpn_stride_size()) {
+    if (i == post_processor_.fpn_stride_size()) {
       reg_max = output_shape_list[i][2] / 4;
       break;
     }
   }
   std::vector<int> ori_shape = {srcimg.rows, srcimg.cols};
   std::vector<int> resize_shape = {resize_img.rows, resize_img.cols};
-  this->post_processor_.Run(result, out_tensor_list, ori_shape, resize_shape,
-                            reg_max);
+  post_processor_.Run(result, out_tensor_list, ori_shape, resize_shape,
+                      reg_max);
   bbox_num.emplace_back(result.size());
 }
 
@@ -151,7 +151,7 @@ void StructureLayoutRecognizer::LoadModel(
   config.EnableMemoryOptim();
   config.DisableGlogInfo();
 
-  this->predictor_ = paddle_infer::CreatePredictor(config);
+  predictor_ = paddle_infer::CreatePredictor(config);
 }
 
 } // namespace PaddleOCR

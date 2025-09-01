@@ -46,7 +46,7 @@ PaddleStructure::structure(const cv::Mat &srcimg) noexcept {
   std::vector<StructurePredictResult> structure_results;
 
   if (args.layout) {
-    this->layout(img, structure_results);
+    layout(img, structure_results);
   } else {
     StructurePredictResult res;
     res.type = "table";
@@ -60,9 +60,9 @@ PaddleStructure::structure(const cv::Mat &srcimg) noexcept {
     // crop image
     roi_img = std::move(Utility::crop_image(img, structure_results[i].box));
     if (args.table && structure_results[i].type == "table") {
-      this->table(roi_img, structure_results[i]);
+      table(roi_img, structure_results[i]);
     } else if (args.det && args.rec) {
-      structure_results[i].text_res = std::move(this->ocr(roi_img, false));
+      structure_results[i].text_res = std::move(ocr(roi_img, false));
     }
   }
 
@@ -91,7 +91,7 @@ void PaddleStructure::table(const cv::Mat &img,
 
   for (size_t i = 0; i < img_list.size(); ++i) {
     // det
-    this->det(img_list[i], ocr_result);
+    det(img_list[i], ocr_result);
     // crop image
     std::vector<cv::Mat> rec_img_list;
     std::vector<int> ocr_box;
@@ -106,10 +106,10 @@ void PaddleStructure::table(const cv::Mat &img,
       rec_img_list.emplace_back(std::move(crop_img));
     }
     // rec
-    this->rec(rec_img_list, ocr_result);
+    rec(rec_img_list, ocr_result);
     // rebuild table
-    structure_result.html = std::move(this->rebuild_table(
-        structure_html_tags[i], structure_boxes[i], ocr_result));
+    structure_result.html = std::move(
+        rebuild_table(structure_html_tags[i], structure_boxes[i], ocr_result));
     structure_result.cell_box = std::move(structure_boxes[i]);
     structure_result.html_score = structure_scores[i];
   }
@@ -139,7 +139,7 @@ std::string PaddleStructure::rebuild_table(
       } else {
         structure_box = structure_boxes[j];
       }
-      dis_list[j][0] = this->dis(ocr_box, structure_box);
+      dis_list[j][0] = dis(ocr_box, structure_box);
       dis_list[j][1] = 1 - Utility::iou(ocr_box, structure_box);
       dis_list[j][2] = j;
     }

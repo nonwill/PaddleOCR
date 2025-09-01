@@ -68,7 +68,7 @@ PPOCR::ocr(const std::vector<cv::Mat> &img_list) noexcept {
     std::vector<OCRPredictResult> ocr_result;
     ocr_result.resize(img_list.size());
     if (pri->args.cls && pri->classifier) {
-      this->cls(img_list, ocr_result);
+      cls(img_list, ocr_result);
       for (size_t i = 0; i < img_list.size(); ++i) {
         if (ocr_result[i].cls_label % 2 == 1 &&
             ocr_result[i].cls_score > pri->args.cls_thresh) {
@@ -77,14 +77,14 @@ PPOCR::ocr(const std::vector<cv::Mat> &img_list) noexcept {
       }
     }
     if (pri->args.rec) {
-      this->rec(img_list, ocr_result);
+      rec(img_list, ocr_result);
     }
     for (size_t i = 0; i < ocr_result.size(); ++i) {
       ocr_results.emplace_back(1, std::move(ocr_result[i]));
     }
   } else {
     for (size_t i = 0; i < img_list.size(); ++i) {
-      std::vector<OCRPredictResult> ocr_result = this->ocr(img_list[i]);
+      std::vector<OCRPredictResult> ocr_result = ocr(img_list[i]);
       ocr_results.emplace_back(std::move(ocr_result));
     }
   }
@@ -96,7 +96,7 @@ std::vector<OCRPredictResult> PPOCR::ocr(const cv::Mat &img,
 
   std::vector<OCRPredictResult> ocr_result;
   // det
-  this->det(img, ocr_result);
+  det(img, ocr_result);
   // crop image
   std::vector<cv::Mat> img_list;
   for (size_t j = 0; j < ocr_result.size(); ++j) {
@@ -105,7 +105,7 @@ std::vector<OCRPredictResult> PPOCR::ocr(const cv::Mat &img,
   }
   // cls
   if (and_cls && pri->args.cls && pri->classifier) {
-    this->cls(img_list, ocr_result);
+    cls(img_list, ocr_result);
     for (size_t i = 0; i < img_list.size(); ++i) {
       if (ocr_result[i].cls_label % 2 == 1 &&
           ocr_result[i].cls_score > pri->args.cls_thresh) {
@@ -115,7 +115,7 @@ std::vector<OCRPredictResult> PPOCR::ocr(const cv::Mat &img,
   }
   // rec
   if (pri->args.rec) {
-    this->rec(img_list, ocr_result);
+    rec(img_list, ocr_result);
   }
   return ocr_result;
 }

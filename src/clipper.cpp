@@ -3610,8 +3610,8 @@ DoublePoint GetUnitNormal(const IntPoint &pt1, const IntPoint &pt2) noexcept {
 //------------------------------------------------------------------------------
 
 ClipperOffset::ClipperOffset(double miterLimit, double arcTolerance) noexcept {
-  this->MiterLimit = miterLimit;
-  this->ArcTolerance = arcTolerance;
+  MiterLimit = miterLimit;
+  ArcTolerance = arcTolerance;
   m_lowest.X = -1;
 }
 //------------------------------------------------------------------------------

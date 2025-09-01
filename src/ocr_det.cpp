@@ -96,7 +96,7 @@ void DBDetector::LoadModel(const std::string &model_dir) noexcept {
   config.EnableMemoryOptim();
   config.DisableGlogInfo();
 
-  this->predictor_ = paddle_infer::CreatePredictor(config);
+  predictor_ = paddle_infer::CreatePredictor(config);
 }
 
 void DBDetector::Run(
@@ -118,16 +118,16 @@ void DBDetector::Run(
   Permute::Run(resize_img, input.data());
 
   // Inference.
-  auto input_names = this->predictor_->GetInputNames();
-  auto input_t = this->predictor_->GetInputHandle(input_names[0]);
+  auto input_names = predictor_->GetInputNames();
+  auto input_t = predictor_->GetInputHandle(input_names[0]);
   input_t->Reshape({1, 3, resize_img.rows, resize_img.cols});
   input_t->CopyFromCpu(input.data());
 
-  this->predictor_->Run();
+  predictor_->Run();
 
   std::vector<float> out_data;
-  auto output_names = this->predictor_->GetOutputNames();
-  auto output_t = this->predictor_->GetOutputHandle(output_names[0]);
+  auto output_names = predictor_->GetOutputNames();
+  auto output_t = predictor_->GetOutputHandle(output_names[0]);
   std::vector<int> output_shape = output_t->shape();
   int out_num = std::accumulate(output_shape.begin(), output_shape.end(), 1,
                                 std::multiplies<int>());
