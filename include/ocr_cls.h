@@ -15,7 +15,6 @@
 #ifndef PPOCR_OCR_CLS_HH
 #define PPOCR_OCR_CLS_HH
 
-#include <include/preprocess_op.h>
 #include <include/utility.h>
 #include <memory>
 
@@ -44,12 +43,6 @@ private:
   const bool is_scale_;
 
   std::shared_ptr<paddle_infer::Predictor> predictor_;
-
-  // pre-process
-  ClsResizeImg resize_op_;
-  Normalize normalize_op_;
-  PermuteBatch permute_op_;
-
 }; // class Classifier
 
 } // namespace PaddleOCR

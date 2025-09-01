@@ -16,7 +16,6 @@
 #define PPOCR_STRUCTURE_LAYOUT_HH
 
 #include <include/postprocess_op.h>
-#include <include/preprocess_op.h>
 #include <memory>
 
 namespace paddle_infer {
@@ -41,17 +40,12 @@ private:
   Args const &args_;
   std::shared_ptr<paddle_infer::Predictor> predictor_;
 
-  std::vector<float> mean_;
-  std::vector<float> scale_;
-  bool is_scale_;
-
-  // pre-process
-  Resize resize_op_;
-  Normalize normalize_op_;
-  Permute permute_op_;
+  const std::vector<float> mean_;
+  const std::vector<float> scale_;
+  const bool is_scale_;
 
   // post-process
-  PicodetPostProcessor post_processor_;
+  const PicodetPostProcessor post_processor_;
 };
 
 } // namespace PaddleOCR

@@ -15,7 +15,6 @@
 #ifndef PPOCR_OCR_REC_HH
 #define PPOCR_OCR_REC_HH
 
-#include <include/preprocess_op.h>
 #include <include/utility.h>
 #include <memory>
 
@@ -51,12 +50,6 @@ private:
   const bool is_scale_;
 
   std::shared_ptr<paddle_infer::Predictor> predictor_;
-
-  // pre-process
-  CrnnResizeImg resize_op_;
-  Normalize normalize_op_;
-  PermuteBatch permute_op_;
-
 }; // class CrnnRecognizer
 
 } // namespace PaddleOCR

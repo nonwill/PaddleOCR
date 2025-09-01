@@ -14,6 +14,7 @@
 
 #include <include/args.h>
 #include <include/ocr_rec.h>
+#include <include/preprocess_op.h>
 #include <paddle_inference_api.h>
 
 #include <iostream>
@@ -66,16 +67,15 @@ void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
       cv::Mat srcimg;
       img_list[indices[ino]].copyTo(srcimg);
       cv::Mat resize_img;
-      this->resize_op_.Run(srcimg, resize_img, max_wh_ratio, args_.use_tensorrt,
-                           this->rec_image_shape_);
-      this->normalize_op_.Run(resize_img, this->mean_, this->scale_,
-                              this->is_scale_);
+      CrnnResizeImg::Run(srcimg, resize_img, max_wh_ratio, args_.use_tensorrt,
+                         this->rec_image_shape_);
+      Normalize::Run(resize_img, this->mean_, this->scale_, this->is_scale_);
       batch_width = std::max(resize_img.cols, batch_width);
       norm_img_batch.emplace_back(std::move(resize_img));
     }
 
     std::vector<float> input(batch_num * 3 * imgH * batch_width, 0.0f);
-    this->permute_op_.Run(norm_img_batch, input.data());
+    PermuteBatch::Run(norm_img_batch, input.data());
     // Inference.
     auto input_names = this->predictor_->GetInputNames();
     auto input_t = this->predictor_->GetInputHandle(input_names[0]);

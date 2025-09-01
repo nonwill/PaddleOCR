@@ -14,6 +14,8 @@
 
 #include <include/args.h>
 #include <include/ocr_det.h>
+#include <include/postprocess_op.h>
+#include <include/preprocess_op.h>
 #include <paddle_inference_api.h>
 
 #include <numeric>
@@ -107,13 +109,13 @@ void DBDetector::Run(
   cv::Mat resize_img;
   img.copyTo(srcimg);
 
-  this->resize_op_.Run(img, resize_img, args_.limit_type, args_.limit_side_len,
-                       ratio_h, ratio_w, args_.use_tensorrt);
+  ResizeImgType0::Run(img, resize_img, args_.limit_type, args_.limit_side_len,
+                      ratio_h, ratio_w, args_.use_tensorrt);
 
-  this->normalize_op_.Run(resize_img, mean_, scale_, is_scale_);
+  Normalize::Run(resize_img, mean_, scale_, is_scale_);
 
   std::vector<float> input(1 * 3 * resize_img.rows * resize_img.cols, 0.0f);
-  this->permute_op_.Run(resize_img, input.data());
+  Permute::Run(resize_img, input.data());
 
   // Inference.
   auto input_names = this->predictor_->GetInputNames();
@@ -158,11 +160,11 @@ void DBDetector::Run(
     cv::dilate(bit_map, bit_map, dila_ele);
   }
 
-  boxes = std::move(post_processor_.BoxesFromBitmap(
+  boxes = std::move(DBPostProcessor::BoxesFromBitmap(
       pred_map, bit_map, args_.det_db_box_thresh, args_.det_db_unclip_ratio,
       args_.det_db_score_mode));
 
-  post_processor_.FilterTagDetRes(boxes, ratio_h, ratio_w, srcimg);
+  DBPostProcessor::FilterTagDetRes(boxes, ratio_h, ratio_w, srcimg);
 }
 
 } // namespace PaddleOCR

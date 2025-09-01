@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include <include/args.h>
+#include <include/preprocess_op.h>
 #include <include/structure_table.h>
 #include <paddle_inference_api.h>
 
@@ -46,10 +47,9 @@ void StructureTableRecognizer::Run(
       img_list[ino].copyTo(srcimg);
       cv::Mat resize_img;
       cv::Mat pad_img;
-      this->resize_op_.Run(srcimg, resize_img, args_.table_max_len);
-      this->normalize_op_.Run(resize_img, this->mean_, this->scale_,
-                              this->is_scale_);
-      this->pad_op_.Run(resize_img, pad_img, args_.table_max_len);
+      TableResizeImg::Run(srcimg, resize_img, args_.table_max_len);
+      Normalize::Run(resize_img, this->mean_, this->scale_, this->is_scale_);
+      TablePadImg::Run(resize_img, pad_img, args_.table_max_len);
       norm_img_batch.emplace_back(std::move(pad_img));
       width_list.emplace_back(srcimg.cols);
       height_list.emplace_back(srcimg.rows);
@@ -57,7 +57,7 @@ void StructureTableRecognizer::Run(
 
     std::vector<float> input(
         batch_num * 3 * args_.table_max_len * args_.table_max_len, 0.0f);
-    this->permute_op_.Run(norm_img_batch, input.data());
+    PermuteBatch::Run(norm_img_batch, input.data());
     // inference.
     auto input_names = this->predictor_->GetInputNames();
     auto input_t = this->predictor_->GetInputHandle(input_names[0]);

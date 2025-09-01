@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include <include/args.h>
+#include <include/preprocess_op.h>
 #include <include/structure_layout.h>
 #include <paddle_inference_api.h>
 
@@ -35,12 +36,11 @@ void StructureLayoutRecognizer::Run(
   cv::Mat srcimg;
   img.copyTo(srcimg);
   cv::Mat resize_img;
-  this->resize_op_.Run(srcimg, resize_img, 800, 608);
-  this->normalize_op_.Run(resize_img, this->mean_, this->scale_,
-                          this->is_scale_);
+  Resize::Run(srcimg, resize_img, 800, 608);
+  Normalize::Run(resize_img, this->mean_, this->scale_, this->is_scale_);
 
   std::vector<float> input(1 * 3 * resize_img.rows * resize_img.cols, 0.0f);
-  this->permute_op_.Run(resize_img, input.data());
+  Permute::Run(resize_img, input.data());
 
   // inference.
   auto input_names = this->predictor_->GetInputNames();
@@ -108,6 +108,7 @@ void StructureLayoutRecognizer::LoadModel(
     fflush(stderr);
     return;
   }
+  config.SetModel(model_file_path, param_file_path);
 
   if (args_.use_gpu) {
     config.EnableUseGpu(args_.gpu_mem, args_.gpu_id);

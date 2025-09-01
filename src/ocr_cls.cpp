@@ -14,6 +14,7 @@
 
 #include <include/args.h>
 #include <include/ocr_cls.h>
+#include <include/preprocess_op.h>
 #include <paddle_inference_api.h>
 
 #include <numeric>
@@ -40,10 +41,10 @@ void Classifier::Run(const std::vector<cv::Mat> &img_list,
       cv::Mat srcimg;
       img_list[ino].copyTo(srcimg);
       cv::Mat resize_img;
-      this->resize_op_.Run(srcimg, resize_img, args_.use_tensorrt,
-                           cls_image_shape);
+      ClsResizeImg::Run(srcimg, resize_img, args_.use_tensorrt,
+                        cls_image_shape);
 
-      this->normalize_op_.Run(resize_img, mean_, scale_, is_scale_);
+      Normalize::Run(resize_img, mean_, scale_, is_scale_);
       if (resize_img.cols < cls_image_shape[2]) {
         cv::copyMakeBorder(resize_img, resize_img, 0, 0, 0,
                            cls_image_shape[2] - resize_img.cols,
@@ -54,7 +55,7 @@ void Classifier::Run(const std::vector<cv::Mat> &img_list,
     std::vector<float> input(batch_num * cls_image_shape[0] *
                                  cls_image_shape[1] * cls_image_shape[2],
                              0.0f);
-    this->permute_op_.Run(norm_img_batch, input.data());
+    PermuteBatch::Run(norm_img_batch, input.data());
 
     // inference.
     auto input_names = this->predictor_->GetInputNames();

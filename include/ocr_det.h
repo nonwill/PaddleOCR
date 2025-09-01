@@ -15,8 +15,7 @@
 #ifndef PPOCR_OCR_DET_HH
 #define PPOCR_OCR_DET_HH
 
-#include <include/postprocess_op.h>
-#include <include/preprocess_op.h>
+#include <include/utility.h>
 #include <memory>
 
 namespace paddle_infer {
@@ -46,14 +45,6 @@ private:
   const bool is_scale_;
 
   std::shared_ptr<paddle_infer::Predictor> predictor_;
-
-  // pre-process
-  ResizeImgType0 resize_op_;
-  Normalize normalize_op_;
-  Permute permute_op_;
-
-  // post-process
-  DBPostProcessor post_processor_;
 };
 
 } // namespace PaddleOCR

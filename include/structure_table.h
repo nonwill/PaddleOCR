@@ -16,7 +16,6 @@
 #define PPOCR_STRUCTURE_TABLE_HH
 
 #include <include/postprocess_op.h>
-#include <include/preprocess_op.h>
 #include <memory>
 
 namespace paddle_infer {
@@ -43,18 +42,12 @@ private:
   Args const &args_;
   std::shared_ptr<paddle_infer::Predictor> predictor_;
 
-  std::vector<float> mean_;
-  std::vector<float> scale_;
-  bool is_scale_ = true;
-
-  // pre-process
-  TableResizeImg resize_op_;
-  Normalize normalize_op_;
-  PermuteBatch permute_op_;
-  TablePadImg pad_op_;
+  const std::vector<float> mean_;
+  const std::vector<float> scale_;
+  const bool is_scale_ = true;
 
   // post-process
-  TablePostProcessor post_processor_;
+  const TablePostProcessor post_processor_;
 
 }; // class StructureTableRecognizer
 

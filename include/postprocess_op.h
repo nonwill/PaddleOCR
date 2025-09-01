@@ -21,33 +21,33 @@ namespace PaddleOCR {
 
 class DBPostProcessor {
 public:
-  void GetContourArea(const std::vector<std::vector<float>> &box,
-                      float unclip_ratio, float &distance) noexcept;
+  static void GetContourArea(const std::vector<std::vector<float>> &box,
+                             float unclip_ratio, float &distance) noexcept;
 
-  cv::RotatedRect UnClip(const std::vector<std::vector<float>> &box,
-                         const float &unclip_ratio) noexcept;
+  static cv::RotatedRect UnClip(const std::vector<std::vector<float>> &box,
+                                const float &unclip_ratio) noexcept;
 
-  float **Mat2Vec(const cv::Mat &mat) noexcept;
+  static float **Mat2Vec(const cv::Mat &mat) noexcept;
 
-  std::vector<std::vector<int>>
+  static std::vector<std::vector<int>>
   OrderPointsClockwise(const std::vector<std::vector<int>> &pts) noexcept;
 
-  std::vector<std::vector<float>> GetMiniBoxes(const cv::RotatedRect &box,
-                                               float &ssid) noexcept;
+  static std::vector<std::vector<float>>
+  GetMiniBoxes(const cv::RotatedRect &box, float &ssid) noexcept;
 
-  float BoxScoreFast(const std::vector<std::vector<float>> &box_array,
-                     const cv::Mat &pred) noexcept;
-  float PolygonScoreAcc(const std::vector<cv::Point> &contour,
-                        const cv::Mat &pred) noexcept;
+  static float BoxScoreFast(const std::vector<std::vector<float>> &box_array,
+                            const cv::Mat &pred) noexcept;
+  static float PolygonScoreAcc(const std::vector<cv::Point> &contour,
+                               const cv::Mat &pred) noexcept;
 
-  std::vector<std::vector<std::vector<int>>>
+  static std::vector<std::vector<std::vector<int>>>
   BoxesFromBitmap(const cv::Mat &pred, const cv::Mat &bitmap,
                   const float &box_thresh, const float &det_db_unclip_ratio,
                   const std::string &det_db_score_mode) noexcept;
 
-  void FilterTagDetRes(std::vector<std::vector<std::vector<int>>> &boxes,
-                       float ratio_h, float ratio_w,
-                       const cv::Mat &srcimg) noexcept;
+  static void FilterTagDetRes(std::vector<std::vector<std::vector<int>>> &boxes,
+                              float ratio_h, float ratio_w,
+                              const cv::Mat &srcimg) noexcept;
 
 private:
   static bool XsortInt(const std::vector<int> &a,
@@ -56,13 +56,14 @@ private:
   static bool XsortFp32(const std::vector<float> &a,
                         const std::vector<float> &b) noexcept;
 
-  std::vector<std::vector<float>> Mat2Vector(const cv::Mat &mat) noexcept;
+  static std::vector<std::vector<float>>
+  Mat2Vector(const cv::Mat &mat) noexcept;
 
-  inline int _max(int a, int b) const noexcept { return a >= b ? a : b; }
+  static inline int _max(int a, int b) noexcept { return a >= b ? a : b; }
 
-  inline int _min(int a, int b) const noexcept { return a >= b ? b : a; }
+  static inline int _min(int a, int b) noexcept { return a >= b ? b : a; }
 
-  template <class T> inline T clamp(T x, T min, T max) const noexcept {
+  template <class T> inline static T clamp(T x, T min, T max) noexcept {
     if (x > max)
       return max;
     if (x < min)
@@ -70,7 +71,7 @@ private:
     return x;
   }
 
-  inline float clampf(float x, float min, float max) const noexcept {
+  inline static float clampf(float x, float min, float max) noexcept {
     if (x > max)
       return max;
     if (x < min)
@@ -91,7 +92,7 @@ public:
            std::vector<std::vector<std::string>> &rec_html_tag_batch,
            std::vector<std::vector<std::vector<int>>> &rec_boxes_batch,
            const std::vector<int> &width_list,
-           const std::vector<int> &height_list) noexcept;
+           const std::vector<int> &height_list) const noexcept;
 
 private:
   static std::vector<std::string>
@@ -113,7 +114,7 @@ public:
   void Run(std::vector<StructurePredictResult> &results,
            const std::vector<std::vector<float>> &outs,
            const std::vector<int> &ori_shape,
-           const std::vector<int> &resize_shape, int eg_max) noexcept;
+           const std::vector<int> &resize_shape, int eg_max) const noexcept;
 
   inline size_t fpn_stride_size() const noexcept { return fpn_stride_.size(); }
 
@@ -122,9 +123,9 @@ private:
                                       int label, float score, int x, int y,
                                       int stride,
                                       const std::vector<int> &im_shape,
-                                      int reg_max) noexcept;
+                                      int reg_max) const noexcept;
   void nms(std::vector<StructurePredictResult> &input_boxes,
-           float nms_threshold) noexcept;
+           float nms_threshold) const noexcept;
 
   const std::vector<std::string> label_list_;
   const std::vector<int> fpn_stride_;

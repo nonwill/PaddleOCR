@@ -419,7 +419,7 @@ void TablePostProcessor::Run(
     std::vector<std::vector<std::string>> &rec_html_tag_batch,
     std::vector<std::vector<std::vector<int>>> &rec_boxes_batch,
     const std::vector<int> &width_list,
-    const std::vector<int> &height_list) noexcept {
+    const std::vector<int> &height_list) const noexcept {
   for (int batch_idx = 0; batch_idx < structure_probs_shape[0]; ++batch_idx) {
     // image tags and boxes
     std::vector<std::string> rec_html_tags;
@@ -492,7 +492,7 @@ void PicodetPostProcessor::Run(std::vector<StructurePredictResult> &results,
                                const std::vector<std::vector<float>> &outs,
                                const std::vector<int> &ori_shape,
                                const std::vector<int> &resize_shape,
-                               int reg_max) noexcept {
+                               int reg_max) const noexcept {
   int in_h = resize_shape[0];
   int in_w = resize_shape[1];
   float scale_factor_h = resize_shape[0] / float(ori_shape[0]);
@@ -551,7 +551,7 @@ void PicodetPostProcessor::Run(std::vector<StructurePredictResult> &results,
 
 StructurePredictResult PicodetPostProcessor::disPred2Bbox(
     const std::vector<float> &bbox_pred, int label, float score, int x, int y,
-    int stride, const std::vector<int> &im_shape, int reg_max) noexcept {
+    int stride, const std::vector<int> &im_shape, int reg_max) const noexcept {
   float ct_x = (x + 0.5) * stride;
   float ct_y = (y + 0.5) * stride;
   std::vector<float> dis_pred;
@@ -583,7 +583,7 @@ StructurePredictResult PicodetPostProcessor::disPred2Bbox(
 }
 
 void PicodetPostProcessor::nms(std::vector<StructurePredictResult> &input_boxes,
-                               float nms_threshold) noexcept {
+                               float nms_threshold) const noexcept {
   std::sort(input_boxes.begin(), input_boxes.end(),
             [](StructurePredictResult a, StructurePredictResult b) noexcept {
               return a.confidence > b.confidence;
